@@ -268,4 +268,4 @@ class App extends React.Component {
 
 export default App;
 
-
+// AppRegistry.registerComponent('App', () => App)

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Alert, Button} from 'react-native';
 import { Container, Header, Content, Form, Item, Input, Label, H2, Icon} from 'native-base';
 import  WelcomeScreen from '../../WelcomeScreen/index'
+import {AsyncStorage} from 'react-native';
 // import {ApiService} from './../../../services/api/api'
 import axios from 'axios';
 
@@ -10,6 +11,7 @@ import ForgotPassword from './../ForgotPassword';
 export default class LoginFormScreen extends Component {
     constructor(props){
         super(props);
+        
     }
     static navigationOptions = {
         title: 'Login',
@@ -18,6 +20,24 @@ export default class LoginFormScreen extends Component {
         },
         headerTintColor: '#fff',
     };
+    _storeData = async () => {
+        try {
+          await AsyncStorage.setItem('key', 'I like to save it.');
+        } catch (error) {
+          // Error saving data
+        }
+      };
+      _retrieveData = async () => {
+        try {
+          const value = await AsyncStorage.getItem('key');
+          if (value !== null) {
+            // We have data!!
+            // alert(value);
+          }
+        } catch (error) {
+          // Error retrieving data
+        }
+      };
 
     state = {
         mobileNumber: '',
@@ -34,6 +54,8 @@ export default class LoginFormScreen extends Component {
     };
 
     login = (mobileNumber, pass) => {
+        this._storeData();
+        this._retrieveData();
         const {navigate} =this.props.navigation;
         let responseData;
         const loginUrl = 'https://dealevery.herokuapp.com/account/login';
