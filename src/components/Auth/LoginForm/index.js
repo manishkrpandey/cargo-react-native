@@ -154,7 +154,7 @@ export default class LoginFormScreen extends Component {
     render() {
         return (
             <View style={{paddingTop:75}}>
-                {/*<ForgotPassword />*/}
+                {/* <ForgotPassword /> */}
                 <View style={{alignItems: 'center'}}>
                     <Icon name="person" style={{color:"#10d4f4", fontSize:50, paddingBottom: 35}} />
                     <H2 style={{color: '#10d4f4'}}>Welcome Back!</H2>
@@ -199,7 +199,7 @@ export default class LoginFormScreen extends Component {
                 </Form>
 
                 <View style={{alignItems:'center'}}>
-                    <Text style={styles.forgotLink} onPress={() => this.props.navigation.navigate('WelcomeScreen')}>
+                    <Text style={styles.forgotLink} onPress={() => this.props.navigation.navigate('ForgotPassword')}>
                         Forgot Password?
                     </Text>
 
