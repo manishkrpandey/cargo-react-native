@@ -199,7 +199,7 @@ export default class LoginFormScreen extends Component {
                 </Form>
 
                 <View style={{alignItems:'center'}}>
-                    <Text style={styles.forgotLink} onPress={() => this.props.navigation.navigate('ForgotPassword')}>
+                    <Text style={styles.forgotLink} onPress={() => this.props.navigation.navigate('WelcomeScreen')}>
                         Forgot Password?
                     </Text>
 
