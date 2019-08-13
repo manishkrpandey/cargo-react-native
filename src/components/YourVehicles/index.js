@@ -14,8 +14,8 @@ export default class YourVehicles extends Component {
             </Left>
         </Header>
         <View>
-            <Text style={{textAlign:'left', fontSize:18, paddingLeft:20, paddingTop:10, paddingBottom:10, backgroundColor: '#10d4f4', color:'#fff'}}>
-                Upload Your Documents
+            <Text style={styles.uploadDocuments}>
+               Upload Your Documents
             </Text>
         </View>
       <View style={{ flex: 1 }}>
@@ -57,5 +57,19 @@ export default class YourVehicles extends Component {
     }];
     return <PagerTabIndicator tabs={tabs} />;
   }
-
 }
+
+
+const styles = StyleSheet.create({
+    uploadDocuments : {
+        backgroundColor: '#10d4f4',
+        color:'#fff',
+        textAlign:'left',
+        fontSize:18,
+        paddingLeft:20,
+        paddingTop:10,
+        paddingBottom:10,
+        paddingRight:20,
+        marginTop: 20
+    }
+})

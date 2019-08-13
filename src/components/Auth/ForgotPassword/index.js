@@ -95,7 +95,6 @@ class ForgotPassword extends Component {
           if(this.state.isValidForm){
 
           }
-
       };
 
       sendOTPRequest = () => {
@@ -135,7 +134,8 @@ class ForgotPassword extends Component {
                             <Icon style={styles.icon} name="call" />
                             <Input
                                 style = {styles.input}
-                                underlineColorAndroid = "transparent"                                    placeholder = "Mobile Number"
+                                underlineColorAndroid = "transparent"
+                                placeholder = "Mobile Number"
                                 placeholderTextColor = "#897d7b"
                                 autoCapitalize = "none"
                                 keyboardType = 'numeric'

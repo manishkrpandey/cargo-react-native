@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View ,Button,Image} from 'react-native';
+import {Text, View, Button, Image, StyleSheet} from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 
 const options = {
@@ -54,7 +54,7 @@ export default class InsuranceDetails extends Component {
       />
 
     }else{
-        image = <Text style={{textAlign:'left', fontSize:18, paddingLeft:20, paddingTop:10, paddingBottom:10, backgroundColor: '#10d4f4', color:'#fff'}}>
+        image = <Text style={styles.uploadDocuments}>
         Upload Your Documents
     </Text>
     }
@@ -74,3 +74,17 @@ export default class InsuranceDetails extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+    uploadDocuments: {
+        textAlign:'left',
+        fontSize:18,
+        marginTop:15,
+        paddingLeft:20,
+        paddingRight:20,
+        paddingTop:10,
+        paddingBottom:10,
+        backgroundColor: '#10d4f4',
+        color:'#fff'
+    }
+})
