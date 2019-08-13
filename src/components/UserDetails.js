@@ -3,79 +3,132 @@ import {
     View,
     Text,
     TextInput,
-    StyleSheet
+    StyleSheet,
+    Image, TouchableHighlight
 } from 'react-native';
-import {Icon, Button, Container, Header, Content, Left, Right, Label, Input, Item} from 'native-base';
+import { Icon, Button, Container, Header, Content, Left, Right, Label, Input, Item } from 'native-base';
 import { Col, Row, Grid } from "react-native-easy-grid";
+import ImagePicker from 'react-native-image-picker';
 
-  class UserDetails extends Component {
-      constructor(props) {
-          super(props);
-          this.state = {
-              fullName: 'Raj Barnwal',
-              mobile: '8523450187',
-              email: 'abc@xyz.com',
-              address: 'KM-28, Jaypee Kosmos, Sector-134, Noida',
-              isEdit:true
-          };
-      }
+const options = {
+    title: 'Select Image',
+    storageOptions: {
+        skipBackup: true,
+        path: 'images',
+    },
+};
 
-      handleUsername = (text) => {
-          this.setState({ username: text })
-      };
 
-      handlePhoneNo = (text) => {
-          this.setState({ phone: text })
-      };
 
-      handleEmail = (text) => {
-          this.setState({ email: text })
-      };
+class UserDetails extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            fullName: 'Raj Barnwal',
+            mobile: '8523450187',
+            email: 'abc@xyz.com',
+            address: 'KM-28, Jaypee Kosmos, Sector-134, Noida',
+            isEdit: true,
+            avatarSource: { "uri": '' }
+        };
 
-      handleAddress = (text) => {
-          this.setState({ address: text })
-      };
+    }
 
-      openEditFields = () => {
-          console.log('hello');
-          this.setState(prevState => ({
-              ...prevState,
-              isEdit: !prevState.isEdit
-          }))
-      };
 
-      onButtonPress = () => {
-          this.setState(prevState => ({
-              ...prevState,
-              isEdit: !prevState.isEdit
-          }))
-      }
+    handleUsername = (text) => {
+        this.setState({ username: text })
+    };
 
+    handlePhoneNo = (text) => {
+        this.setState({ phone: text })
+    };
+
+    handleEmail = (text) => {
+        this.setState({ email: text })
+    };
+
+    handleAddress = (text) => {
+        this.setState({ address: text })
+    };
+
+    openEditFields = () => {
+        console.log('hello');
+        this.setState(prevState => ({
+            ...prevState,
+            isEdit: !prevState.isEdit
+        }))
+    };
+
+    onButtonPress = () => {
+        this.setState(prevState => ({
+            ...prevState,
+            isEdit: !prevState.isEdit
+        }))
+    }
+    chooseImage = () => {
+
+    }
+    launchCamera = () => {
+
+        ImagePicker.showImagePicker(options, (response) => {
+            console.log('Response = ', response);
+
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                const source = { uri: response.uri };
+
+                this.setState({
+                    avatarSource: source,
+                });
+
+            }
+        });
+    }
     render() {
+        let image;
+        if (this.state.avatarSource && this.state.avatarSource.uri) {
+            image = <Image
+                style={{ width: 80, height: 80, borderRadius: 40 }}
+                source={this.state.avatarSource}
+            />
+
+        } else {
+            image = <Image style={{width:80,height:80,borderRadius:40,borderColor:"#000",borderWidth:2}}
+                source={require('../../img/user.png')}
+            />
+        }
         return (
             <Container>
-                <Header style={{backgroundColor:'#fff', paddingTop:15, paddingLeft:15, justifyContent:'flex-start'}}>
+                <Header style={{ backgroundColor: '#fff', paddingTop: 15, paddingLeft: 15, justifyContent: 'flex-start' }}>
                     <Left>
                         <Icon name="menu" onPress={() => this.props.navigation.openDrawer()} />
                     </Left>
                 </Header>
                 <View>
-                    <Icon name="man" style={{color:"#10d4f4", fontSize:50, paddingBottom: 10}} />
-                    <Text style={{textAlign:'center', fontSize:18, paddingTop:30, color:'#f00'}}>
-                         User Details
-                    </Text>
                     {
-                        !this.state.isEdit ? null : (   <View style={{textAlign:'right', paddingTop:20, paddingRight:30}}>
-                                <Text style={styles.editLink} onPress={this.openEditFields}>
-                                    EDIT
+                        !this.state.isEdit ? null : (<View style={{ textAlign: 'right', paddingTop: 20, paddingRight: 30 }}>
+                            <Text style={styles.editLink} onPress={this.openEditFields}>
+                                EDIT
+                                </Text>
+                            <Text style={styles.editLink} onPress={this.launchCamera}>
+                                Change Picture
                                 </Text>
                         </View>)
                     }
-
-
-
                     <Grid>
-                        <Row style={{padding:20}}>
+                        <Row>
+                            <Col>
+                                <View style={styles.userImage} >
+                                    {image}
+                                </View>
+                            </Col>
+                        </Row>
+                        <Row style={{ padding: 20,marginTop:60 }}>
                             <Col style={{ width: '30%' }}>
                                 <Text style={styles.title}>Name:</Text>
                             </Col>
@@ -85,7 +138,7 @@ import { Col, Row, Grid } from "react-native-easy-grid";
                             </Col>
                         </Row>
 
-                        <Row style={{padding:20, marginTop: 15}}>
+                        <Row style={{ padding: 20, marginTop: 15 }}>
                             <Col style={{ width: '30%' }}>
                                 <Text style={styles.title}>Email:</Text>
                             </Col>
@@ -97,7 +150,7 @@ import { Col, Row, Grid } from "react-native-easy-grid";
                                         (
                                             <TextInput
                                                 style={styles.forminput}
-                                                onChangeText={(email) => this.setState({email})}
+                                                onChangeText={(email) => this.setState({ email })}
                                                 value={this.state.email}
                                             />
                                         )
@@ -105,7 +158,7 @@ import { Col, Row, Grid } from "react-native-easy-grid";
                             </Col>
                         </Row>
 
-                        <Row style={{padding:20,marginTop: 15}}>
+                        <Row style={{ padding: 20, marginTop: 15 }}>
                             <Col style={{ width: '30%' }}>
                                 <Text style={styles.title}>Mobile:</Text>
                             </Col>
@@ -116,14 +169,14 @@ import { Col, Row, Grid } from "react-native-easy-grid";
                                         :
                                         (<TextInput
                                             style={styles.forminput}
-                                            onChangeText={(mobile) => this.setState({mobile})}
+                                            onChangeText={(mobile) => this.setState({ mobile })}
                                             value={this.state.mobile}
                                         />)
                                 }
                             </Col>
                         </Row>
 
-                        <Row style={{padding:20,marginTop: 15}}>
+                        <Row style={{ padding: 20, marginTop: 15 }}>
                             <Col style={{ width: '30%' }}>
                                 <Text style={styles.title}>Address:</Text>
                             </Col>
@@ -136,7 +189,7 @@ import { Col, Row, Grid } from "react-native-easy-grid";
                                         :
                                         (<TextInput
                                             style={styles.forminput}
-                                            onChangeText={(address) => this.setState({address})}
+                                            onChangeText={(address) => this.setState({ address })}
                                             value={this.state.address}
                                         />)
                                 }
@@ -148,22 +201,22 @@ import { Col, Row, Grid } from "react-native-easy-grid";
                                 (
                                     null
                                 ) :
-                                <Row style={{padding:20,marginTop: 15}}>
+                                <Row style={{ padding: 20, marginTop: 15 }}>
                                     <View style={styles.btnStyle}>
                                         <Button onPress={this.onButtonPress} style={styles.button}>
-                                            <Text style={{color:'#fff', paddingLeft:20}}>UPDATE</Text>
+                                            <Text style={{ color: '#fff', paddingLeft: 20 }}>UPDATE</Text>
                                         </Button>
                                     </View>
                                     <View style={styles.btnStyle}>
                                         <Button onPress={this.onButtonPress} style={styles.cancelBtn}>
-                                            <Text style={{color:'#fff',paddingLeft:20}}>CANCEL</Text>
+                                            <Text style={{ color: '#fff', paddingLeft: 20 }}>CANCEL</Text>
                                         </Button>
                                     </View>
                                 </Row>
                         }
                     </Grid>
 
-               </View>
+                </View>
             </Container>
         )
     }
@@ -172,54 +225,58 @@ export default UserDetails;
 
 const styles = StyleSheet.create({
     title: {
-        fontSize:16,
+        fontSize: 16,
     },
     heading: {
-        fontSize:16,
+        fontSize: 16,
         fontWeight: 'bold'
     },
     editLink: {
-        color:'#20336b',
-        fontWeight:'bold',
-        fontSize:18,
-        marginTop: 10,
-        borderColor:'#ebebeb',
-        marginBottom: 20,
+        color: '#20336b',
+        fontWeight: 'bold',
+        fontSize: 18,
+        marginTop: 5,
+        borderColor: '#ebebeb',
         textAlign: 'right',
-        marginLeft:20
+        marginLeft: 20
     },
     forminput: {
         paddingLeft: 3,
         paddingBottom: 5,
-        height:40,
+        height: 40,
         color: '#3f414d',
-        borderBottomWidth:1,
-        borderBottomColor:'#ddd',
-        marginTop:-15
+        borderBottomWidth: 1,
+        borderBottomColor: '#ddd',
+        marginTop: -15
     },
     btnStyle: {
         marginTop: 30,
     },
-    button:{
-        backgroundColor:'#20336b',
-        borderRadius:5,
-        color:'#fff',
-        height:40,
-        letterSpacing:1.5,
-        lineHeight:40,
-        width:100,
-        marginRight:10,
-        padding:5,
+    button: {
+        backgroundColor: '#20336b',
+        borderRadius: 5,
+        color: '#fff',
+        height: 40,
+        letterSpacing: 1.5,
+        lineHeight: 40,
+        width: 100,
+        marginRight: 10,
+        padding: 5,
     },
     cancelBtn: {
-        backgroundColor:'#b0280f',
-        borderRadius:5,
-        color:'#fff',
-        height:40,
-        letterSpacing:1.5,
-        lineHeight:40,
-        width:100,
-        marginRight:10,
-        padding:5,
+        backgroundColor: '#b0280f',
+        borderRadius: 5,
+        color: '#fff',
+        height: 40,
+        letterSpacing: 1.5,
+        lineHeight: 40,
+        width: 100,
+        marginRight: 10,
+        padding: 5,
+    },
+    userImage: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: "center",
     }
 });

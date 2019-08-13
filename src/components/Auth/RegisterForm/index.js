@@ -24,6 +24,7 @@ export default class RegisterFormScreen extends Component {
         // isOwner: '',
         // isDriver: '',
         gender: '',
+        panCard:'',
         // ownerName: '',
         // ownerContact: '',
         // vehicleRegistrationNumber: '',
@@ -56,6 +57,10 @@ export default class RegisterFormScreen extends Component {
                 errorType:''
             },
             confirmPasswordError:  {
+                status:false,
+                errorType:''
+            },
+            panCard:  {
                 status:false,
                 errorType:''
             },
@@ -328,6 +333,28 @@ if(key === 'mobileNumber'){
                         </Text>
                     </View>
 
+                    <View style={styles.inputContainer} error={this.state.errorObj.panCard.status}>
+                        <Item style={styles.inputView}>
+                        <Icon style={styles.icon} name="envelope" />
+                        <Input
+                            style = {styles.input}
+                            underlineColorAndroid = "transparent"
+                            placeholder = "Pan Card Number"
+                            placeholderTextColor = "#897d7b"
+                            autoCapitalize = "none"
+                            keyboardType = 'email-address'
+                            autoFocus={true}
+                            returnKeyType='next'
+                            returnKeyLabel='next'
+                            onChangeText={(value) => this.onChangeText('panCard',value)}
+                        />
+                    </Item>
+                        <Text style={styles.error}>
+                            {
+                                !this.state.errorObj.panCard.status ? '' : errroMessages.emailMsgError
+                            }
+                        </Text>
+                    </View>
                     <View style={styles.inputContainer} error={this.state.errorObj.passwordError.status}>
                         <Item style={styles.inputView}>
                         <Icon style={styles.icon} name="lock" />
