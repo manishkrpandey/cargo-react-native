@@ -27,6 +27,13 @@ import { Col, Row, Grid } from "react-native-easy-grid";
           this.setState({ address: text })
       };
 
+      openEditFields() {
+          console.log('hello');
+          this.setState({
+              isEdit: !this.state.isEdit
+          })
+      };
+
     render() {
         return (
             <Container>
@@ -41,7 +48,7 @@ import { Col, Row, Grid } from "react-native-easy-grid";
                     </Text>
 
                     <View style={{textAlign:'right', paddingTop:30, paddingRight:30}}>
-                        <Text style={styles.editLink}>
+                        <Text style={styles.editLink} onPress={this.openEditFields}>
                             Edit
                         </Text>
                     </View>
