@@ -2,18 +2,23 @@ import React, { Component } from 'react';
 import {
     View,
     Text,
+    TextInput,
     StyleSheet
 } from 'react-native';
 import {Icon, Button, Container, Header, Content, Left, Right, Label, Input, Item} from 'native-base';
 import { Col, Row, Grid } from "react-native-easy-grid";
 
   class UserDetails extends Component {
-      state = {
-          username: '',
-          phone: '',
-          address: '',
-          isEdit:false
-      };
+      constructor(props) {
+          super(props);
+          this.state = {
+              fullName: 'Raj Barnwal',
+              mobile: '8523450187',
+              email: 'abc@xyz.com',
+              address: 'KM-28, Jaypee Kosmos, Sector-134, Noida',
+              isEdit:true
+          };
+      }
 
       handleUsername = (text) => {
           this.setState({ username: text })
@@ -23,16 +28,28 @@ import { Col, Row, Grid } from "react-native-easy-grid";
           this.setState({ phone: text })
       };
 
+      handleEmail = (text) => {
+          this.setState({ email: text })
+      };
+
       handleAddress = (text) => {
           this.setState({ address: text })
       };
 
-      openEditFields() {
+      openEditFields = () => {
           console.log('hello');
-          this.setState({
-              isEdit: !this.state.isEdit
-          })
+          this.setState(prevState => ({
+              ...prevState,
+              isEdit: !prevState.isEdit
+          }))
       };
+
+      onButtonPress = () => {
+          this.setState(prevState => ({
+              ...prevState,
+              isEdit: !prevState.isEdit
+          }))
+      }
 
     render() {
         return (
@@ -43,15 +60,19 @@ import { Col, Row, Grid } from "react-native-easy-grid";
                     </Left>
                 </Header>
                 <View>
-                    <Text style={{textAlign:'center', fontSize:18, paddingTop:50, color:'#f00'}}>
+                    <Icon name="man" style={{color:"#10d4f4", fontSize:50, paddingBottom: 10}} />
+                    <Text style={{textAlign:'center', fontSize:18, paddingTop:30, color:'#f00'}}>
                          User Details
                     </Text>
+                    {
+                        !this.state.isEdit ? null : (   <View style={{textAlign:'right', paddingTop:20, paddingRight:30}}>
+                                <Text style={styles.editLink} onPress={this.openEditFields}>
+                                    EDIT
+                                </Text>
+                        </View>)
+                    }
 
-                    <View style={{textAlign:'right', paddingTop:30, paddingRight:30}}>
-                        <Text style={styles.editLink} onPress={this.openEditFields}>
-                            Edit
-                        </Text>
-                    </View>
+
 
                     <Grid>
                         <Row style={{padding:20}}>
@@ -60,63 +81,49 @@ import { Col, Row, Grid } from "react-native-easy-grid";
                             </Col>
 
                             <Col>
-                                {
-                                    this.state.isEdit ?
-                                        (<Text style={styles.heading}>Raj Barnwal</Text>)
-                                        :
-                                        (<Item floatingLabel>
-                                            <Label>Name</Label>
-                                            <Input
-                                                underlineColorAndroid="transparent"
-                                                placeholderTextColor="#897d7b"
-                                                autoCapitalize="none"
-                                                secureTextEntry={true}
-                                                autoFocus={true}
-                                                returnKeyType='next'
-                                                returnKeyLabel='next'
-                                                onChangeText={this.handleUsername}
-                                            />
-                                        </Item>)
-                                }
+                                <Text style={styles.heading}>{this.state.fullName}</Text>
                             </Col>
                         </Row>
 
-                        <Row style={{padding:20}}>
+                        <Row style={{padding:20, marginTop: 15}}>
                             <Col style={{ width: '30%' }}>
                                 <Text style={styles.title}>Email:</Text>
                             </Col>
                             <Col>
-                                <Text style={styles.heading}>raj@gmail.com</Text>
+                                {
+                                    this.state.isEdit ?
+                                        (<Text style={styles.heading}>{this.state.email}</Text>)
+                                        :
+                                        (
+                                            <TextInput
+                                                style={styles.forminput}
+                                                onChangeText={(email) => this.setState({email})}
+                                                value={this.state.email}
+                                            />
+                                        )
+                                }
                             </Col>
                         </Row>
 
-                        <Row style={{padding:20}}>
+                        <Row style={{padding:20,marginTop: 15}}>
                             <Col style={{ width: '30%' }}>
                                 <Text style={styles.title}>Mobile:</Text>
                             </Col>
                             <Col>
                                 {
                                     this.state.isEdit ?
-                                        (<Text style={styles.heading}>+91-8527884512</Text>)
+                                        (<Text style={styles.heading}>{this.state.mobile}</Text>)
                                         :
-                                        (<Item floatingLabel>
-                                            <Label>Mobile Number</Label>
-                                            <Input
-                                                underlineColorAndroid="transparent"
-                                                placeholderTextColor="#897d7b"
-                                                autoCapitalize="none"
-                                                secureTextEntry={true}
-                                                autoFocus={true}
-                                                returnKeyType='next'
-                                                returnKeyLabel='next'
-                                                onChangeText={this.handlePhoneNo}
-                                            />
-                                        </Item>)
+                                        (<TextInput
+                                            style={styles.forminput}
+                                            onChangeText={(mobile) => this.setState({mobile})}
+                                            value={this.state.mobile}
+                                        />)
                                 }
                             </Col>
                         </Row>
 
-                        <Row style={{padding:20}}>
+                        <Row style={{padding:20,marginTop: 15}}>
                             <Col style={{ width: '30%' }}>
                                 <Text style={styles.title}>Address:</Text>
                             </Col>
@@ -124,26 +131,38 @@ import { Col, Row, Grid } from "react-native-easy-grid";
                                 {
                                     this.state.isEdit ?
                                         (<Text style={styles.heading}>
-                                            KM-28, Jaypee Kosmos, Sector-134, Noida
+                                            {this.state.address}
                                         </Text>)
                                         :
-                                        (<Item floatingLabel>
-                                            <Label>Address</Label>
-                                            <Input
-                                                underlineColorAndroid = "transparent"
-                                                placeholderTextColor = "#897d7b"
-                                                autoCapitalize = "none"
-                                                secureTextEntry={true}
-                                                autoFocus={true}
-                                                returnKeyType='next'
-                                                returnKeyLabel='next'
-                                                onChangeText={this.handleAddress}
-                                            />
-                                        </Item>)
+                                        (<TextInput
+                                            style={styles.forminput}
+                                            onChangeText={(address) => this.setState({address})}
+                                            value={this.state.address}
+                                        />)
                                 }
                             </Col>
                         </Row>
+
+                        {
+                            this.state.isEdit ?
+                                (
+                                    null
+                                ) :
+                                <Row style={{padding:20,marginTop: 15}}>
+                                    <View style={styles.btnStyle}>
+                                        <Button onPress={this.onButtonPress} style={styles.button}>
+                                            <Text style={{color:'#fff', paddingLeft:20}}>UPDATE</Text>
+                                        </Button>
+                                    </View>
+                                    <View style={styles.btnStyle}>
+                                        <Button onPress={this.onButtonPress} style={styles.cancelBtn}>
+                                            <Text style={{color:'#fff',paddingLeft:20}}>CANCEL</Text>
+                                        </Button>
+                                    </View>
+                                </Row>
+                        }
                     </Grid>
+
                </View>
             </Container>
         )
@@ -168,5 +187,39 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         textAlign: 'right',
         marginLeft:20
+    },
+    forminput: {
+        paddingLeft: 3,
+        paddingBottom: 5,
+        height:40,
+        color: '#3f414d',
+        borderBottomWidth:1,
+        borderBottomColor:'#ddd',
+        marginTop:-15
+    },
+    btnStyle: {
+        marginTop: 30,
+    },
+    button:{
+        backgroundColor:'#20336b',
+        borderRadius:5,
+        color:'#fff',
+        height:40,
+        letterSpacing:1.5,
+        lineHeight:40,
+        width:100,
+        marginRight:10,
+        padding:5,
+    },
+    cancelBtn: {
+        backgroundColor:'#b0280f',
+        borderRadius:5,
+        color:'#fff',
+        height:40,
+        letterSpacing:1.5,
+        lineHeight:40,
+        width:100,
+        marginRight:10,
+        padding:5,
     }
 });
