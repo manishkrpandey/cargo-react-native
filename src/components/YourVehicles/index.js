@@ -2,7 +2,8 @@ import { Icon, Button, Container, Header, Content, Left, Right} from 'native-bas
 import { StyleSheet, View, Text } from 'react-native';
 import React, { Component } from 'react';
 import { PagerTabIndicator, IndicatorViewPager } from 'rn-viewpager';
-import InsuranceDetails from './../DocumentsUpload/InsuranceDetails/index'
+import InsuranceDetails from './../DocumentsUpload/InsuranceDetails/index';
+import { AccountDetailsComponent } from '../DocumentsUpload/AccountDetails'
 
 export default class YourVehicles extends Component {
   render() {
@@ -27,7 +28,7 @@ export default class YourVehicles extends Component {
             <InsuranceDetails></InsuranceDetails>
           </View>
           <View style={{ backgroundColor: 'cornflowerblue' }}>
-            <Text>page two</Text>
+          <Text>page two</Text>
           </View>
           <View style={{ backgroundColor: '#1AA094' }}>
             <Text>page three</Text>

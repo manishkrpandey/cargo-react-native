@@ -111,24 +111,37 @@ class UserDetails extends Component {
                 </Header>
                 <View>
                     {
-                        !this.state.isEdit ? null : (<View style={{ textAlign: 'right', paddingTop: 20, paddingRight: 30 }}>
+                        !this.state.isEdit ? null : (
+
+                        <View style={{ textAlign: 'right', paddingTop: 20, paddingRight: 30 }}>
                             <Text style={styles.editLink} onPress={this.openEditFields}>
-                                EDIT
-                                </Text>
-                            <Text style={styles.editLink} onPress={this.launchCamera}>
-                                Change Picture
-                                </Text>
+                               EDIT
+                            </Text>
+
                         </View>)
                     }
                     <Grid>
                         <Row>
-                            <Col>
+                            <Col style={{marginTop:40,marginBottom:30}}>
                                 <View style={styles.userImage} >
                                     {image}
                                 </View>
+
+                                {
+                                    !this.state.isEdit ?
+                                        (
+                                            <View style={{flex:1}}>
+                                                <Text style={styles.changeImgLink} onPress={this.launchCamera}>
+                                                    Change Picture
+                                                </Text>
+                                            </View>
+                                        )
+                                        :
+                                        null
+                                }
                             </Col>
                         </Row>
-                        <Row style={{ padding: 20,marginTop:60 }}>
+                        <Row style={{ padding: 20,marginTop:200 }}>
                             <Col style={{ width: '30%' }}>
                                 <Text style={styles.title}>Name:</Text>
                             </Col>
@@ -152,6 +165,7 @@ class UserDetails extends Component {
                                                 style={styles.forminput}
                                                 onChangeText={(email) => this.setState({ email })}
                                                 value={this.state.email}
+                                                keyboardType='email-address'
                                             />
                                         )
                                 }
@@ -171,6 +185,7 @@ class UserDetails extends Component {
                                             style={styles.forminput}
                                             onChangeText={(mobile) => this.setState({ mobile })}
                                             value={this.state.mobile}
+                                            keyboardType='number-pad'
                                         />)
                                 }
                             </Col>
@@ -188,9 +203,11 @@ class UserDetails extends Component {
                                         </Text>)
                                         :
                                         (<TextInput
-                                            style={styles.forminput}
+                                            style={styles.textAreaInput}
                                             onChangeText={(address) => this.setState({ address })}
                                             value={this.state.address}
+                                            multiline = {true}
+                                            numberOfLines = {4}
                                         />)
                                 }
                             </Col>
@@ -201,17 +218,21 @@ class UserDetails extends Component {
                                 (
                                     null
                                 ) :
-                                <Row style={{ padding: 20, marginTop: 15 }}>
-                                    <View style={styles.btnStyle}>
-                                        <Button onPress={this.onButtonPress} style={styles.button}>
-                                            <Text style={{ color: '#fff', paddingLeft: 20 }}>UPDATE</Text>
-                                        </Button>
-                                    </View>
-                                    <View style={styles.btnStyle}>
-                                        <Button onPress={this.onButtonPress} style={styles.cancelBtn}>
-                                            <Text style={{ color: '#fff', paddingLeft: 20 }}>CANCEL</Text>
-                                        </Button>
-                                    </View>
+                                <Row style={{ padding: 20, marginTop: 15, display:'flex' }}>
+                                    <Col>
+                                        <View style={styles.btnStyle}>
+                                            <Button onPress={this.onButtonPress} style={styles.button}>
+                                                <Text style={{color: '#fff', paddingLeft: 20}}>UPDATE</Text>
+                                            </Button>
+                                        </View>
+                                    </Col>
+                                    <Col>
+                                        <View style={styles.btnStyle}>
+                                            <Button onPress={this.onButtonPress} style={styles.cancelBtn}>
+                                                <Text style={{color: '#fff', paddingLeft: 20}}>CANCEL</Text>
+                                            </Button>
+                                        </View>
+                                    </Col>
                                 </Row>
                         }
                     </Grid>
@@ -249,8 +270,18 @@ const styles = StyleSheet.create({
         borderBottomColor: '#ddd',
         marginTop: -15
     },
+    textAreaInput: {
+        paddingLeft: 3,
+        paddingBottom: 5,
+        height: 60,
+        color: '#3f414d',
+        borderBottomWidth: 1,
+        borderBottomColor: '#ddd',
+        marginTop: -15
+    },
     btnStyle: {
         marginTop: 30,
+        marginLeft: 40
     },
     button: {
         backgroundColor: '#20336b',
@@ -278,5 +309,14 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: "center",
+    },
+    changeImgLink: {
+        color: '#b0280f',
+        fontWeight: 'bold',
+        fontSize: 14,
+        borderColor: '#ebebeb',
+        textAlign: 'center',
+        marginTop:85
+
     }
 });
