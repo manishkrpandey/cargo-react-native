@@ -21,7 +21,7 @@ export default class YourVehicles extends Component {
         </View>
       <View style={{ flex: 1 }}>
         <IndicatorViewPager
-          style={{ flex: 1 }}
+          style={{ flex: 1}}
           indicator={this._renderTabIndicator()}
         >
           <View style={{ backgroundColor: 'cadetblue' }}>
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     uploadDocuments : {
         backgroundColor: '#10d4f4',
         color:'#fff',
-        textAlign:'left',
+        textAlign:'center',
         fontSize:18,
         paddingLeft:20,
         paddingTop:10,
