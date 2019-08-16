@@ -9,29 +9,29 @@ export default class YourVehicles extends Component {
   render() {
     return (
         <Container>
-        <Header style={{backgroundColor:'#fff', paddingTop:15, paddingLeft:15, justifyContent:'flex-start'}}>
+        <Header style={{backgroundColor:'#10d4f4', borderBottomWidth:1, borderBottomColor:'#6b6b6b',paddingTop:15, paddingLeft:15, justifyContent:'flex-start'}}>
             <Left>
-                <Icon name="menu" onPress={() => this.props.navigation.openDrawer()} />
+                <Icon name="menu" style={{color:'#fff'}} onPress={() => this.props.navigation.openDrawer()} />
             </Left>
         </Header>
-        <View>
+        <View style={{marginTop: -20,}}>
             <Text style={styles.uploadDocuments}>
-               Upload Your Documents
+               Vehicle Details
             </Text>
         </View>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, borderBottomWidth:1, borderBottomColor:'#6b6b6b'}}>
         <IndicatorViewPager
           style={{ flex: 1}}
           indicator={this._renderTabIndicator()}
         >
-          <View style={{ backgroundColor: 'cadetblue' }}>
-            <InsuranceDetails></InsuranceDetails>
+          <View style={{ backgroundColor: '#fff', padding:20 }}>
+              <Text>Vehicle Details</Text>
           </View>
-          <View style={{ backgroundColor: 'cornflowerblue' }}>
-          <Text>page two</Text>
+          <View style={{ backgroundColor: 'cornflowerblue', padding:20}}>
+              <InsuranceDetails></InsuranceDetails>
           </View>
-          <View style={{ backgroundColor: '#1AA094' }}>
-            <Text>page three</Text>
+          <View style={{ backgroundColor: '#FFF', padding:20}}>
+            <Text>Upload Documents</Text>
           </View>
         </IndicatorViewPager>
       </View>
@@ -40,22 +40,18 @@ export default class YourVehicles extends Component {
   }
   _renderTabIndicator() {
     let tabs = [{
-      text: 'Driving Licence Details',
-      iconSource: require('../../../img/manish.png'),
-      selectedIconSource: require('../../../img/manish2.png')
-    }, {
       text: 'Vehicle Details',
-      iconSource: require('../../../img/manish.png'),
-      selectedIconSource: require('../../../img/manish2.png')
+      iconSource: require('../../../img/truck.png'),
+      selectedIconSource: require('../../../img/truckSelected.png')
     }, {
-      text: 'Insurance Details',
-      iconSource: require('../../../img/manish.png'),
-      selectedIconSource: require('../../../img/manish2.png')
+      text: 'Driver Details',
+      iconSource: require('../../../img/driver.png'),
+      selectedIconSource: require('../../../img/driverSelected.png')
     }, {
-      text: 'Profile',
-      iconSource: require('../../../img/manish.png'),
-      selectedIconSource: require('../../../img/manish2.png')
-    }];
+      text: 'Documents',
+      iconSource: require('../../../img/license.png'),
+      selectedIconSource: require('../../../img/licenseSelected.png')
+    },];
     return <PagerTabIndicator tabs={tabs} />;
   }
 }
