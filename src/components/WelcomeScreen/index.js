@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import {View, Text, StyleSheet, SafeAreaView, ScrollView, Dimensions, Image} from 'react-native';
 import { Content, Icon} from 'native-base';
 import { createDrawerNavigator , createAppContainer, DrawerItems } from 'react-navigation';
-import YourVehicles from '../YourVehicles'
-import UserDetails from './../UserDetails';
+import YourVehicles from '../AddNewVehicle'
+import UserDetails from '../UserProfile/UserDetails';
 import About from './../About';
 
 class WelcomeScreen extends Component {

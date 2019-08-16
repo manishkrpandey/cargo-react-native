@@ -106,7 +106,7 @@ class UserDetails extends Component {
 
         } else {
             image = <Image style={{ width: 100, height: 100, borderRadius: 60, borderColor: "#fff", borderWidth: 3 }}
-                source={require('../../img/user.png')}
+                source={require('../../../img/user.png')}
             />
         }
         return (
@@ -233,7 +233,7 @@ class UserDetails extends Component {
                         <Col style={{ backgroundColor: '#fff' }}>
                             <Row style={{ padding: 20, paddingBottom:14 }}>
                                 <Col>
-                                    <Text style={{ textAlign: 'right',color:'#000',fontWeight:"bold" }} onPress={this.openPassWordField}>Change Password </Text>
+                                    <Text style={{ textAlign: 'right',color:'#10d4f4',fontWeight:"bold" }} onPress={this.openPassWordField}>CHANGE PASSWORD </Text>
                                 </Col>
                             </Row>
                             <Row style={{ padding: 25, paddingBottom:15, marginBottom:15 }}>

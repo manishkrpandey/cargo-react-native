@@ -2,8 +2,9 @@ import { Icon, Button, Container, Header, Content, Left, Right} from 'native-bas
 import { StyleSheet, View, Text } from 'react-native';
 import React, { Component } from 'react';
 import { PagerTabIndicator, IndicatorViewPager } from 'rn-viewpager';
-import InsuranceDetails from './../DocumentsUpload/InsuranceDetails/index';
-import { AccountDetailsComponent } from '../DocumentsUpload/AccountDetails'
+import UploadDocuments from '../UsersDetails/UploadDocuments/index';
+import  VehicleDescriptionComponent  from './../UsersDetails/VehicleDetails';
+import DriverDescriptionComponent from './../UsersDetails/DriverDetails';
 
 export default class YourVehicles extends Component {
   render() {
@@ -25,13 +26,14 @@ export default class YourVehicles extends Component {
           indicator={this._renderTabIndicator()}
         >
           <View style={{ backgroundColor: '#fff', padding:20 }}>
-              <Text>Vehicle Details</Text>
+          <VehicleDescriptionComponent></VehicleDescriptionComponent>
+              
           </View>
-          <View style={{ backgroundColor: 'cornflowerblue', padding:20}}>
-              <InsuranceDetails></InsuranceDetails>
+          <View style={{ backgroundColor: '#fff', padding:20}}>
+          <DriverDescriptionComponent></DriverDescriptionComponent>
           </View>
-          <View style={{ backgroundColor: '#FFF', padding:20}}>
-            <Text>Upload Documents</Text>
+          <View style={{ backgroundColor: '#fff', padding:20}}>
+              <UploadDocuments></UploadDocuments>
           </View>
         </IndicatorViewPager>
       </View>

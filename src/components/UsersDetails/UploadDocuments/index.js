@@ -12,7 +12,7 @@ const options = {
   };
   
 
-export default class InsuranceDetails extends Component {
+export default class UploadDocuments extends Component {
 
     constructor(props){
         super(props);
