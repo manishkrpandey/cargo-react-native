@@ -4,7 +4,7 @@ import {
     Text,
     TextInput,
     StyleSheet,
-    Image, TouchableHighlight
+    Image, TouchableHighlight,ScrollView
 } from 'react-native';
 import { Icon, Button, Container, Header, Content, Left, Right, Label, Input, Item } from 'native-base';
 import { Col, Row, Grid } from "react-native-easy-grid";
@@ -29,7 +29,8 @@ class UserDetails extends Component {
             email: 'abc@xyz.com',
             address: 'KM-28, Jaypee Kosmos, Sector-134, Noida',
             isEdit: true,
-            avatarSource: { "uri": '' }
+            avatarSource: { "uri": '' },
+            isChangePassword:false
         };
 
 
@@ -59,6 +60,13 @@ class UserDetails extends Component {
             isEdit: !prevState.isEdit
         }))
     };
+    openPassWordField = () => {
+        this.setState(prevState => ({
+            ...prevState,
+            isChangePassword: !prevState.isChangePassword}))
+            alert(this.state.isChangePassword);
+    };
+
 
     onButtonPress = () => {
         this.setState(prevState => ({
@@ -104,6 +112,7 @@ class UserDetails extends Component {
             />
         }
         return (
+            <ScrollView>
             <Container>
                 <Header style={{ backgroundColor: '#fff', paddingTop: 15, paddingLeft: 15, justifyContent: 'flex-start' }}>
                     <Left>
@@ -111,7 +120,7 @@ class UserDetails extends Component {
                     </Left>
                 </Header>
                 <Grid>
-                    <Row size={4}>
+                    <Row size={8}>
                         <Col style={{ backgroundColor: '#00CE9F' }}>
                             {
                                 !this.state.isEdit ? null : (
@@ -126,120 +135,160 @@ class UserDetails extends Component {
                         </Col>
 
                     </Row>
-                    <Row size={22}>
+                    <Row size={28}>
                         <Col style={{ backgroundColor: '#00CE9F' }}>
                             <View style={styles.userImage} >
                                 {image}
                             </View>
 
-                    {
-                        this.state.isEdit ?
-                            (
-                                null
-                            ) :
-                            <View style={{ flex: 1 }}>
-                                <Text style={styles.changeImgLink} onPress={this.launchCamera}>
-                                    Change Picture
+                            {
+                                this.state.isEdit ?
+                                    (
+                                        null
+                                    ) :
+                                    <View style={{ flex: 1 }}>
+                                        <Text style={styles.changeImgLink} onPress={this.launchCamera}>
+                                            Change Picture
                                  </Text>
-                            </View>
-                    }
+                                    </View>
+                            }
                         </Col>
 
                     </Row>
 
-                    <Row size={50}>
+                    <Row size={40}>
                         <Col style={{ backgroundColor: '#fff' }}>
-                        <Row  style={{ padding: 20}}>
-                          <Col style={{ width: '30%' }}>
-                              <Text style={styles.title}>Name:</Text>
-                            </Col>
+                            <Row style={{ padding: 20, paddingBottom:14}}>
+                                <Col style={{ width: '30%' }}>
+                                    <Text style={styles.title}>Name:</Text>
+                                </Col>
 
-                          <Col>
-                              <Text style={styles.heading}>{this.state.fullName}</Text>
-                         </Col>
-                      </Row>
-                      <Row style={{ padding: 20}}>
-                            <Col style={{ width: '30%' }}>
-                                <Text style={styles.title}>Email:</Text>
-                            </Col>
-                            <Col>
-                                {
-                                    this.state.isEdit ?
-                                        (<Text style={styles.heading}>{this.state.email}</Text>)
-                                        :
-                                        (
-                                            <TextInput
+                                <Col>
+                                    <Text style={styles.heading}>{this.state.fullName}</Text>
+                                </Col>
+                            </Row>
+                            <Row style={{ padding: 20, paddingBottom:14 }}>
+                                <Col style={{ width: '30%' }}>
+                                    <Text style={styles.title}>Email:</Text>
+                                </Col>
+                                <Col>
+                                    {
+                                        this.state.isEdit ?
+                                            (<Text style={styles.heading}>{this.state.email}</Text>)
+                                            :
+                                            (
+                                                <TextInput
+                                                    style={styles.forminput}
+                                                    onChangeText={(email) => this.setState({ email })}
+                                                    value={this.state.email}
+                                                    keyboardType='email-address'
+                                                />
+                                            )
+                                    }
+                                </Col>
+                            </Row>
+                            <Row style={{ padding: 20, paddingBottom:14 }}>
+                                <Col style={{ width: '30%' }}>
+                                    <Text style={styles.title}>Mobile:</Text>
+                                </Col>
+                                <Col>
+                                    {
+                                        this.state.isEdit ?
+                                            (<Text style={styles.heading}>{this.state.mobile}</Text>)
+                                            :
+                                            (<TextInput
                                                 style={styles.forminput}
-                                                onChangeText={(email) => this.setState({ email })}
-                                                value={this.state.email}
-                                                keyboardType='email-address'
-                                            />
-                                        )
-                                }
-                            </Col>
-                        </Row>
-                        <Row style={{ padding: 20}}>
-                            <Col style={{ width: '30%' }}>
-                                <Text style={styles.title}>Mobile:</Text>
-                            </Col>
-                            <Col>
-                                {
-                                    this.state.isEdit ?
-                                        (<Text style={styles.heading}>{this.state.mobile}</Text>)
-                                        :
-                                        (<TextInput
-                                            style={styles.forminput}
-                                            onChangeText={(mobile) => this.setState({ mobile })}
-                                            value={this.state.mobile}
-                                            keyboardType='number-pad'
-                                        />)
-                                }
-                            </Col>
-                        </Row>
+                                                onChangeText={(mobile) => this.setState({ mobile })}
+                                                value={this.state.mobile}
+                                                keyboardType='number-pad'
+                                            />)
+                                    }
+                                </Col>
+                            </Row>
 
-                        <Row style={{ padding: 20}}>
-                            <Col style={{ width: '30%' }}>
-                                <Text style={styles.title}>Address:</Text>
-                            </Col>
-                            <Col>
-                                {
-                                    this.state.isEdit ?
-                                        (<Text style={styles.heading}>
-                                            {this.state.address}
-                                        </Text>)
-                                        :
-                                        (<TextInput
-                                            style={styles.textAreaInput}
-                                            onChangeText={(address) => this.setState({ address })}
-                                            value={this.state.address}
-                                            multiline = {true}
-                                            numberOfLines = {4}
-                                        />)
-                                }
-                            </Col>
-                        </Row>
+                            <Row style={{ padding: 20, paddingBottom:14 }}>
+                                <Col style={{ width: '30%' }}>
+                                    <Text style={styles.title}>Address:</Text>
+                                </Col>
+                                <Col>
+                                    {
+                                        this.state.isEdit ?
+                                            (<Text style={styles.heading}>
+                                                {this.state.address}
+                                            </Text>)
+                                            :
+                                            (<TextInput
+                                                style={styles.textAreaInput}
+                                                onChangeText={(address) => this.setState({ address })}
+                                                value={this.state.address}
+                                                multiline={true}
+                                                numberOfLines={4}
+                                            />)
+                                    }
+                                </Col>
+                            </Row>
 
 
                         </Col>
                     </Row>
-                    <Row size={30}>
+                    <Row size={24}>
+                        <Col style={{ backgroundColor: '#fff' }}>
+                            <Row style={{ padding: 20, paddingBottom:14 }}>
+                                <Col>
+                                    <Text style={{ textAlign: 'right',color:'#000',fontWeight:"bold" }} onPress={this.openPassWordField}>Change Password </Text>
+                                </Col>
+                            </Row>
+                            <Row style={{ padding: 25, paddingBottom:14 }}>
+                                <Col>
+                                <TextInput
+                                                style={styles.forminput}
+                                                onChangeText={(mobile) => this.setState({ mobile })}
+                                                placeholder="Old Password"
+                                                editable = {this.state.isChangePassword}
+                                            />
+                                </Col>
+                            </Row>
+                            <Row style={{ padding: 25, paddingBottom:14 }}>
 
+                                <Col>
+                                <TextInput
+                                                style={styles.forminput}
+                                                onChangeText={(mobile) => this.setState({ mobile })}
+                                                placeholder="New Password"
+                                                keyboardType='number-pad'
+                                                editable = {this.state.isChangePassword}
+                                            />
+                                </Col>
+                            </Row>
+
+                            <Row style={{ padding: 25, paddingBottom:14 }}>
+
+                                <Col>
+                                    <TextInput
+                                        style={styles.forminput}
+                                        onChangeText={(mobile) => this.setState({ mobile })}
+                                        placeholder="Retype Password"
+                                        editable = {this.state.isChangePassword}
+                                    />
+                                </Col>
+                            </Row>
+                        </Col>
                     </Row>
 
                     {
-                        this.state.isEdit ?
+                        this.state.isEdit  ?
                             (
-                                <Row size={30}></Row>
+                                <Row size={14}><Col></Col></Row>
                             ) :
-                            <Row size={30}>
-                                <Col>
+                            <Row size={18}>
+                                <Col style={{marginTop:20, marginBottom:20}}>
                                     <View style={styles.btnStyle}>
                                         <Button onPress={this.onButtonPress} style={styles.button}>
                                             <Text style={{ color: '#fff', paddingLeft: 20 }}>UPDATE</Text>
                                         </Button>
                                     </View>
                                 </Col>
-                                <Col>
+                                <Col style={{marginTop:20,marginBottom:20}}>
                                     <View style={styles.btnStyle}>
                                         <Button onPress={this.onButtonPress} style={styles.cancelBtn}>
                                             <Text style={{ color: '#fff', paddingLeft: 20 }}>CANCEL</Text>
@@ -252,6 +301,7 @@ class UserDetails extends Component {
 
                 </Grid>
             </Container>
+            </ScrollView>
             // <Container>
             //     <Header style={{ backgroundColor: '#fff', paddingTop: 15, paddingLeft: 15, justifyContent: 'flex-start' }}>
             //         <Left>
@@ -290,7 +340,7 @@ class UserDetails extends Component {
             //                     }
             //                 </Col>
             //             </Row>
-            //             <Row style={{ padding: 20,marginTop:200 }}>
+            //             <Row style={{ padding: 20, paddingBottom:14,marginTop:200 }}>
             //                 <Col style={{ width: '30%' }}>
             //                     <Text style={styles.title}>Name:</Text>
             //                 </Col>
@@ -300,7 +350,7 @@ class UserDetails extends Component {
             //                 </Col>
             //             </Row>
 
-            //             <Row style={{ padding: 20, marginTop: 15 }}>
+            //             <Row style={{ padding: 20, paddingBottom:14, marginTop: 15 }}>
             //                 <Col style={{ width: '30%' }}>
             //                     <Text style={styles.title}>Email:</Text>
             //                 </Col>
@@ -321,7 +371,7 @@ class UserDetails extends Component {
             //                 </Col>
             //             </Row>
 
-            //             <Row style={{ padding: 20, marginTop: 15 }}>
+            //             <Row style={{ padding: 20, paddingBottom:14, marginTop: 15 }}>
             //                 <Col style={{ width: '30%' }}>
             //                     <Text style={styles.title}>Mobile:</Text>
             //                 </Col>
@@ -340,7 +390,7 @@ class UserDetails extends Component {
             //                 </Col>
             //             </Row>
 
-            //             <Row style={{ padding: 20, marginTop: 15 }}>
+            //             <Row style={{ padding: 20, paddingBottom:14, marginTop: 15 }}>
             //                 <Col style={{ width: '30%' }}>
             //                     <Text style={styles.title}>Address:</Text>
             //                 </Col>
@@ -367,7 +417,7 @@ class UserDetails extends Component {
             //                     (
             //                         null
             //                     ) :
-            //                     <Row style={{ padding: 20, marginTop: 15, display:'flex' }}>
+            //                     <Row style={{ padding: 20, paddingBottom:14, marginTop: 15, display:'flex' }}>
             //                         <Col>
             //                             <View style={styles.btnStyle}>
             //                                 <Button onPress={this.onButtonPress} style={styles.button}>
