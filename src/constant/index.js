@@ -12,6 +12,7 @@ const errroMessages = {
     driversDLNumberMsgError: 'Driver DL number should not be empty',
     // vehicleSnapshotMsgError: 'Please upload vehicle Snapshot image',
     // dlSnapshotMsgError: 'Please upload DL snapshot image',
+
 };
 
 export default errroMessages;

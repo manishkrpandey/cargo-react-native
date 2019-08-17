@@ -50,16 +50,16 @@ export default class YourVehicles extends Component {
     _renderTabIndicator() {
         let tabs = [{
             text: 'Vehicle Details',
-            iconSource: require('../../../img/truck.png'),
-            selectedIconSource: require('../../../img/truckSelected.png')
+            iconSource: require('../../../img/truckSelected.png'),
+            selectedIconSource: require('../../../img/truck.png')
         }, {
             text: 'Driver Details',
-            iconSource: require('../../../img/driver.png'),
-            selectedIconSource: require('../../../img/driverSelected.png')
+            iconSource: require('../../../img/driverSelected.png'),
+            selectedIconSource: require('../../../img/driver.png')
         }, {
             text: 'Documents',
-            iconSource: require('../../../img/license.png'),
-            selectedIconSource: require('../../../img/licenseSelected.png')
+            iconSource: require('../../../img/licenseSelected.png'),
+            selectedIconSource: require('../../../img/license.png')
         },];
         return <PagerTabIndicator tabs={tabs}/>;
     }
