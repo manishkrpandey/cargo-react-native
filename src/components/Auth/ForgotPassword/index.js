@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, Alert, TouchableOpacity, StyleSheet} from 'react-native';
+import {Text, View, Alert, TouchableOpacity, StyleSheet,KeyboardAvoidingView,ScrollView} from 'react-native';
 import {Form, Input, Icon, Item, Label} from 'native-base';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -110,6 +110,8 @@ class ForgotPassword extends Component {
 
     render() {
         return (
+            <ScrollView>
+            <KeyboardAvoidingView  behavior="padding" enabled>
             <View style={{paddingTop:75}}>
                 <View style={{alignItems: 'center'}}>
                     <Icon name="person" style={{color:"#10d4f4", fontSize:50, paddingBottom: 35}} />
@@ -152,7 +154,8 @@ class ForgotPassword extends Component {
                             </Text>
                         </View>
                     :
-                        <Item floatingLabel>
+                    <View>
+                        <Item floatingLabel style={styles.labelInput}>
                             <Label>OTP</Label>
                             <Input
                                 style={styles.inputBox}
@@ -166,6 +169,33 @@ class ForgotPassword extends Component {
                                 onChangeText={this.handleMobile}
                             />
                         </Item>
+                                                <Item floatingLabel style={styles.labelInput}>
+                                                <Label>New Password</Label>
+                                                <Input
+                                                    style={styles.inputBox}
+                                                    underlineColorAndroid = "transparent"
+                                                    placeholderTextColor = "#897d7b"
+                                                    autoCapitalize = "none"
+                                                    keyboardType = 'numeric'
+                                                    returnKeyType='next'
+                                                    returnKeyLabel='next'
+                                                    onChangeText={this.handleMobile}
+                                                />
+                                            </Item>
+                                            <Item floatingLabel style={styles.labelInput}>
+                                                <Label>Confirm Password</Label>
+                                                <Input
+                                                    style={styles.inputBox}
+                                                    underlineColorAndroid = "transparent"
+                                                    placeholderTextColor = "#897d7b"
+                                                    autoCapitalize = "none"
+                                                    keyboardType = 'numeric'
+                                                    returnKeyType='next'
+                                                    returnKeyLabel='next'
+                                                    onChangeText={this.handleMobile}
+                                                />
+                                            </Item>
+                                            </View>
                     }
 
                   {
@@ -190,6 +220,8 @@ class ForgotPassword extends Component {
                     </Text>
                 </View>
             </View>
+            </KeyboardAvoidingView>
+            </ScrollView>
         );
     }
 }
@@ -205,13 +237,14 @@ const styles = StyleSheet.create({
         padding: 10,
         height: 40,
         marginTop:30,
-        marginLeft:10
+        marginLeft:10,
+        borderRadius:4
     },
     submitButtonText: {
         color: 'white',
         fontWeight: 'bold',
         textAlign: 'center',
-        fontSize:16,
+        fontSize:16, 
     },
     forgotLink: {
         color:'#20336b',
@@ -232,5 +265,8 @@ const styles = StyleSheet.create({
     icon: {
         color: '#3f414d',
         fontSize:24
+    },
+    labelInput:{
+        paddingBottom:10
     }
 });

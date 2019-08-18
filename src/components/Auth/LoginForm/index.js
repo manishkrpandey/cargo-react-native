@@ -162,7 +162,7 @@ export default class LoginFormScreen extends Component {
                     <Text>Login to continue with Kargo </Text>
                 </View>
                 <Form style={{marginLeft: 10, marginRight: 30}}>
-                    <Item floatingLabel>
+                    <Item floatingLabel style={styles.labelInput}>
                         <Label>Mobile Number</Label>
                         <Input
                             style={styles.inputBox}
@@ -170,21 +170,16 @@ export default class LoginFormScreen extends Component {
                             placeholderTextColor="#897d7b"
                             autoCapitalize="none"
                             keyboardType='numeric'
-                            autoFocus={true}
-                            returnKeyType='next'
-                            returnKeyLabel='next'
                             onChangeText={this.handleEmail}
                         />
                     </Item>
-                    <Item floatingLabel>
+                    <Item floatingLabel style={styles.labelInput}>
                         <Label>Password</Label>
                         <Input
                             underlineColorAndroid="transparent"
                             placeholderTextColor="#897d7b"
                             autoCapitalize="none"
                             secureTextEntry={true}
-                            returnKeyType='next'
-                            returnKeyLabel='next'
                             onChangeText={this.handlePassword}
                         />
                     </Item>
@@ -227,7 +222,8 @@ const styles = StyleSheet.create({
         padding: 10,
         height: 40,
         marginTop: 30,
-        marginLeft: 10
+        marginLeft: 10,
+        borderRadius:4
     },
     submitButtonText: {
         color: 'white',
@@ -243,5 +239,8 @@ const styles = StyleSheet.create({
         paddingBottom: 30,
         borderColor: '#ebebeb',
         marginBottom: 20
+    },
+    labelInput:{
+        paddingBottom:5
     }
 });

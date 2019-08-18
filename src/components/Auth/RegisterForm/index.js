@@ -448,7 +448,8 @@ const styles = StyleSheet.create({
         marginTop: 20,
         height: 40,
         marginLeft: 20,
-        marginRight: 20
+        marginRight: 20,
+        borderRadius:4
     },
     submitButtonText: {
         color: 'white',
