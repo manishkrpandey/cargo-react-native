@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, TouchableOpacity, Button} from 'react-native';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import { Col, Row, Grid } from "react-native-easy-grid";
+
 import {
     H2,
     Container,
@@ -10,12 +12,8 @@ import {
     ListItem,
     Radio,
     Text,
-    CheckBox,
-    Body,
-    Picker,
-    DatePicker
 } from "native-base";
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import errroMessages from './../../../constant';
@@ -35,18 +33,8 @@ export default class RegisterFormScreen extends Component {
         email: '',
         password: '',
         confirmPassword: '',
-        // isOwner: '',
-        // isDriver: '',
         gender: '',
         panCard: '',
-        // ownerName: '',
-        // ownerContact: '',
-        // vehicleRegistrationNumber: '',
-        // driversDLNumber: '',
-        // hasNationalPermit: '',
-        // allowedStateForTransportation: '',
-        // vehicleSnapshot: '',
-        // dlSnapshot: '',
         selected: '',
         errorObj: {
             firstNameError:
@@ -78,24 +66,6 @@ export default class RegisterFormScreen extends Component {
                 status: false,
                 errorType: ''
             },
-            // ownerNameError:  {
-            //     status:false,
-            //     errorType:''
-            // },
-            // ownerContactError:  {
-            //     status:false,
-            //     errorType:''
-            // },
-            // vehicleRegistrationNumberError:  {
-            //     status:false,
-            //     errorType:''
-            // },
-            // driversDLNumberError:  {
-            //     status:false,
-            //     errorType:''
-            // },
-            // vehicleSnapshotError: false,
-            // dlSnapshotError: false,
         }
     };
 
@@ -417,16 +387,24 @@ export default class RegisterFormScreen extends Component {
                     </View>
 
                     <List style={{borderColor: 'transparent', marginLeft: 20, marginRight: 20}}>
-                        <ListItem style={{borderColor: 'transparent', marginLeft: 0}}>
-                            <Radio selected={false} style={{marginRight: 15}}/>
-                            <Text>Male</Text>
-                        </ListItem>
+                        <Grid>
+                            <Row>
+                                <Col>
+                                    <ListItem style={{borderColor: 'transparent', marginLeft: 0}}>
+                                        <Radio selected={true} style={{marginRight: 15}}/>
+                                        <Text>Male</Text>
+                                    </ListItem>
+                                </Col>
 
-                        <ListItem style={{borderColor: 'transparent', marginLeft: 0}}>
-                            <Radio selected={true} style={{marginRight: 15}}
-                                   onChangeText={(value) => this.onChangeText('firstName', value)}/>
-                            <Text>Female</Text>
-                        </ListItem>
+                                <Col>
+                                    <ListItem style={{borderColor: 'transparent', marginLeft: 0}}>
+                                        <Radio selected={false} style={{marginRight: 15}}
+                                               onChangeText={(value) => this.onChangeText('firstName', value)}/>
+                                        <Text>Female</Text>
+                                    </ListItem>
+                                </Col>
+                            </Row>
+                        </Grid>
                     </List>
 
                     <TouchableOpacity

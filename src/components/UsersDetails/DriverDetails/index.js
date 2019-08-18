@@ -285,16 +285,24 @@ export default class DriverDescriptionComponent extends Component {
                     </View>
 
                     <List style={{borderColor: 'transparent', marginLeft: 20, marginRight: 20, marginTop: -15, marginBottom:10}}>
-                        <ListItem style={{borderColor: 'transparent', marginLeft: 0}}>
-                            <Radio selected={false} style={{marginRight: 15}}/>
-                            <Text>Male</Text>
-                        </ListItem>
+                        <Grid>
+                            <Row>
+                                <Col>
+                                    <ListItem style={{borderColor: 'transparent', marginLeft: 0}}>
+                                        <Radio selected={true} style={{marginRight: 15}}/>
+                                        <Text>Male</Text>
+                                    </ListItem>
+                                </Col>
 
-                        <ListItem style={{borderColor: 'transparent', marginLeft: 0}}>
-                            <Radio selected={true} style={{marginRight: 15}}
-                                   onChangeText={(value) => this.onChangeText('gender', value)}/>
-                            <Text>Female</Text>
-                        </ListItem>
+                                <Col>
+                                    <ListItem style={{borderColor: 'transparent', marginLeft: 0}}>
+                                        <Radio selected={false} style={{marginRight: 15}}
+                                               onChangeText={(value) => this.onChangeText('gender', value)}/>
+                                        <Text>Female</Text>
+                                    </ListItem>
+                                </Col>
+                            </Row>
+                        </Grid>
                     </List>
 
                     <View style={styles.inputContainer}>
@@ -411,10 +419,11 @@ export default class DriverDescriptionComponent extends Component {
                                             },
                                             dateInput: {
                                                 marginLeft: 5,
-                                                marginRight: -10
-                                            }
+                                                marginRight: -10,
+                                                paddingLeft:15
+                                            },
                                         }}
-                                        onDateChange={(date) => {this.setState({date: date})}}
+                                        onDateChange={(date) => {this.setState({insuranceValidFrom: date})}}
                                     />
                                 </View>
                             </Col>
@@ -439,10 +448,11 @@ export default class DriverDescriptionComponent extends Component {
                                             },
                                             dateInput: {
                                                 marginLeft: 5,
-                                                marginRight: -10
+                                                marginRight: -10,
+                                                paddingLeft:15
                                             }
                                         }}
-                                        onDateChange={(date) => {this.setState({date: date})}}
+                                        onDateChange={(date) => {this.setState({insuranceValidTo: date})}}
                                     />
                                 </View>
                             </Col>

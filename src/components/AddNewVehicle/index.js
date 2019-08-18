@@ -19,7 +19,7 @@ export default class YourVehicles extends Component {
                     justifyContent: 'flex-start'
                 }}>
                     <Left>
-                        <Icon name="menu" style={{color: '#fff'}} onPress={() => this.props.navigation.openDrawer()}/>
+                        <Icon name="menu" style={{color: '#fff', marginTop:-12}} onPress={() => this.props.navigation.openDrawer()}/>
                     </Left>
                 </Header>
                 <View style={{flex: 1, borderBottomWidth: 1, borderBottomColor: '#6b6b6b'}}>

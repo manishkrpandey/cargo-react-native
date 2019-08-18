@@ -13,7 +13,7 @@ import { Icon, Button, Container, Header, Content, Left } from 'native-base';
             <View style={StyleSheet.Container}> 
                 <Header style={{backgroundColor:'#fff', paddingTop:15, paddingLeft:15, justifyContent:'flex-start'}}>
                     <Left>
-                        <Icon name="menu" onPress={() => this.props.navigation.openDrawer()} />
+                        <Icon name="menu" style={{marginTop:-12}} onPress={() => this.props.navigation.openDrawer()} />
                     </Left>
                 </Header>
                 <View>
