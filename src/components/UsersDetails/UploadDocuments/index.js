@@ -13,6 +13,7 @@ const options = {
   },
 };
 
+const imgArraySrc = ['PasbookDocumentSrc','rcDocumentSrc','permitDocumentSrc','insuranceDocumentSrc','dInsuranceDocumentSrc','pollutionDocumentSrc','PasbookDocumentSrc'];
 
 export default class UploadDocuments extends Component {
   constructor(props) {
@@ -83,7 +84,18 @@ export default class UploadDocuments extends Component {
     });
   }
   submitDocuments = () => {
-    alert('submitted');
+    let InvalidForm = false;
+    imgArraySrc.forEach((element)=>{
+      if(this.state[element].uri===''){
+        InvalidForm = true;
+      }
+    })
+    if(InvalidForm){
+      alert(JSON.stringify(this.props));
+      
+    }else{
+      alert('submitted');
+    }
   }
 
   toggleModal = (documenType) => {
@@ -186,7 +198,7 @@ export default class UploadDocuments extends Component {
                     <Left>
                       <Body>
                         <Text style={styles.carHeader}>Registration Certificate</Text>
-                        <Text style={styles.closeIcon}><Icon name="close-circle" style={{color: '#fff'}}/></Text>
+                        <Text style={styles.closeIcon} onPress={()=>this.toggleModal('RC')}><Icon name="close-circle" style={{color: '#fff'}}/></Text>
                       </Body>
                     </Left>
                   </CardItem>
@@ -214,7 +226,7 @@ export default class UploadDocuments extends Component {
                     <Left>
                       <Body>
                         <Text style={styles.carHeader}>Permit Document</Text>
-                        <Text style={styles.closeIcon}><Icon name="close-circle" style={{color: '#fff'}}/></Text>
+                        <Text style={styles.closeIcon} onPress={()=>this.toggleModal('PERMIT')}><Icon name="close-circle" style={{color: '#fff'}}/></Text>
                       </Body>
                     </Left>
                   </CardItem>
@@ -242,7 +254,7 @@ export default class UploadDocuments extends Component {
                     <Left>
                       <Body>
                         <Text style={styles.carHeader}>Insurance Vehicle</Text>
-                        <Text style={styles.closeIcon}><Icon name="close-circle" style={{color: '#fff'}}/></Text>
+                        <Text style={styles.closeIcon} onPress={()=>this.toggleModal('INVH')}><Icon name="close-circle" style={{color: '#fff'}}/></Text>
                       </Body>
                     </Left>
                   </CardItem>
@@ -270,7 +282,7 @@ export default class UploadDocuments extends Component {
                     <Left>
                       <Body>
                         <Text style={styles.carHeader}>Driver Insurance</Text>
-                        <Text style={styles.closeIcon}><Icon name="close-circle" style={{color: '#fff'}}/></Text>
+                        <Text style={styles.closeIcon} onPress={()=>this.toggleModal('INDL')}><Icon name="close-circle" style={{color: '#fff'}}/></Text>
                       </Body>
                     </Left>
                   </CardItem>
@@ -298,7 +310,7 @@ export default class UploadDocuments extends Component {
                     <Left>
                       <Body>
                         <Text style={styles.carHeader}>Pollution Certificate</Text>
-                        <Text style={styles.closeIcon}><Icon name="close-circle" style={{color: '#fff'}}/></Text>
+                        <Text style={styles.closeIcon} onPress={()=>this.toggleModal('POL')}><Icon name="close-circle" style={{color: '#fff'}}/></Text>
                       </Body>
                     </Left>
                   </CardItem>
@@ -326,7 +338,7 @@ export default class UploadDocuments extends Component {
                     <Left>
                       <Body>
                         <Text style={styles.carHeader}>Passbook Document</Text>
-                        <Text style={styles.closeIcon}><Icon name="close-circle" style={{color: '#fff'}}/></Text>
+                        <Text style={styles.closeIcon} onPress={()=>this.toggleModal('PASSBOOK')}><Icon name="close-circle" style={{color: '#fff'}}/></Text>
                       </Body>
                     </Left>
                   </CardItem>
@@ -345,7 +357,6 @@ export default class UploadDocuments extends Component {
               title="Submit Your Documents"
               color="#b0280f"
               backgroundColor="#20336b"
-              accessibilityLabel="Upload Driving Licence Document"
             />
             </TouchableHighlight>
           </View>
