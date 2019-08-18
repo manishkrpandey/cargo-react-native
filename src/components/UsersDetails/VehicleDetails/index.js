@@ -266,7 +266,6 @@ export default class VehicleDescriptionComponent extends Component {
                                 placeholder="Chassis Number"
                                 placeholderTextColor="#897d7b"
                                 autoCapitalize="none"
-                                autoFocus={true}
                                 returnKeyType='next'
                                 returnKeyLabel='next'
                                 onChangeText={(value) => this.onChangeText('chassisNumber', value)}
@@ -288,7 +287,6 @@ export default class VehicleDescriptionComponent extends Component {
                                 placeholder="Owner Name"
                                 placeholderTextColor="#897d7b"
                                 autoCapitalize="none"
-                                autoFocus={true}
                                 returnKeyType='next'
                                 returnKeyLabel='next'
                                 onChangeText={(value) => this.onChangeText('alternateContact', value)}
@@ -311,7 +309,6 @@ export default class VehicleDescriptionComponent extends Component {
                                 placeholderTextColor="#897d7b"
                                 autoCapitalize="none"
                                 keyboardType='numeric'
-                                autoFocus={true}
                                 returnKeyType='next'
                                 returnKeyLabel='next'
                                 onChangeText={(value) => this.onChangeText('ownerContact', value)}
@@ -333,7 +330,6 @@ export default class VehicleDescriptionComponent extends Component {
                                 placeholder="Owner Address"
                                 placeholderTextColor="#897d7b"
                                 autoCapitalize="none"
-                                autoFocus={true}
                                 returnKeyType='next'
                                 returnKeyLabel='next'
                                 onChangeText={(value) => this.onChangeText('ownerAddress', value)}
@@ -392,7 +388,6 @@ export default class VehicleDescriptionComponent extends Component {
                                     placeholderTextColor="#897d7b"
                                     autoCapitalize="none"
                                     keyboardType='numeric'
-                                    autoFocus={true}
                                     returnKeyType='next'
                                     returnKeyLabel='next'
                                     onChangeText={(value) => this.onChangeText('RCNumber', value)}
@@ -414,7 +409,6 @@ export default class VehicleDescriptionComponent extends Component {
                                     placeholder="Allowed Load in Tons"
                                     placeholderTextColor="#897d7b"
                                     autoCapitalize="none"
-                                    autoFocus={true}
                                     returnKeyType='next'
                                     returnKeyLabel='next'
                                     onChangeText={(value) => this.onChangeText('allowedLoad', value)}
@@ -436,7 +430,6 @@ export default class VehicleDescriptionComponent extends Component {
                                     placeholder="Insurance Details"
                                     placeholderTextColor="#897d7b"
                                     autoCapitalize="none"
-                                    autoFocus={true}
                                     returnKeyType='next'
                                     returnKeyLabel='next'
                                     onChangeText={(value) => this.onChangeText('insuranceDetails', value)}

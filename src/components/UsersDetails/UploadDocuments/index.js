@@ -91,10 +91,10 @@ export default class UploadDocuments extends Component {
       }
     })
     if(InvalidForm){
-      alert(JSON.stringify(this.props));
+      alert("Please upload all documents.");
       
     }else{
-      alert('submitted');
+      alert('Documents submitted successfully.');
     }
   }
 

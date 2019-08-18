@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Alert, Button} from 'react-native';
-import { Container, Header, Content, Form, Item, Input, Label, H2, Icon} from 'native-base';
-import  WelcomeScreen from '../../WelcomeScreen/index'
+import {Container, Header, Content, Form, Item, Input, Label, H2, Icon} from 'native-base';
+import WelcomeScreen from '../../WelcomeScreen/index'
 import {AsyncStorage} from 'react-native';
 // import {ApiService} from './../../../services/api/api'
 import axios from 'axios';
@@ -9,10 +9,11 @@ import axios from 'axios';
 import ForgotPassword from './../ForgotPassword';
 
 export default class LoginFormScreen extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-        
+
     }
+
     static navigationOptions = {
         title: 'Login',
         headerStyle: {
@@ -22,22 +23,22 @@ export default class LoginFormScreen extends Component {
     };
     _storeData = async () => {
         try {
-          await AsyncStorage.setItem('key', 'I like to save it.');
+            await AsyncStorage.setItem('key', 'I like to save it.');
         } catch (error) {
-          // Error saving data
+            // Error saving data
         }
-      };
-      _retrieveData = async () => {
+    };
+    _retrieveData = async () => {
         try {
-          const value = await AsyncStorage.getItem('key');
-          if (value !== null) {
-            // We have data!!
-            // alert(value);
-          }
+            const value = await AsyncStorage.getItem('key');
+            if (value !== null) {
+                // We have data!!
+                // alert(value);
+            }
         } catch (error) {
-          // Error retrieving data
+            // Error retrieving data
         }
-      };
+    };
 
     state = {
         mobileNumber: '',
@@ -46,65 +47,65 @@ export default class LoginFormScreen extends Component {
     };
 
     handleEmail = (text) => {
-        this.setState({ mobileNumber: text })
+        this.setState({mobileNumber: text})
     };
 
     handlePassword = (text) => {
-        this.setState({ password: text })
+        this.setState({password: text})
     };
 
     login = (mobileNumber, pass) => {
         this._storeData();
         this._retrieveData();
-        const {navigate} =this.props.navigation;
+        const {navigate} = this.props.navigation;
         let responseData;
         const loginUrl = 'https://dealevery.herokuapp.com/account/login';
         const data = {
             "mobileNumber": mobileNumber,
             "password": pass
         }
-    //     fetch(loginUrl,{
-    //         method: 'POST', 
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify(data) })
-    // .then((response) => response)
-    // .then((responseJson) => {
-    //     if(JSON.parse(responseJson['_bodyText'])['data'][0].isLoggedIn){
-    //         alert('Logged In succesfully');
-    //     }else{
-    //         alert('Mobile Number or Password did not match');
-    //     }
-    // //   alert(JSON.parse(responseJson['_bodyText'])['data'][0].isLoggedIn);
-    // })
-    // .catch((error) => {
-    //     alert('There is some error on, Please try again..');
-      
-    // });
- 
-    // responseData=ApiService.postRequest(loginUrl,data);
-    // if(responseData){
-    //         if(response['data']['data'][0].isLoggedIn){
-    //                    alert('Logged In succesfully');
-    //                }else{
-    //                    alert('Mobile Number or Password did not match');
-    //                }
-        
-    // }
+        //     fetch(loginUrl,{
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify(data) })
+        // .then((response) => response)
+        // .then((responseJson) => {
+        //     if(JSON.parse(responseJson['_bodyText'])['data'][0].isLoggedIn){
+        //         alert('Logged In succesfully');
+        //     }else{
+        //         alert('Mobile Number or Password did not match');
+        //     }
+        // //   alert(JSON.parse(responseJson['_bodyText'])['data'][0].isLoggedIn);
+        // })
+        // .catch((error) => {
+        //     alert('There is some error on, Please try again..');
+
+        // });
+
+        // responseData=ApiService.postRequest(loginUrl,data);
+        // if(responseData){
+        //         if(response['data']['data'][0].isLoggedIn){
+        //                    alert('Logged In succesfully');
+        //                }else{
+        //                    alert('Mobile Number or Password did not match');
+        //                }
+
+        // }
 
 
         axios.post(loginUrl, data)
-          .then(function (response) {
-            if(response['data']['data'][0].isLoggedIn){
-                navigate('WelcomeScreen');
-                   }else{
-                       alert('Mobile Number or Password did not match');
-                   }
-          })
-          .catch(function (error) {
-            alert(error);
-          });
+            .then(function (response) {
+                if (response['data']['data'][0].isLoggedIn) {
+                    navigate('WelcomeScreen');
+                } else {
+                    alert('Mobile Number or Password did not match');
+                }
+            })
+            .catch(function (error) {
+                alert(error);
+            });
         // Send a POST request
 
         // fetch(loginUrl, {
@@ -153,52 +154,51 @@ export default class LoginFormScreen extends Component {
 
     render() {
         return (
-            <View style={{paddingTop:75}}>
+            <View style={{paddingTop: 75}}>
                 {/* <ForgotPassword /> */}
                 <View style={{alignItems: 'center'}}>
-                    <Icon name="person" style={{color:"#10d4f4", fontSize:50, paddingBottom: 35}} />
+                    <Icon name="person" style={{color: "#10d4f4", fontSize: 50, paddingBottom: 35}}/>
                     <H2 style={{color: '#10d4f4'}}>Welcome Back!</H2>
                     <Text>Login to continue with Kargo </Text>
                 </View>
-                <Form style={{marginLeft:10, marginRight:30}}>
+                <Form style={{marginLeft: 10, marginRight: 30}}>
                     <Item floatingLabel>
-                            <Label>Mobile Number</Label>
-                            <Input
-                                style={styles.inputBox}
-                                underlineColorAndroid = "transparent"
-                                placeholderTextColor = "#897d7b"
-                                autoCapitalize = "none"
-                                keyboardType = 'numeric'
-                                autoFocus={true}
-                                returnKeyType='next'
-                                returnKeyLabel='next'
-                                onChangeText={this.handleEmail}
-                            />
-                        </Item>
+                        <Label>Mobile Number</Label>
+                        <Input
+                            style={styles.inputBox}
+                            underlineColorAndroid="transparent"
+                            placeholderTextColor="#897d7b"
+                            autoCapitalize="none"
+                            keyboardType='numeric'
+                            autoFocus={true}
+                            returnKeyType='next'
+                            returnKeyLabel='next'
+                            onChangeText={this.handleEmail}
+                        />
+                    </Item>
                     <Item floatingLabel>
-                            <Label>Password</Label>
-                            <Input
-                                underlineColorAndroid = "transparent"
-                                placeholderTextColor = "#897d7b"
-                                autoCapitalize = "none"
-                                secureTextEntry={true}
-                                autoFocus={true}
-                                returnKeyType='next'
-                                returnKeyLabel='next'
-                                onChangeText={this.handlePassword}
-                            />
-                        </Item>
+                        <Label>Password</Label>
+                        <Input
+                            underlineColorAndroid="transparent"
+                            placeholderTextColor="#897d7b"
+                            autoCapitalize="none"
+                            secureTextEntry={true}
+                            returnKeyType='next'
+                            returnKeyLabel='next'
+                            onChangeText={this.handlePassword}
+                        />
+                    </Item>
 
                     <TouchableOpacity
                         style={styles.submitButton}
                         onPress={
-                            () => this.login(this.state.mobileNumber , this.state.password)
+                            () => this.login(this.state.mobileNumber, this.state.password)
                         }>
                         <Text style={styles.submitButtonText}> LOGIN </Text>
                     </TouchableOpacity>
                 </Form>
 
-                <View style={{alignItems:'center'}}>
+                <View style={{alignItems: 'center'}}>
                     <Text style={styles.forgotLink} onPress={() => this.props.navigation.navigate('WelcomeScreen')}>
                         Forgot Password?
                     </Text>
@@ -206,8 +206,9 @@ export default class LoginFormScreen extends Component {
                     <Text>Don't have Kargo account?</Text>
                     <TouchableOpacity
                         style={styles.submitButton}
-                        >
-                        <Text style={styles.submitButtonText}  onPress={() => this.props.navigation.navigate('Register')}>
+                    >
+                        <Text style={styles.submitButtonText}
+                              onPress={() => this.props.navigation.navigate('Register')}>
                             REGISTER
                         </Text>
                     </TouchableOpacity>
@@ -219,28 +220,28 @@ export default class LoginFormScreen extends Component {
 
 const styles = StyleSheet.create({
     inputBox: {
-        paddingBottom:5
+        paddingBottom: 5
     },
     submitButton: {
         backgroundColor: '#10d4f4',
         padding: 10,
         height: 40,
-        marginTop:30,
-        marginLeft:10
+        marginTop: 30,
+        marginLeft: 10
     },
     submitButtonText: {
         color: 'white',
         fontWeight: 'bold',
         textAlign: 'center',
-        fontSize:16,
+        fontSize: 16,
     },
     forgotLink: {
-        color:'#20336b',
-        fontWeight:'bold',
-        fontSize:18,
+        color: '#20336b',
+        fontWeight: 'bold',
+        fontSize: 18,
         marginTop: 20,
-        paddingBottom:30,
-        borderColor:'#ebebeb',
+        paddingBottom: 30,
+        borderColor: '#ebebeb',
         marginBottom: 20
     }
 });
