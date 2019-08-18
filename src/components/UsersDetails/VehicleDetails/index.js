@@ -234,6 +234,12 @@ export default class VehicleDescriptionComponent extends Component {
             <Container style={{flex: 1}}>
                 <Content style={{marginBottom: 30}}>
 
+                    <View>
+                        <Text style={styles.uploadDocuments}>
+                            Vehicle Details
+                        </Text>
+                    </View>
+
                     <View style={styles.inputContainer}>
                         <Item style={styles.inputView} error={this.state.errorObj.vehicleNumberError.status}>
                             <Icon style={styles.icon} name="user"/>
@@ -447,7 +453,7 @@ export default class VehicleDescriptionComponent extends Component {
                     <TouchableOpacity
                         style={styles.submitButton}
                     >
-                        <Text style={styles.submitButtonText} onPress={() => this.onSubmitForm()}> REGISTER </Text>
+                        <Text style={styles.submitButtonText} onPress={() => this.onSubmitForm()}> SAVE </Text>
                     </TouchableOpacity>
 
 
@@ -474,7 +480,7 @@ const styles = StyleSheet.create({
     },
 
     submitButton: {
-        backgroundColor: '#10d4f4',
+        backgroundColor: '#20336b',
         padding: 10,
         marginTop: 20,
         height: 40,
@@ -505,5 +511,16 @@ const styles = StyleSheet.create({
     icon: {
         color: '#3f414d',
         fontSize: 24
+    },
+    uploadDocuments: {
+        color: '#20336b',
+        textAlign: 'center',
+        fontSize: 18,
+        fontWeight: 'bold',
+        paddingBottom: 30,
+        textDecorationLine: "underline",
+        textDecorationStyle: "solid",
+        textDecorationColor: "#000",
+        textTransform:'uppercase'
     }
 });

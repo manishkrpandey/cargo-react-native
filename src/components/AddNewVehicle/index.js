@@ -22,11 +22,6 @@ export default class YourVehicles extends Component {
                         <Icon name="menu" style={{color: '#fff'}} onPress={() => this.props.navigation.openDrawer()}/>
                     </Left>
                 </Header>
-                <View style={{marginTop: -20,}}>
-                    <Text style={styles.uploadDocuments}>
-                        Vehicle Details
-                    </Text>
-                </View>
                 <View style={{flex: 1, borderBottomWidth: 1, borderBottomColor: '#6b6b6b'}}>
                     <IndicatorViewPager
                         style={{flex: 1}}
@@ -64,18 +59,3 @@ export default class YourVehicles extends Component {
         return <PagerTabIndicator tabs={tabs}/>;
     }
 }
-
-
-const styles = StyleSheet.create({
-    uploadDocuments: {
-        backgroundColor: '#10d4f4',
-        color: '#fff',
-        textAlign: 'center',
-        fontSize: 18,
-        paddingLeft: 20,
-        paddingTop: 10,
-        paddingBottom: 10,
-        paddingRight: 20,
-        marginTop: 20
-    }
-})
