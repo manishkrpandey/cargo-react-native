@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import React, { Component } from 'react';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
-
+import AuthenticationController from './../../../services/api/Authentication'
 import {
     H2,
     Container,
@@ -18,6 +18,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import errroMessages from './../../../constant';
 
+const authenticationController = new AuthenticationController();
 export default class RegisterFormScreen extends Component {
     static navigationOptions = {
         title: 'Register',
@@ -35,13 +36,14 @@ export default class RegisterFormScreen extends Component {
         confirmPassword: '',
         gender: '',
         panCard: '',
-        selected: '',
+        isMale: true,
+        isFemale: false,
         errorObj: {
             firstNameError:
-                {
-                    status: false,
-                    errorType: ''
-                },
+            {
+                status: false,
+                errorType: ''
+            },
             mobileNumberError: {
                 status: false,
                 errorType: ''
@@ -172,19 +174,254 @@ export default class RegisterFormScreen extends Component {
         }
 
         if (key === 'alternateContact') {
-            this.state.errorObj.alternateContactError = val === '' || val.length < 10;
+            let reg = /^[6-9]\d{9}$/;
+            if (this.state.alternateContact.length < 1) {
+                this.setState(prevState => ({
+                    ...prevState,
+                    errorObj: {
+                        ...prevState.errorObj,
+                        alternateContactError: {
+                            ...prevState.errorObj.alternateContactError,
+                            status: true,
+                            errorType: errroMessages.genericError
+
+                        }
+                    }
+                }))
+            } else if (!reg.test(this.state.alternateContact)) {
+
+                this.setState(prevState => ({
+                    ...prevState,
+                    errorObj: {
+                        ...prevState.errorObj,
+                        alternateContactError: {
+                            ...prevState.errorObj.alternateContactError,
+                            status: true,
+                            errorType: errroMessages.mobileError
+
+                        }
+                    }
+                }))
+
+
+            } else {
+
+                this.setState(prevState => ({
+                    ...prevState,
+                    errorObj: {
+                        ...prevState.errorObj,
+                        alternateContactError: {
+                            ...prevState.errorObj.alternateContactError,
+                            status: false,
+                            errorType: errroMessages.genericError
+
+                        }
+                    }
+                }))
+
+
+            }
+
         }
 
         if (key === 'email') {
-            this.state.errorObj.emailError = val === '';
+            let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            if (this.state.email.length < 1) {
+                this.setState(prevState => ({
+                    ...prevState,
+                    errorObj: {
+                        ...prevState.errorObj,
+                        emailError: {
+                            ...prevState.errorObj.emailError,
+                            status: true,
+                            errorType: errroMessages.genericError
+
+                        }
+                    }
+                }))
+            } else if (!reg.test(this.state.email)) {
+
+                this.setState(prevState => ({
+                    ...prevState,
+                    errorObj: {
+                        ...prevState.errorObj,
+                        emailError: {
+                            ...prevState.errorObj.emailError,
+                            status: true,
+                            errorType: errroMessages.mobileError
+
+                        }
+                    }
+                }))
+
+
+            } else {
+
+                this.setState(prevState => ({
+                    ...prevState,
+                    errorObj: {
+                        ...prevState.errorObj,
+                        emailError: {
+                            ...prevState.errorObj.emailError,
+                            status: false,
+                            errorType: errroMessages.genericError
+
+                        }
+                    }
+                }))
+
+
+            }
+
         }
 
         if (key === 'password') {
-            this.state.errorObj.passwordError = val === '' || val.length <= 4;
+            if (this.state.password.length < 1) {
+                this.setState(prevState => ({
+                    ...prevState,
+                    errorObj: {
+                        ...prevState.errorObj,
+                        passwordError: {
+                            ...prevState.errorObj.passwordError,
+                            status: true,
+                            errorType: errroMessages.genericError
+
+                        }
+                    }
+                }))
+            } else if (this.state.password.length <= 4) {
+
+                this.setState(prevState => ({
+                    ...prevState,
+                    errorObj: {
+                        ...prevState.errorObj,
+                        passwordError: {
+                            ...prevState.errorObj.passwordError,
+                            status: true,
+                            errorType: errroMessages.fnameError
+
+                        }
+                    }
+                }))
+
+
+            } else {
+
+                this.setState(prevState => ({
+                    ...prevState,
+                    errorObj: {
+                        ...prevState.errorObj,
+                        passwordError: {
+                            ...prevState.errorObj.passwordError,
+                            status: false,
+                            errorType: errroMessages.genericError
+
+                        }
+                    }
+                }))
+
+
+            }
         }
 
         if (key === 'confirmPassword') {
-            this.state.errorObj.confirmPasswordError = val === '' || val !== this.state.password;
+            if (this.state.confirmPassword.length < 1 || this.state.confirmPassword !== this.state.password) {
+                this.setState(prevState => ({
+                    ...prevState,
+                    errorObj: {
+                        ...prevState.errorObj,
+                        confirmPassword: {
+                            ...prevState.errorObj.confirmPassword,
+                            status: true,
+                            errorType: errroMessages.genericError
+
+                        }
+                    }
+                }))
+            } else if (this.state.confirmPassword.length <= 4) {
+
+                this.setState(prevState => ({
+                    ...prevState,
+                    errorObj: {
+                        ...prevState.errorObj,
+                        confirmPassword: {
+                            ...prevState.errorObj.confirmPassword,
+                            status: true,
+                            errorType: errroMessages.fnameError
+
+                        }
+                    }
+                }))
+
+
+            } else {
+
+                this.setState(prevState => ({
+                    ...prevState,
+                    errorObj: {
+                        ...prevState.errorObj,
+                        confirmPassword: {
+                            ...prevState.errorObj.confirmPassword,
+                            status: false,
+                            errorType: errroMessages.genericError
+
+                        }
+                    }
+                }))
+
+
+            }
+        }
+
+        if (key === 'panCard') {
+            let reg = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+            if (this.state.panCard.length < 1) {
+                this.setState(prevState => ({
+                    ...prevState,
+                    errorObj: {
+                        ...prevState.errorObj,
+                        panCard: {
+                            ...prevState.errorObj.panCard,
+                            status: true,
+                            errorType: errroMessages.genericError
+
+                        }
+                    }
+                }))
+            } else if (!reg.test(this.state.panCard)) {
+
+                this.setState(prevState => ({
+                    ...prevState,
+                    errorObj: {
+                        ...prevState.errorObj,
+                        panCard: {
+                            ...prevState.errorObj.panCard,
+                            status: true,
+                            errorType: errroMessages.mobileError
+
+                        }
+                    }
+                }))
+
+
+            } else {
+
+                this.setState(prevState => ({
+                    ...prevState,
+                    errorObj: {
+                        ...prevState.errorObj,
+                        panCard: {
+                            ...prevState.errorObj.panCard,
+                            status: false,
+                            errorType: errroMessages.genericError
+
+                        }
+                    }
+                }))
+
+
+            }
+
         }
 
         // if(key === 'ownerName'){
@@ -205,27 +442,75 @@ export default class RegisterFormScreen extends Component {
     };
 
     onChangeText = async (key, val) => {
-        await this.setState({[key]: val});
+        await this.setState({ [key]: val });
         await this.setErrorStatus(key, val);
     };
-    onSubmitForm = () => {
-        this.setErrorStatus('firstName', '');
-        this.setErrorStatus('lastName', '');
-        this.setErrorStatus('mobileNumber', '');
+    onGender = (gender) => {
+        if (gender === 'Male') {
+            this.setState({ isFemale: false });
+            this.setState({ isMale: true });
+        }
+        if (gender === 'Female') {
+            this.setState({ isFemale: false });
+            this.setState({ isMale: true });
+        }
+    }
+    onSubmitForm = async () => {
+        let validForm = true;
+        let formField = ['firstName', 'mobileNumber', 'alternateContact', 'email', 'password', 'confirmPassword', 'panCard'];
+        let errorObj = ['firstNameError', 'mobileNumberError', 'alternateContactError', 'emailError', 'passwordError', 'confirmPasswordError', 'panCard'];
+
+        await formField.forEach(element => {
+            this.setErrorStatus(element, this.state[element]);
+        });
+
+        await errorObj.forEach(element => {
+            if (this.state.errorObj[element].status === true) {
+                validForm = false;
+            }
+        })
+        if (validForm) {
+            let userDtata = {
+                "name": this.state.firstName,
+                "phone": this.state.mobileNumber,
+                "alternatePhone": this.state.alternateContact,
+                "email": this.state.email,
+                "pan": this.state.panCard,
+                "gender": this.state.isMale ? 'Male' : 'Femaile',
+                "password": this.state.password,
+                "role": "user",
+                "isAdditionalDetailsAdded": false
+            }
+
+             await console.log('data2',await authenticationController.registerUser(userDtata));
+            //  .then(data=>{
+            //     if (data && data.status === 201) {
+            //         alert('wow');
+            //     }else{
+            //         alert('no');
+            //     }
+            // }).catch(function (error) {
+            //     console.log(error);
+            //     alert('There is some error on Page, Please try again..');
+            //     return;
+            // });
+
+
+        }
     };
 
     render() {
         return (
             <Container>
-                <Content style={{marginBottom: 30}}>
-                    <View style={{alignItems: 'center', paddingTop: 15}}>
-                        <Icon name="user" style={{color: "#10d4f4", fontSize: 50, paddingBottom: 10}}/>
-                        <H2 style={{color: '#10d4f4', paddingBottom: 10}}>Create Kargo Account</H2>
+                <Content style={{ marginBottom: 30 }}>
+                    <View style={{ alignItems: 'center', paddingTop: 15 }}>
+                        <Icon name="user" style={{ color: "#10d4f4", fontSize: 50, paddingBottom: 10 }} />
+                        <H2 style={{ color: '#10d4f4', paddingBottom: 10 }}>Create Kargo Account</H2>
                     </View>
 
                     <View style={styles.inputContainer}>
                         <Item style={styles.inputView} error={this.state.errorObj.firstNameError.status}>
-                            <Icon style={styles.icon} name="user"/>
+                            <Icon style={styles.icon} name="user" />
                             <Input
                                 style={styles.input}
                                 underlineColorAndroid="transparent"
@@ -248,7 +533,7 @@ export default class RegisterFormScreen extends Component {
 
                     <View style={styles.inputContainer}>
                         <Item style={styles.inputView} error={this.state.errorObj.mobileNumberError.status}>
-                            <Icon style={styles.icon} name="mobile"/>
+                            <Icon style={styles.icon} name="mobile" />
                             <Input
                                 style={styles.input}
                                 underlineColorAndroid="transparent"
@@ -270,7 +555,7 @@ export default class RegisterFormScreen extends Component {
 
                     <View style={styles.inputContainer} error={this.state.errorObj.alternateContactError}>
                         <Item style={styles.inputView}>
-                            <Icon style={styles.icon} name="mobile"/>
+                            <Icon style={styles.icon} name="mobile" />
                             <Input
                                 style={styles.input}
                                 underlineColorAndroid="transparent"
@@ -292,7 +577,7 @@ export default class RegisterFormScreen extends Component {
 
                     <View style={styles.inputContainer} error={this.state.errorObj.emailError.status}>
                         <Item style={styles.inputView}>
-                            <Icon style={styles.icon} name="envelope"/>
+                            <Icon style={styles.icon} name="envelope" />
                             <Input
                                 style={styles.input}
                                 underlineColorAndroid="transparent"
@@ -314,7 +599,7 @@ export default class RegisterFormScreen extends Component {
 
                     <View style={styles.inputContainer} error={this.state.errorObj.panCard.status}>
                         <Item style={styles.inputView}>
-                            <Icon style={styles.icon} name="envelope"/>
+                            <Icon style={styles.icon} name="envelope" />
                             <Input
                                 style={styles.input}
                                 underlineColorAndroid="transparent"
@@ -335,7 +620,7 @@ export default class RegisterFormScreen extends Component {
                     </View>
                     <View style={styles.inputContainer} error={this.state.errorObj.passwordError.status}>
                         <Item style={styles.inputView}>
-                            <Icon style={styles.icon} name="lock"/>
+                            <Icon style={styles.icon} name="lock" />
                             <Input
                                 style={styles.input}
                                 underlineColorAndroid="transparent"
@@ -357,7 +642,7 @@ export default class RegisterFormScreen extends Component {
 
                     <View style={styles.inputContainer} error={this.state.errorObj.confirmPasswordError.status}>
                         <Item style={styles.inputView}>
-                            <Icon style={styles.icon} name="lock"/>
+                            <Icon style={styles.icon} name="lock" />
                             <Input
                                 style={styles.input}
                                 underlineColorAndroid="transparent"
@@ -379,27 +664,27 @@ export default class RegisterFormScreen extends Component {
 
 
                     <View style={styles.inputContainer}>
-                        <Item style={{borderColor: 'transparent', marginLeft: 20, marginRight: 20}}>
-                            <Text style={{fontWeight: 'bold'}}>
+                        <Item style={{ borderColor: 'transparent', marginLeft: 20, marginRight: 20 }}>
+                            <Text style={{ fontWeight: 'bold' }}>
                                 Gender:
                             </Text>
                         </Item>
                     </View>
 
-                    <List style={{borderColor: 'transparent', marginLeft: 20, marginRight: 20}}>
+                    <List style={{ borderColor: 'transparent', marginLeft: 20, marginRight: 20 }}>
                         <Grid>
                             <Row>
-                                <Col>
-                                    <ListItem style={{borderColor: 'transparent', marginLeft: 0}}>
-                                        <Radio selected={true} style={{marginRight: 15}}/>
+                                <Col onPress={() => this.onGender('Male')}>
+                                    <ListItem style={{ borderColor: 'transparent', marginLeft: 0 }}>
+                                        <Radio selected={this.state.isMale} style={{ marginRight: 15 }} />
                                         <Text>Male</Text>
                                     </ListItem>
                                 </Col>
 
-                                <Col>
-                                    <ListItem style={{borderColor: 'transparent', marginLeft: 0}}>
-                                        <Radio selected={false} style={{marginRight: 15}}
-                                               onChangeText={(value) => this.onChangeText('firstName', value)}/>
+                                <Col onPress={() => this.onGender('Female')}>
+                                    <ListItem style={{ borderColor: 'transparent', marginLeft: 0 }}>
+                                        <Radio selected={this.state.isFemale} style={{ marginRight: 15 }}
+                                        />
                                         <Text>Female</Text>
                                     </ListItem>
                                 </Col>
@@ -410,15 +695,15 @@ export default class RegisterFormScreen extends Component {
                     <TouchableOpacity
                         style={styles.submitButton}
                     >
-                        <Text style={styles.submitButtonText} onPress={() => this.onSubmitForm()}> REGISTER </Text>
+                        <Text style={styles.submitButtonText} onPress={this.onSubmitForm}> REGISTER </Text>
                     </TouchableOpacity>
 
-                    <View style={{paddingBottom: 200}}/>
+                    <View style={{ paddingBottom: 200 }} />
 
-                    <View style={{borderTopColor: '#ebebeb', borderTopWidth: 1, paddingTop: 15, alignItems: 'center'}}>
+                    <View style={{ borderTopColor: '#ebebeb', borderTopWidth: 1, paddingTop: 15, alignItems: 'center' }}>
                         <Text>Already have an account? &nbsp;
                             <Text onPress={() => this.props.navigation.navigate('Login')}
-                                  style={{color: '#10d4f4', fontWeight: 'bold'}}>
+                                style={{ color: '#10d4f4', fontWeight: 'bold' }}>
                                 Sign In
                             </Text>
                         </Text>
@@ -449,7 +734,7 @@ const styles = StyleSheet.create({
         height: 40,
         marginLeft: 20,
         marginRight: 20,
-        borderRadius:4
+        borderRadius: 4
     },
     submitButtonText: {
         color: 'white',

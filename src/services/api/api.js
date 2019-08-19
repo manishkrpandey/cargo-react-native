@@ -20,35 +20,31 @@
 
 import axios from 'axios';
 
-export class ApiService {
+export default class ApiService {
     constructor() { }
     getRequest(url) {
-        axios.get(loginUrl)
-            .then(function (response) {
-                if (response['data']['data'][0].isLoggedIn) {
-                    alert('Logged In succesfully');
-                } else {
-                    alert('Mobile Number or Password did not match');
-                }
-            })
-            .catch(function (error) {
-                alert('There is some error on Page, Please try again..');
-            });
+        axios.get(url).then(function (response) {
+            console.log(response);
+            return response.json();
+
+        })
+        .catch(function (error) {
+            console.log(response);
+            alert('There is some error on Page, Please try again..');
+            return;
+        });
     }
     postRequest(requestUrl, data){
-        axios.post(requestUrl, data)
-            .then(function (response) {
-                // if (response['data']['data'][0].isLoggedIn) {
-                //     alert('Logged In succesfully');
-                // } else {
-                //     alert('Mobile Number or Password did not match');
-                // }
-                return response;
-            })
-            .catch(function (error) {
-                alert('There is some error on Page, Please try again..');
-                return;
-            });
+        axios.post(requestUrl, data).then(function (response) {
+            console.log(response);
+            return response.json();
+
+        })
+        .catch(function (error) {
+            console.log(response);
+            alert('There is some error on Page, Please try again..');
+            return;
+        });
     }
 }
 
