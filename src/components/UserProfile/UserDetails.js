@@ -293,7 +293,6 @@ class UserDetails extends Component {
                                         </Button>
                                     </View>
                                 </Col>
-
                             </Row>
                     }
 

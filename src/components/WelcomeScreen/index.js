@@ -4,7 +4,9 @@ import { Content, Icon } from 'native-base';
 import { createDrawerNavigator, createAppContainer, DrawerItems } from 'react-navigation';
 import YourVehicles from '../AddNewVehicle'
 import UserDetails from '../UserProfile/UserDetails';
-import About from './../About';
+import Help from '../Help';
+import AvailableBooking from '../AvailableBooking';
+import RequestForServices from '../RequestForServices';
 
 class WelcomeScreen extends Component {
     render() {
@@ -30,11 +32,11 @@ const CustomDrawerComponent = (props) => (
 )
 
 const AppDrawerNavigator = createDrawerNavigator({
-    'Available Bookings': About,
-    'Request For Goods': About,
+    'Available Bookings': AvailableBooking,
+    'Request For Services': RequestForServices,
     'Your Vehicles': YourVehicles,
     'Account Details': UserDetails,
-    About: About,
+    'Help': Help,
 }, {
         contentComponent: CustomDrawerComponent
     })

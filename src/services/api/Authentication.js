@@ -17,7 +17,7 @@ export default class AuthenticationController {
             },
             body: JSON.stringify(userData),
         }).then((response) => {
-            console.log(response);
+            console.log(response.json().then(data=>data));
             return response.json();
         }).catch(error=>{
             console.log(error);
