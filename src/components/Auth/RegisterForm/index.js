@@ -12,11 +12,16 @@ import {
     ListItem,
     Radio,
     Text,
+    Toast
 } from "native-base";
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import errroMessages from './../../../constant';
+
+
+
+
 
 const authenticationController = new AuthenticationController();
 export default class RegisterFormScreen extends Component {
@@ -482,7 +487,19 @@ export default class RegisterFormScreen extends Component {
                 "isAdditionalDetailsAdded": false
             }
 
-             await console.log('data2',await authenticationController.registerUser(userDtata));
+            await authenticationController.registerUser(userDtata).then(response => {
+
+                if (response.userId) {
+                    this.props.navigation.navigate('Login')
+                } else {
+                    Toast.show({
+                        text: "Already registered with this number!",
+                        buttonText: "Okay",
+                        duration: 3000
+                      })
+                }
+            }).catch(err=>console.log(err));
+            //    console.log('hello',data2);
             //  .then(data=>{
             //     if (data && data.status === 201) {
             //         alert('wow');
@@ -495,9 +512,29 @@ export default class RegisterFormScreen extends Component {
             //     return;
             // });
 
-
+            // fetch('https://gentle-oasis-28246.herokuapp.com/user/signup', {
+            //     method: 'POST',
+            //     headers: {
+            //         Accept: 'application/json',
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify(userDtata),
+            // }).then((response) => {
+            //     return response.json();
+            // }).then(response=>{
+            //     if(response.userId){
+            //         this.props.navigation.navigate('Login')
+            //     }
+            // }).catch(error=>{
+            //     console.log(error);
+            // })
         }
     };
+    resetState = () => {
+        Object.keys(state).forEach(element => {
+
+        })
+    }
 
     render() {
         return (
@@ -520,6 +557,7 @@ export default class RegisterFormScreen extends Component {
                                 autoFocus={true}
                                 returnKeyType='next'
                                 returnKeyLabel='next'
+                                autoCorrect={false}
                                 onChangeText={(value) => this.onChangeText('firstName', value)}
                             />
                         </Item>

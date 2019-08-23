@@ -7,9 +7,9 @@ export default class AuthenticationController {
     constructor() {
     }
 
-    registerUser(userData) {
+    registerUser = (userData) => {
         console.log('entered');
-        fetch('https://gentle-oasis-28246.herokuapp.com/user/signup', {
+        return fetch('https://gentle-oasis-28246.herokuapp.com/user/signup', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -17,17 +17,17 @@ export default class AuthenticationController {
             },
             body: JSON.stringify(userData),
         }).then((response) => {
-            console.log(response.json().then(data=>data));
             return response.json();
-        }).catch(error=>{
+        }).then(res=>res)
+        .catch(error => {
             console.log(error);
         })
-
     }
+
 
     loginUser(userData) {
         console.log('entered');
-        fetch('https://gentle-oasis-28246.herokuapp.com/user/login', {
+       return fetch('https://gentle-oasis-28246.herokuapp.com/user/login', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -35,11 +35,8 @@ export default class AuthenticationController {
             },
             body: JSON.stringify(userData),
         }).then(function (response) {
-            console.log(response);
             return response.json();
-
-        })
-            .catch(function (error) {
+        }).catch(function (error) {
                 console.log(response);
                 alert('There is some error on Page, Please try again..');
                 return;
@@ -47,5 +44,5 @@ export default class AuthenticationController {
 
     }
 
-    
+
 }

@@ -3,11 +3,11 @@ import {View, Text, TouchableOpacity, StyleSheet, Alert, Button} from 'react-nat
 import {Container, Header, Content, Form, Item, Input, Label, H2, Icon} from 'native-base';
 import WelcomeScreen from '../../WelcomeScreen/index'
 import {AsyncStorage} from 'react-native';
-// import {ApiService} from './../../../services/api/api'
-import axios from 'axios';
-
+import AuthenticationController from './../../../services/api/Authentication'
 import ForgotPassword from './../ForgotPassword';
 
+
+const authenticationController = new AuthenticationController();
 export default class LoginFormScreen extends Component {
     constructor(props) {
         super(props);
@@ -59,11 +59,19 @@ export default class LoginFormScreen extends Component {
         this._retrieveData();
         const {navigate} = this.props.navigation;
         let responseData;
-        const loginUrl = 'https://dealevery.herokuapp.com/account/login';
         const data = {
-            "mobileNumber": mobileNumber,
+            "phone": mobileNumber,
             "password": pass
         }
+
+         authenticationController.loginUser(data).then(data=>{
+             if(data.token){
+                //  navigate.navigate('WelcomeScreen');
+                 this.props.navigation.navigate('WelcomeScreen')
+             }else{
+                 alert(data.message);
+             }
+         }).catch(err=>console.log(err)); 
         //     fetch(loginUrl,{
         //         method: 'POST',
         //         headers: {
@@ -95,17 +103,17 @@ export default class LoginFormScreen extends Component {
         // }
 
 
-        axios.post(loginUrl, data)
-            .then(function (response) {
-                if (response['data']['data'][0].isLoggedIn) {
-                    navigate('WelcomeScreen');
-                } else {
-                    alert('Mobile Number or Password did not match');
-                }
-            })
-            .catch(function (error) {
-                alert(error);
-            });
+        // axios.post(loginUrl, data)
+        //     .then(function (response) {
+        //         if (response['data']['data'][0].isLoggedIn) {
+        //             navigate('WelcomeScreen');
+        //         } else {
+        //             alert('Mobile Number or Password did not match');
+        //         }
+        //     })
+        //     .catch(function (error) {
+        //         alert(error);
+        //     });
         // Send a POST request
 
         // fetch(loginUrl, {
@@ -194,7 +202,7 @@ export default class LoginFormScreen extends Component {
                 </Form>
 
                 <View style={{alignItems: 'center'}}>
-                    <Text style={styles.forgotLink} onPress={() => this.props.navigation.navigate('WelcomeScreen')}>
+                    <Text style={styles.forgotLink} onPress={() => this.props.navigation.navigate('ForgotPassword')}>
                         Forgot Password?
                     </Text>
 

@@ -7,11 +7,14 @@ import UserDetails from '../UserProfile/UserDetails';
 import Help from '../Help';
 import AvailableBooking from '../AvailableBooking';
 import RequestForServices from '../RequestForServices';
+import { Root } from "native-base";
 
 class WelcomeScreen extends Component {
     render() {
         return (
-            <DrawerContainer />
+          <Root>
+              <DrawerContainer />
+          </Root>  
         );
     }
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation'; 
-
+import { Root } from "native-base";
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 
@@ -21,6 +21,7 @@ const RootStack = createStackNavigator(
 export default class Auth extends Component {
     render() {
         return (
+          <Root>
           <View style={{ flex: 1, alignItems:'center' }}>
             <Text>Kargo App</Text>
             <View style={styles.btnView}>
@@ -37,6 +38,7 @@ export default class Auth extends Component {
               />
             </View>
           </View>
+          </Root>
         );
       }
 }

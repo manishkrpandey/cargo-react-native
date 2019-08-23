@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, TouchableOpacity, Button} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import { Container, Content, Item, Input, Text } from "native-base";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Dropdown} from 'react-native-material-dropdown';
 import MultiSelect from 'react-native-multiple-select';
-
 import errroMessages from './../../../constant';
+import truckImages from './../../../../img/truckUploaded.jpg';
 
 export default class VehicleDescriptionComponent extends Component {
     static navigationOptions = {
@@ -70,11 +70,20 @@ export default class VehicleDescriptionComponent extends Component {
                 errorType: ''
             },
         },
-        selectedItems : []
+        selectedItems : [],
+        showVehicleInputForm:true
     };
 
     onSelectedItemsChange = selectedItems => {
         this.setState({ selectedItems });
+    };
+
+    showVehicleForms = () => {
+        console.log('hello');
+        this.setState(prevState => ({
+            ...prevState,
+            showVehicleInputForm: !prevState.showVehicleInputForm
+        }))
     };
 
     setErrorStatus = (key, val) => {
@@ -234,227 +243,336 @@ export default class VehicleDescriptionComponent extends Component {
             <Container style={{flex: 1}}>
                 <Content style={{marginBottom: 30}}>
 
-                    <View>
+                    <View style={styles.pageHeader}>
                         <Text style={styles.uploadDocuments}>
                             Vehicle Details
                         </Text>
-                    </View>
-
-                    <View style={styles.inputContainer}>
-                        <Item style={styles.inputView} error={this.state.errorObj.vehicleNumberError.status}>
-                            <Icon style={styles.icon} name="user"/>
-                            <Input
-                                style={styles.input}
-                                underlineColorAndroid="transparent"
-                                placeholder="Vehicle Number"
-                                placeholderTextColor="#897d7b"
-                                autoCapitalize="none"
-                                autoFocus={true}
-                                returnKeyType='next'
-                                returnKeyLabel='next'
-                                onChangeText={(value) => this.onChangeText('vehicleNumber', value)}
-                            />
-                        </Item>
-                        <Text style={styles.error}>
-                            {
-                                !this.state.errorObj.vehicleNumberError.status ? '' : this.state.errorObj.vehicleNumberError.errorType
-                            }
-                        </Text>
-
-                    </View>
-
-                    <View style={styles.inputContainer}>
-                        <Item style={styles.inputView} error={this.state.errorObj.chassisNumberError.status}>
-                            <Icon style={styles.icon} name="mobile"/>
-                            <Input
-                                style={styles.input}
-                                underlineColorAndroid="transparent"
-                                placeholder="Chassis Number"
-                                placeholderTextColor="#897d7b"
-                                autoCapitalize="none"
-                                returnKeyType='next'
-                                returnKeyLabel='next'
-                                onChangeText={(value) => this.onChangeText('chassisNumber', value)}
-                            />
-                        </Item>
-                        <Text style={styles.error}>
-                            {
-                                !this.state.errorObj.chassisNumberError.status ? '' : this.state.errorObj.chassisNumberError.errorType
-                            }
+                        <Text style={{alignSelf:'flex-end', position:'absolute', right:15, top:5}}>
+                            <Icon style={styles.Addicon} name="plus-circle" onPress={this.showVehicleForms}/>
                         </Text>
                     </View>
 
-                    <View style={styles.inputContainer} error={this.state.errorObj.ownerNameError}>
-                        <Item style={styles.inputView}>
-                            <Icon style={styles.icon} name="user"/>
-                            <Input
-                                style={styles.input}
-                                underlineColorAndroid="transparent"
-                                placeholder="Owner Name"
-                                placeholderTextColor="#897d7b"
-                                autoCapitalize="none"
-                                returnKeyType='next'
-                                returnKeyLabel='next'
-                                onChangeText={(value) => this.onChangeText('alternateContact', value)}
-                            />
-                        </Item>
-                        <Text style={styles.error}>
-                            {
-                                !this.state.errorObj.ownerNameError.status ? '' : errroMessages.ownerNameError
-                            }
-                        </Text>
-                    </View>
+                    {
+                        this.state.showVehicleInputForm ? (
+                                <View>
+                                    <View style={styles.cardView}>
+                                        <View style={styles.dataRow}>
+                                            <Image style={styles.uploadImages}
+                                                   source={truckImages}/>
+                                        </View>
+                                        <View style={styles.dataRow}>
+                                            <View style={styles.title}>
+                                                <Text>Truck Number:</Text>
+                                            </View>
+                                            <View style={styles.data}>
+                                                <Text style={{fontWeight:'bold'}}>BR21S5423</Text>
+                                            </View>
+                                        </View>
 
-                    <View style={styles.inputContainer} error={this.state.errorObj.ownerContactError.status}>
-                        <Item style={styles.inputView}>
-                            <Icon style={styles.icon} name="mobile"/>
-                            <Input
-                                style={styles.input}
-                                underlineColorAndroid="transparent"
-                                placeholder="Owner Contact"
-                                placeholderTextColor="#897d7b"
-                                autoCapitalize="none"
-                                keyboardType='numeric'
-                                returnKeyType='next'
-                                returnKeyLabel='next'
-                                onChangeText={(value) => this.onChangeText('ownerContact', value)}
-                            />
-                        </Item>
-                        <Text style={styles.error}>
-                            {
-                                !this.state.errorObj.ownerContactError.status ? '' : errroMessages.ownerContactError
-                            }
-                        </Text>
-                    </View>
+                                        <View style={styles.dataRow}>
+                                            <View style={styles.title}>
+                                                <Text>Driver Name:</Text>
+                                            </View>
+                                            <View style={styles.data}>
+                                                <Text style={{fontWeight:'bold'}}>Manish Kumar</Text>
+                                            </View>
+                                        </View>
 
-                    <View style={styles.inputContainer} error={this.state.errorObj.ownerAddressError}>
-                        <Item style={styles.inputView}>
-                            <Icon style={styles.icon} name="mobile"/>
-                            <Input
-                                style={styles.input}
-                                underlineColorAndroid="transparent"
-                                placeholder="Owner Address"
-                                placeholderTextColor="#897d7b"
-                                autoCapitalize="none"
-                                returnKeyType='next'
-                                returnKeyLabel='next'
-                                onChangeText={(value) => this.onChangeText('ownerAddress', value)}
-                            />
-                        </Item>
-                        <Text style={styles.error}>
-                            {
-                                !this.state.errorObj.ownerAddressError.status ? '' : errroMessages.ownerAddressError
-                            }
-                        </Text>
+                                        <View style={styles.dataRow}>
+                                            <View style={styles.title}>
+                                                <Text>Last Updated:</Text>
+                                            </View>
+                                            <View style={styles.data}>
+                                                <Text style={{fontWeight:'bold'}}>15th, Sep 2019 | 10:30 PM</Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                    <View style={styles.cardView}>
+                                        <View style={styles.dataRow}>
+                                            <Image style={styles.uploadImages}
+                                                   source={truckImages}/>
+                                        </View>
+                                        <View style={styles.dataRow}>
+                                            <View style={styles.title}>
+                                                <Text>Truck Number:</Text>
+                                            </View>
+                                            <View style={styles.data}>
+                                                <Text style={{fontWeight:'bold'}}>BR21S5423</Text>
+                                            </View>
+                                        </View>
 
-                        <View style={{marginBottom:15, marginTop:-15, marginLeft:20, marginRight:20}}>
-                            <Dropdown
-                                label='Current State'
-                                data={data}
-                                overlayStyle={{marginTop:86, marginLeft:17}}
-                            />
-                        </View>
+                                        <View style={styles.dataRow}>
+                                            <View style={styles.title}>
+                                                <Text>Driver Name:</Text>
+                                            </View>
+                                            <View style={styles.data}>
+                                                <Text style={{fontWeight:'bold'}}>Manish Kumar</Text>
+                                            </View>
+                                        </View>
 
-                        <View style={{ flex: 1,marginBottom:15, marginTop:-5, marginLeft:20, marginRight:20}}>
-                            <MultiSelect
-                                hideTags
-                                items={items}
-                                uniqueKey="id"
-                                ref={(component) => { this.multiSelect = component }}
-                                onSelectedItemsChange={this.onSelectedItemsChange}
-                                selectedItems={selectedItems}
-                                selectText="Select State"
-                                searchInputPlaceholderText="Search State Name..."
-                                onChangeInput={ (text)=> console.log(text)}
-                                altFontFamily="ProximaNova-Light"
-                                tagRemoveIconColor="#CCC"
-                                tagBorderColor="#CCC"
-                                tagTextColor="#10d4f4"
-                                selectedItemTextColor="#10d4f4"
-                                selectedItemIconColor="#CCC"
-                                itemTextColor="#000"
-                                displayKey="name"
-                                searchInputStyle={{ color: '#CCC' }}
-                                submitButtonColor="#10d4f4"
-                                submitButtonText="Submit"
-                                styleDropdownMenuSubsection={{paddingRight:0}}
-                            />
-                            <View>
-                                {this.multiSelect && this.multiSelect.getSelectedItemsExt(selectedItems)}
-                            </View>
-                        </View>
+                                        <View style={styles.dataRow}>
+                                            <View style={styles.title}>
+                                                <Text>Last Updated:</Text>
+                                            </View>
+                                            <View style={styles.data}>
+                                                <Text style={{fontWeight:'bold'}}>15th, Sep 2019 | 10:30 PM</Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                    <View style={styles.cardView}>
+                                        <View style={styles.dataRow}>
+                                            <Image style={styles.uploadImages}
+                                                   source={truckImages}/>
+                                        </View>
+                                        <View style={styles.dataRow}>
+                                            <View style={styles.title}>
+                                                <Text>Truck Number:</Text>
+                                            </View>
+                                            <View style={styles.data}>
+                                                <Text style={{fontWeight:'bold'}}>BR21S5423</Text>
+                                            </View>
+                                        </View>
 
-                        <View style={styles.inputContainer} error={this.state.errorObj.RCNumberError.status}>
-                            <Item style={styles.inputView}>
-                                <Icon style={styles.icon} name="envelope"/>
-                                <Input
-                                    style={styles.input}
-                                    underlineColorAndroid="transparent"
-                                    placeholder="RC Number"
-                                    placeholderTextColor="#897d7b"
-                                    autoCapitalize="none"
-                                    keyboardType='numeric'
-                                    returnKeyType='next'
-                                    returnKeyLabel='next'
-                                    onChangeText={(value) => this.onChangeText('RCNumber', value)}
-                                />
-                            </Item>
-                            <Text style={styles.error}>
-                                {
-                                    !this.state.errorObj.RCNumberError.status ? '' : errroMessages.RCNumberError
-                                }
-                            </Text>
-                        </View>
+                                        <View style={styles.dataRow}>
+                                            <View style={styles.title}>
+                                                <Text>Driver Name:</Text>
+                                            </View>
+                                            <View style={styles.data}>
+                                                <Text style={{fontWeight:'bold'}}>Manish Kumar</Text>
+                                            </View>
+                                        </View>
 
-                        <View style={styles.inputContainer}>
-                            <Item style={styles.inputView} error={this.state.errorObj.allowedLoadError.status}>
-                                <Icon style={styles.icon} name="user"/>
-                                <Input
-                                    style={styles.input}
-                                    underlineColorAndroid="transparent"
-                                    placeholder="Allowed Load in Tons"
-                                    placeholderTextColor="#897d7b"
-                                    autoCapitalize="none"
-                                    returnKeyType='next'
-                                    returnKeyLabel='next'
-                                    onChangeText={(value) => this.onChangeText('allowedLoad', value)}
-                                />
-                            </Item>
-                            <Text style={styles.error}>
-                                {
-                                    !this.state.errorObj.allowedLoadError.status ? '' : this.state.errorObj.allowedLoadError.errorType
-                                }
-                            </Text>
-                        </View>
+                                        <View style={styles.dataRow}>
+                                            <View style={styles.title}>
+                                                <Text>Last Updated:</Text>
+                                            </View>
+                                            <View style={styles.data}>
+                                                <Text style={{fontWeight:'bold'}}>15th, Sep 2019 | 10:30 PM</Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </View>
+                        ):
+                            (
+                                <View style={styles.vehicleInputForm}>
+                                    <View style={styles.inputContainer}>
+                                        <Item style={styles.inputView} error={this.state.errorObj.vehicleNumberError.status}>
+                                            <Icon style={styles.icon} name="user"/>
+                                            <Input
+                                                style={styles.input}
+                                                underlineColorAndroid="transparent"
+                                                placeholder="Vehicle Number"
+                                                placeholderTextColor="#897d7b"
+                                                autoCapitalize="none"
+                                                autoFocus={true}
+                                                returnKeyType='next'
+                                                returnKeyLabel='next'
+                                                onChangeText={(value) => this.onChangeText('vehicleNumber', value)}
+                                            />
+                                        </Item>
+                                        <Text style={styles.error}>
+                                            {
+                                                !this.state.errorObj.vehicleNumberError.status ? '' : this.state.errorObj.vehicleNumberError.errorType
+                                            }
+                                        </Text>
 
-                        <View style={styles.inputContainer}>
-                            <Item style={styles.inputView} error={this.state.errorObj.insuranceDetailsError.status}>
-                                <Icon style={styles.icon} name="user"/>
-                                <Input
-                                    style={styles.input}
-                                    underlineColorAndroid="transparent"
-                                    placeholder="Insurance Details"
-                                    placeholderTextColor="#897d7b"
-                                    autoCapitalize="none"
-                                    returnKeyType='next'
-                                    returnKeyLabel='next'
-                                    onChangeText={(value) => this.onChangeText('insuranceDetails', value)}
-                                />
-                            </Item>
-                            <Text style={styles.error}>
-                                {
-                                    !this.state.errorObj.insuranceDetailsError.status ? '' : this.state.errorObj.insuranceDetailsError.errorType
-                                }
-                            </Text>
+                                    </View>
 
-                        </View>
-                    </View>
+                                    <View style={styles.inputContainer}>
+                                        <Item style={styles.inputView} error={this.state.errorObj.chassisNumberError.status}>
+                                            <Icon style={styles.icon} name="mobile"/>
+                                            <Input
+                                                style={styles.input}
+                                                underlineColorAndroid="transparent"
+                                                placeholder="Chassis Number"
+                                                placeholderTextColor="#897d7b"
+                                                autoCapitalize="none"
+                                                returnKeyType='next'
+                                                returnKeyLabel='next'
+                                                onChangeText={(value) => this.onChangeText('chassisNumber', value)}
+                                            />
+                                        </Item>
+                                        <Text style={styles.error}>
+                                            {
+                                                !this.state.errorObj.chassisNumberError.status ? '' : this.state.errorObj.chassisNumberError.errorType
+                                            }
+                                        </Text>
+                                    </View>
 
-                    <TouchableOpacity
-                        style={styles.submitButton}
-                    >
-                        <Text style={styles.submitButtonText} onPress={() => this.onSubmitForm()}> SAVE </Text>
-                    </TouchableOpacity>
+                                    <View style={styles.inputContainer} error={this.state.errorObj.ownerNameError}>
+                                        <Item style={styles.inputView}>
+                                            <Icon style={styles.icon} name="user"/>
+                                            <Input
+                                                style={styles.input}
+                                                underlineColorAndroid="transparent"
+                                                placeholder="Owner Name"
+                                                placeholderTextColor="#897d7b"
+                                                autoCapitalize="none"
+                                                returnKeyType='next'
+                                                returnKeyLabel='next'
+                                                onChangeText={(value) => this.onChangeText('alternateContact', value)}
+                                            />
+                                        </Item>
+                                        <Text style={styles.error}>
+                                            {
+                                                !this.state.errorObj.ownerNameError.status ? '' : errroMessages.ownerNameError
+                                            }
+                                        </Text>
+                                    </View>
+
+                                    <View style={styles.inputContainer} error={this.state.errorObj.ownerContactError.status}>
+                                        <Item style={styles.inputView}>
+                                            <Icon style={styles.icon} name="mobile"/>
+                                            <Input
+                                                style={styles.input}
+                                                underlineColorAndroid="transparent"
+                                                placeholder="Owner Contact"
+                                                placeholderTextColor="#897d7b"
+                                                autoCapitalize="none"
+                                                keyboardType='numeric'
+                                                returnKeyType='next'
+                                                returnKeyLabel='next'
+                                                onChangeText={(value) => this.onChangeText('ownerContact', value)}
+                                            />
+                                        </Item>
+                                        <Text style={styles.error}>
+                                            {
+                                                !this.state.errorObj.ownerContactError.status ? '' : errroMessages.ownerContactError
+                                            }
+                                        </Text>
+                                    </View>
+
+                                    <View style={styles.inputContainer} error={this.state.errorObj.ownerAddressError}>
+                                        <Item style={styles.inputView}>
+                                            <Icon style={styles.icon} name="mobile"/>
+                                            <Input
+                                                style={styles.input}
+                                                underlineColorAndroid="transparent"
+                                                placeholder="Owner Address"
+                                                placeholderTextColor="#897d7b"
+                                                autoCapitalize="none"
+                                                returnKeyType='next'
+                                                returnKeyLabel='next'
+                                                onChangeText={(value) => this.onChangeText('ownerAddress', value)}
+                                            />
+                                        </Item>
+                                        <Text style={styles.error}>
+                                            {
+                                                !this.state.errorObj.ownerAddressError.status ? '' : errroMessages.ownerAddressError
+                                            }
+                                        </Text>
+
+                                        <View style={{marginBottom:15, marginTop:-15, marginLeft:20, marginRight:20}}>
+                                            <Dropdown
+                                                label='Current State'
+                                                data={data}
+                                                overlayStyle={{marginTop:86, marginLeft:17}}
+                                            />
+                                        </View>
+
+                                        <View style={{ flex: 1,marginBottom:15, marginTop:-5, marginLeft:20, marginRight:20}}>
+                                            <MultiSelect
+                                                hideTags
+                                                items={items}
+                                                uniqueKey="id"
+                                                ref={(component) => { this.multiSelect = component }}
+                                                onSelectedItemsChange={this.onSelectedItemsChange}
+                                                selectedItems={selectedItems}
+                                                selectText="Select State"
+                                                searchInputPlaceholderText="Search State Name..."
+                                                onChangeInput={ (text)=> console.log(text)}
+                                                altFontFamily="ProximaNova-Light"
+                                                tagRemoveIconColor="#CCC"
+                                                tagBorderColor="#CCC"
+                                                tagTextColor="#10d4f4"
+                                                selectedItemTextColor="#10d4f4"
+                                                selectedItemIconColor="#CCC"
+                                                itemTextColor="#000"
+                                                displayKey="name"
+                                                searchInputStyle={{ color: '#CCC' }}
+                                                submitButtonColor="#10d4f4"
+                                                submitButtonText="Submit"
+                                                styleDropdownMenuSubsection={{paddingRight:0}}
+                                            />
+                                            <View>
+                                                {this.multiSelect && this.multiSelect.getSelectedItemsExt(selectedItems)}
+                                            </View>
+                                        </View>
+
+                                        <View style={styles.inputContainer} error={this.state.errorObj.RCNumberError.status}>
+                                            <Item style={styles.inputView}>
+                                                <Icon style={styles.icon} name="envelope"/>
+                                                <Input
+                                                    style={styles.input}
+                                                    underlineColorAndroid="transparent"
+                                                    placeholder="RC Number"
+                                                    placeholderTextColor="#897d7b"
+                                                    autoCapitalize="none"
+                                                    keyboardType='numeric'
+                                                    returnKeyType='next'
+                                                    returnKeyLabel='next'
+                                                    onChangeText={(value) => this.onChangeText('RCNumber', value)}
+                                                />
+                                            </Item>
+                                            <Text style={styles.error}>
+                                                {
+                                                    !this.state.errorObj.RCNumberError.status ? '' : errroMessages.RCNumberError
+                                                }
+                                            </Text>
+                                        </View>
+
+                                        <View style={styles.inputContainer}>
+                                            <Item style={styles.inputView} error={this.state.errorObj.allowedLoadError.status}>
+                                                <Icon style={styles.icon} name="user"/>
+                                                <Input
+                                                    style={styles.input}
+                                                    underlineColorAndroid="transparent"
+                                                    placeholder="Allowed Load in Tons"
+                                                    placeholderTextColor="#897d7b"
+                                                    autoCapitalize="none"
+                                                    returnKeyType='next'
+                                                    returnKeyLabel='next'
+                                                    onChangeText={(value) => this.onChangeText('allowedLoad', value)}
+                                                />
+                                            </Item>
+                                            <Text style={styles.error}>
+                                                {
+                                                    !this.state.errorObj.allowedLoadError.status ? '' : this.state.errorObj.allowedLoadError.errorType
+                                                }
+                                            </Text>
+                                        </View>
+
+                                        <View style={styles.inputContainer}>
+                                            <Item style={styles.inputView} error={this.state.errorObj.insuranceDetailsError.status}>
+                                                <Icon style={styles.icon} name="user"/>
+                                                <Input
+                                                    style={styles.input}
+                                                    underlineColorAndroid="transparent"
+                                                    placeholder="Insurance Details"
+                                                    placeholderTextColor="#897d7b"
+                                                    autoCapitalize="none"
+                                                    returnKeyType='next'
+                                                    returnKeyLabel='next'
+                                                    onChangeText={(value) => this.onChangeText('insuranceDetails', value)}
+                                                />
+                                            </Item>
+                                            <Text style={styles.error}>
+                                                {
+                                                    !this.state.errorObj.insuranceDetailsError.status ? '' : this.state.errorObj.insuranceDetailsError.errorType
+                                                }
+                                            </Text>
+
+                                        </View>
+                                    </View>
+
+                                    <TouchableOpacity
+                                        style={styles.submitButton}
+                                    >
+                                        <Text style={styles.submitButtonText} onPress={() => this.onSubmitForm()}> SAVE </Text>
+                                    </TouchableOpacity>
+                                </View>
+                        )
+                    }
 
 
                 </Content>
@@ -512,15 +630,56 @@ const styles = StyleSheet.create({
         color: '#3f414d',
         fontSize: 24
     },
+    Addicon: {
+        color: '#fff',
+        fontSize: 30,
+        paddingLeft:10,
+        paddingRight: 10
+    },
     uploadDocuments: {
-        color: '#20336b',
-        textAlign: 'center',
+        color: '#fff',
         fontSize: 18,
         fontWeight: 'bold',
-        paddingBottom: 30,
-        textDecorationLine: "underline",
-        textDecorationStyle: "solid",
-        textDecorationColor: "#000",
-        textTransform:'uppercase'
+        textTransform:'uppercase',
+        alignSelf: 'flex-start',
+        paddingTop:5
+    },
+    pageHeader: {
+        backgroundColor:'#20336b',
+        marginBottom:10,
+        position: 'relative',
+        paddingLeft: 15,
+        paddingTop: 5,
+        paddingBottom:5
+    },
+    cardView: {
+        marginLeft:15,
+        marginRight:15,
+        marginTop:10,
+        marginBottom:15,
+        borderRadius: 2,
+        borderBottomWidth: 0,
+        shadowColor: '#20336b',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 1,
+        shadowRadius: 2,
+        elevation: 1,
+        padding:10
+    },
+    dataRow: {
+        flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'flex-start',
+        paddingBottom: 10
+    },
+    title: {
+        width: '40%' // is 50% of container width
+    },
+    data: {
+        width: '60%',
+    },
+    uploadImages: {
+        width:'100%'
     }
 });

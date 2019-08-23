@@ -132,6 +132,7 @@
 // }
 
 import React from 'react';
+import { Root } from "native-base";
 import { Button, View, Text, StyleSheet,ActivityIndicator, ImageBackground ,Image} from 'react-native';
 
 import { createStackNavigator, createAppContainer } from 'react-navigation'; 
@@ -261,7 +262,9 @@ const AppContainer = createAppContainer(RootStack);
 class App extends React.Component {
   render() {
     return (
+    <Root>
       <AppContainer />
+    </Root>  
     )
   }
 }

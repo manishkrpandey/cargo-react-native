@@ -27,7 +27,7 @@ export default class YourVehicles extends Component {
                         style={{flex: 1}}
                         indicator={this._renderTabIndicator()}
                     >
-                        <View style={{backgroundColor: '#fff', padding: 20}}>
+                        <View style={{backgroundColor: '#fff'}}>
                             <VehicleDescriptionComponent/>
                         </View>
                         <View style={{backgroundColor: '#fff', padding: 20}}>
