@@ -43,6 +43,7 @@ export default class RegisterFormScreen extends Component {
         panCard: '',
         isMale: true,
         isFemale: false,
+        passwordVerfication:false,
         errorObj: {
             firstNameError:
             {
@@ -489,8 +490,9 @@ export default class RegisterFormScreen extends Component {
 
             await authenticationController.registerUser(userDtata).then(response => {
 
-                if (response.userId) {
-                    this.props.navigation.navigate('Login')
+                if (response && response.userId) {
+                    // this.props.navigation.navigate('Login')
+                    this.setState({passwordVerfication:true});
                 } else {
                     Toast.show({
                         text: "Already registered with this number!",
@@ -540,42 +542,226 @@ export default class RegisterFormScreen extends Component {
         return (
             <Container>
                 <Content style={{ marginBottom: 30 }}>
+                {
+                    !this.state.passwordVerfication ? (<View>
+                        <View style={{ alignItems: 'center', paddingTop: 15 }}>
+                            <Icon name="user" style={{ color: "#10d4f4", fontSize: 50, paddingBottom: 10 }} />
+                            <H2 style={{ color: '#10d4f4', paddingBottom: 10 }}>Create Kargo Account</H2>
+                        </View>
+    
+                        <View style={styles.inputContainer}>
+                            <Item style={styles.inputView} error={this.state.errorObj.firstNameError.status}>
+                                <Icon style={styles.icon} name="user" />
+                                <Input
+                                    style={styles.input}
+                                    underlineColorAndroid="transparent"
+                                    placeholder="Full Name"
+                                    placeholderTextColor="#897d7b"
+                                    autoCapitalize="none"
+                                    autoFocus={true}
+                                    returnKeyType='next'
+                                    returnKeyLabel='next'
+                                    autoCorrect={false}
+                                    onChangeText={(value) => this.onChangeText('firstName', value)}
+                                />
+                            </Item>
+                            <Text style={styles.error}>
+                                {
+                                    !this.state.errorObj.firstNameError.status ? '' : this.state.errorObj.firstNameError.errorType
+                                }
+                            </Text>
+    
+                        </View>
+    
+                        <View style={styles.inputContainer}>
+                            <Item style={styles.inputView} error={this.state.errorObj.mobileNumberError.status}>
+                                <Icon style={styles.icon} name="mobile" />
+                                <Input
+                                    style={styles.input}
+                                    underlineColorAndroid="transparent"
+                                    placeholder="Mobile Number"
+                                    placeholderTextColor="#897d7b"
+                                    autoCapitalize="none"
+                                    keyboardType='numeric'
+                                    returnKeyType='next'
+                                    returnKeyLabel='next'
+                                    onChangeText={(value) => this.onChangeText('mobileNumber', value)}
+                                />
+                            </Item>
+                            <Text style={styles.error}>
+                                {
+                                    !this.state.errorObj.mobileNumberError.status ? '' : this.state.errorObj.mobileNumberError.errorType
+                                }
+                            </Text>
+                        </View>
+    
+                        <View style={styles.inputContainer} error={this.state.errorObj.alternateContactError}>
+                            <Item style={styles.inputView}>
+                                <Icon style={styles.icon} name="mobile" />
+                                <Input
+                                    style={styles.input}
+                                    underlineColorAndroid="transparent"
+                                    placeholder="Alternate Contact"
+                                    placeholderTextColor="#897d7b"
+                                    autoCapitalize="none"
+                                    keyboardType='numeric'
+                                    returnKeyType='next'
+                                    returnKeyLabel='next'
+                                    onChangeText={(value) => this.onChangeText('alternateContact', value)}
+                                />
+                            </Item>
+                            <Text style={styles.error}>
+                                {
+                                    !this.state.errorObj.alternateContactError.status ? '' : errroMessages.alternateContactError
+                                }
+                            </Text>
+                        </View>
+    
+                        <View style={styles.inputContainer} error={this.state.errorObj.emailError.status}>
+                            <Item style={styles.inputView}>
+                                <Icon style={styles.icon} name="envelope" />
+                                <Input
+                                    style={styles.input}
+                                    underlineColorAndroid="transparent"
+                                    placeholder="Email"
+                                    placeholderTextColor="#897d7b"
+                                    autoCapitalize="none"
+                                    keyboardType='email-address'
+                                    returnKeyType='next'
+                                    returnKeyLabel='next'
+                                    onChangeText={(value) => this.onChangeText('email', value)}
+                                />
+                            </Item>
+                            <Text style={styles.error}>
+                                {
+                                    !this.state.errorObj.emailError.status ? '' : errroMessages.emailMsgError
+                                }
+                            </Text>
+                        </View>
+    
+                        <View style={styles.inputContainer} error={this.state.errorObj.panCard.status}>
+                            <Item style={styles.inputView}>
+                                <Icon style={styles.icon} name="envelope" />
+                                <Input
+                                    style={styles.input}
+                                    underlineColorAndroid="transparent"
+                                    placeholder="Pan Card Number"
+                                    placeholderTextColor="#897d7b"
+                                    autoCapitalize="none"
+                                    keyboardType='email-address'
+                                    returnKeyType='next'
+                                    returnKeyLabel='next'
+                                    onChangeText={(value) => this.onChangeText('panCard', value)}
+                                />
+                            </Item>
+                            <Text style={styles.error}>
+                                {
+                                    !this.state.errorObj.panCard.status ? '' : errroMessages.emailMsgError
+                                }
+                            </Text>
+                        </View>
+                        <View style={styles.inputContainer} error={this.state.errorObj.passwordError.status}>
+                            <Item style={styles.inputView}>
+                                <Icon style={styles.icon} name="lock" />
+                                <Input
+                                    style={styles.input}
+                                    underlineColorAndroid="transparent"
+                                    placeholder="Password"
+                                    placeholderTextColor="#897d7b"
+                                    autoCapitalize="none"
+                                    secureTextEntry={true}
+                                    returnKeyType='next'
+                                    returnKeyLabel='next'
+                                    onChangeText={(value) => this.onChangeText('password', value)}
+                                />
+                            </Item>
+                            <Text style={styles.error}>
+                                {
+                                    !this.state.errorObj.passwordError.status ? '' : errroMessages.passwordMsgError
+                                }
+                            </Text>
+                        </View>
+    
+                        <View style={styles.inputContainer} error={this.state.errorObj.confirmPasswordError.status}>
+                            <Item style={styles.inputView}>
+                                <Icon style={styles.icon} name="lock" />
+                                <Input
+                                    style={styles.input}
+                                    underlineColorAndroid="transparent"
+                                    placeholder="Confirm Password"
+                                    placeholderTextColor="#897d7b"
+                                    autoCapitalize="none"
+                                    secureTextEntry={true}
+                                    returnKeyType='next'
+                                    returnKeyLabel='next'
+                                    onChangeText={(value) => this.onChangeText('confirmPassword', value)}
+                                />
+                            </Item>
+                            <Text style={styles.error}>
+                                {
+                                    !this.state.errorObj.confirmPasswordError.status ? '' : errroMessages.confirmPasswordMsgError
+                                }
+                            </Text>
+                        </View>
+    
+    
+                        <View style={styles.inputContainer}>
+                            <Item style={{ borderColor: 'transparent', marginLeft: 20, marginRight: 20 }}>
+                                <Text style={{ fontWeight: 'bold' }}>
+                                    Gender:
+                                </Text>
+                            </Item>
+                        </View>
+    
+                        <List style={{ borderColor: 'transparent', marginLeft: 20, marginRight: 20 }}>
+                            <Grid>
+                                <Row>
+                                    <Col onPress={() => this.onGender('Male')}>
+                                        <ListItem style={{ borderColor: 'transparent', marginLeft: 0 }}>
+                                            <Radio selected={this.state.isMale} style={{ marginRight: 15 }} />
+                                            <Text>Male</Text>
+                                        </ListItem>
+                                    </Col>
+    
+                                    <Col onPress={() => this.onGender('Female')}>
+                                        <ListItem style={{ borderColor: 'transparent', marginLeft: 0 }}>
+                                            <Radio selected={this.state.isFemale} style={{ marginRight: 15 }}
+                                            />
+                                            <Text>Female</Text>
+                                        </ListItem>
+                                    </Col>
+                                </Row>
+                            </Grid>
+                        </List>
+    
+                        <TouchableOpacity
+                            style={styles.submitButton}
+                        >
+                            <Text style={styles.submitButtonText} onPress={this.onSubmitForm}> REGISTER </Text>
+                        </TouchableOpacity>
+    
+                        <View style={{ paddingBottom: 200 }} />
+    
+                        <View style={{ borderTopColor: '#ebebeb', borderTopWidth: 1, paddingTop: 15, alignItems: 'center' }}>
+                            <Text>Already have an account? &nbsp;
+                                <Text onPress={() => this.props.navigation.navigate('Login')}
+                                    style={{ color: '#10d4f4', fontWeight: 'bold' }}>
+                                    Sign In
+                                </Text>
+                            </Text>
+                        </View>
+                        </View>):(<View>
                     <View style={{ alignItems: 'center', paddingTop: 15 }}>
                         <Icon name="user" style={{ color: "#10d4f4", fontSize: 50, paddingBottom: 10 }} />
                         <H2 style={{ color: '#10d4f4', paddingBottom: 10 }}>Create Kargo Account</H2>
                     </View>
-
-                    <View style={styles.inputContainer}>
-                        <Item style={styles.inputView} error={this.state.errorObj.firstNameError.status}>
-                            <Icon style={styles.icon} name="user" />
-                            <Input
-                                style={styles.input}
-                                underlineColorAndroid="transparent"
-                                placeholder="Full Name"
-                                placeholderTextColor="#897d7b"
-                                autoCapitalize="none"
-                                autoFocus={true}
-                                returnKeyType='next'
-                                returnKeyLabel='next'
-                                autoCorrect={false}
-                                onChangeText={(value) => this.onChangeText('firstName', value)}
-                            />
-                        </Item>
-                        <Text style={styles.error}>
-                            {
-                                !this.state.errorObj.firstNameError.status ? '' : this.state.errorObj.firstNameError.errorType
-                            }
-                        </Text>
-
-                    </View>
-
                     <View style={styles.inputContainer}>
                         <Item style={styles.inputView} error={this.state.errorObj.mobileNumberError.status}>
                             <Icon style={styles.icon} name="mobile" />
                             <Input
                                 style={styles.input}
                                 underlineColorAndroid="transparent"
-                                placeholder="Mobile Number"
+                                placeholder="Enter OTP sent to your mobile number"
                                 placeholderTextColor="#897d7b"
                                 autoCapitalize="none"
                                 keyboardType='numeric'
@@ -590,162 +776,16 @@ export default class RegisterFormScreen extends Component {
                             }
                         </Text>
                     </View>
-
-                    <View style={styles.inputContainer} error={this.state.errorObj.alternateContactError}>
-                        <Item style={styles.inputView}>
-                            <Icon style={styles.icon} name="mobile" />
-                            <Input
-                                style={styles.input}
-                                underlineColorAndroid="transparent"
-                                placeholder="Alternate Contact"
-                                placeholderTextColor="#897d7b"
-                                autoCapitalize="none"
-                                keyboardType='numeric'
-                                returnKeyType='next'
-                                returnKeyLabel='next'
-                                onChangeText={(value) => this.onChangeText('alternateContact', value)}
-                            />
-                        </Item>
-                        <Text style={styles.error}>
-                            {
-                                !this.state.errorObj.alternateContactError.status ? '' : errroMessages.alternateContactError
-                            }
-                        </Text>
-                    </View>
-
-                    <View style={styles.inputContainer} error={this.state.errorObj.emailError.status}>
-                        <Item style={styles.inputView}>
-                            <Icon style={styles.icon} name="envelope" />
-                            <Input
-                                style={styles.input}
-                                underlineColorAndroid="transparent"
-                                placeholder="Email"
-                                placeholderTextColor="#897d7b"
-                                autoCapitalize="none"
-                                keyboardType='email-address'
-                                returnKeyType='next'
-                                returnKeyLabel='next'
-                                onChangeText={(value) => this.onChangeText('email', value)}
-                            />
-                        </Item>
-                        <Text style={styles.error}>
-                            {
-                                !this.state.errorObj.emailError.status ? '' : errroMessages.emailMsgError
-                            }
-                        </Text>
-                    </View>
-
-                    <View style={styles.inputContainer} error={this.state.errorObj.panCard.status}>
-                        <Item style={styles.inputView}>
-                            <Icon style={styles.icon} name="envelope" />
-                            <Input
-                                style={styles.input}
-                                underlineColorAndroid="transparent"
-                                placeholder="Pan Card Number"
-                                placeholderTextColor="#897d7b"
-                                autoCapitalize="none"
-                                keyboardType='email-address'
-                                returnKeyType='next'
-                                returnKeyLabel='next'
-                                onChangeText={(value) => this.onChangeText('panCard', value)}
-                            />
-                        </Item>
-                        <Text style={styles.error}>
-                            {
-                                !this.state.errorObj.panCard.status ? '' : errroMessages.emailMsgError
-                            }
-                        </Text>
-                    </View>
-                    <View style={styles.inputContainer} error={this.state.errorObj.passwordError.status}>
-                        <Item style={styles.inputView}>
-                            <Icon style={styles.icon} name="lock" />
-                            <Input
-                                style={styles.input}
-                                underlineColorAndroid="transparent"
-                                placeholder="Password"
-                                placeholderTextColor="#897d7b"
-                                autoCapitalize="none"
-                                secureTextEntry={true}
-                                returnKeyType='next'
-                                returnKeyLabel='next'
-                                onChangeText={(value) => this.onChangeText('password', value)}
-                            />
-                        </Item>
-                        <Text style={styles.error}>
-                            {
-                                !this.state.errorObj.passwordError.status ? '' : errroMessages.passwordMsgError
-                            }
-                        </Text>
-                    </View>
-
-                    <View style={styles.inputContainer} error={this.state.errorObj.confirmPasswordError.status}>
-                        <Item style={styles.inputView}>
-                            <Icon style={styles.icon} name="lock" />
-                            <Input
-                                style={styles.input}
-                                underlineColorAndroid="transparent"
-                                placeholder="Confirm Password"
-                                placeholderTextColor="#897d7b"
-                                autoCapitalize="none"
-                                secureTextEntry={true}
-                                returnKeyType='next'
-                                returnKeyLabel='next'
-                                onChangeText={(value) => this.onChangeText('confirmPassword', value)}
-                            />
-                        </Item>
-                        <Text style={styles.error}>
-                            {
-                                !this.state.errorObj.confirmPasswordError.status ? '' : errroMessages.confirmPasswordMsgError
-                            }
-                        </Text>
-                    </View>
-
-
-                    <View style={styles.inputContainer}>
-                        <Item style={{ borderColor: 'transparent', marginLeft: 20, marginRight: 20 }}>
-                            <Text style={{ fontWeight: 'bold' }}>
-                                Gender:
-                            </Text>
-                        </Item>
-                    </View>
-
-                    <List style={{ borderColor: 'transparent', marginLeft: 20, marginRight: 20 }}>
-                        <Grid>
-                            <Row>
-                                <Col onPress={() => this.onGender('Male')}>
-                                    <ListItem style={{ borderColor: 'transparent', marginLeft: 0 }}>
-                                        <Radio selected={this.state.isMale} style={{ marginRight: 15 }} />
-                                        <Text>Male</Text>
-                                    </ListItem>
-                                </Col>
-
-                                <Col onPress={() => this.onGender('Female')}>
-                                    <ListItem style={{ borderColor: 'transparent', marginLeft: 0 }}>
-                                        <Radio selected={this.state.isFemale} style={{ marginRight: 15 }}
-                                        />
-                                        <Text>Female</Text>
-                                    </ListItem>
-                                </Col>
-                            </Row>
-                        </Grid>
-                    </List>
-
                     <TouchableOpacity
-                        style={styles.submitButton}
-                    >
-                        <Text style={styles.submitButtonText} onPress={this.onSubmitForm}> REGISTER </Text>
-                    </TouchableOpacity>
+                            style={styles.submitButton}
+                        >
+                            <Text style={styles.submitButtonText} onPress={this.onSubmitForm}> SUBMIT OTP </Text>
+                        </TouchableOpacity>
+                    </View>)
 
-                    <View style={{ paddingBottom: 200 }} />
-
-                    <View style={{ borderTopColor: '#ebebeb', borderTopWidth: 1, paddingTop: 15, alignItems: 'center' }}>
-                        <Text>Already have an account? &nbsp;
-                            <Text onPress={() => this.props.navigation.navigate('Login')}
-                                style={{ color: '#10d4f4', fontWeight: 'bold' }}>
-                                Sign In
-                            </Text>
-                        </Text>
-                    </View>
+                }
+                    
+                    
                 </Content>
             </Container>
         );

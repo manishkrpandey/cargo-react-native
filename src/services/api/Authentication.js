@@ -9,7 +9,7 @@ export default class AuthenticationController {
 
     registerUser = (userData) => {
         console.log('entered');
-        return fetch('https://gentle-oasis-28246.herokuapp.com/user/signup', {
+        return fetch('https://ancient-atoll-80049.herokuapp.com/user/signup', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -27,7 +27,7 @@ export default class AuthenticationController {
 
     loginUser(userData) {
         console.log('entered');
-       return fetch('https://gentle-oasis-28246.herokuapp.com/user/login', {
+       return fetch('https://ancient-atoll-80049.herokuapp.com/user/login', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
