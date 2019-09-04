@@ -44,6 +44,8 @@ export default class RegisterFormScreen extends Component {
         isMale: true,
         isFemale: false,
         passwordVerfication:false,
+        verificationOtp:false,
+        isValidOtpForm:false,
         errorObj: {
             firstNameError:
             {
@@ -336,28 +338,30 @@ export default class RegisterFormScreen extends Component {
                     ...prevState,
                     errorObj: {
                         ...prevState.errorObj,
-                        confirmPassword: {
-                            ...prevState.errorObj.confirmPassword,
+                        confirmPasswordError: {
+                            ...prevState.errorObj.confirmPasswordError,
                             status: true,
                             errorType: errroMessages.genericError
 
                         }
                     }
                 }))
+                return
             } else if (this.state.confirmPassword.length <= 4) {
 
                 this.setState(prevState => ({
                     ...prevState,
                     errorObj: {
                         ...prevState.errorObj,
-                        confirmPassword: {
-                            ...prevState.errorObj.confirmPassword,
+                        confirmPasswordError: {
+                            ...prevState.errorObj.confirmPasswordError,
                             status: true,
                             errorType: errroMessages.fnameError
 
                         }
                     }
                 }))
+                return
 
 
             } else {
@@ -366,14 +370,15 @@ export default class RegisterFormScreen extends Component {
                     ...prevState,
                     errorObj: {
                         ...prevState.errorObj,
-                        confirmPassword: {
-                            ...prevState.errorObj.confirmPassword,
+                        confirmPasswordError: {
+                            ...prevState.errorObj.confirmPasswordError,
                             status: false,
                             errorType: errroMessages.genericError
 
                         }
                     }
                 }))
+                return
 
 
             }
@@ -485,14 +490,32 @@ export default class RegisterFormScreen extends Component {
                 "gender": this.state.isMale ? 'Male' : 'Femaile',
                 "password": this.state.password,
                 "role": "user",
-                "isAdditionalDetailsAdded": false
+                "isAdditionalDetailsAdded": false,
             }
 
             await authenticationController.registerUser(userDtata).then(response => {
-
+                if(response && response.data && !response.data[0].msg.isPhoneVerified && response.data[0].msg.status===422){
+                    this.setState({passwordVerfication:true});
+                    this.genaerateOtpandSend();
+                      return 
+                }
+                if(response && response.data && response.data[0].msg.isPhoneVerified && response.data[0].msg.status===422){
+                       this.props.navigation.navigate('Login')
+                      return 
+                }
+                if(response && response.error && response.error.data){
+                    Toast.show({
+                        text: `${response.error.data[0].msg} with ${response.error.data[0].value}`,
+                        buttonText: "Okay",
+                        duration: 3000
+                      });
+                      return 
+                }    
                 if (response && response.userId) {
                     // this.props.navigation.navigate('Login')
                     this.setState({passwordVerfication:true});
+                    this.genaerateOtpandSend();
+
                 } else {
                     Toast.show({
                         text: "Already registered with this number!",
@@ -536,6 +559,36 @@ export default class RegisterFormScreen extends Component {
         Object.keys(state).forEach(element => {
 
         })
+    }
+    genaerateOtpandSend = () =>{
+        let reqObject = {
+            "phone": this.state.mobileNumber
+            }
+        authenticationController.generateOTP(reqObject).then(data=>{console.log('otp generated',data)});
+    }
+    onOtpSubmitForm = () =>{
+        let reqObject = {
+            'phone':this.state.mobileNumber,
+            'otp':this.state.verificationOtp
+        }
+        this.setState({isValidOtpForm:false});
+            if(this.state.verificationOtp.length===4){
+                this.setState({isValidOtpForm:true});
+                authenticationController.verifyMobileNumber(reqObject).then(data=>{
+                    if(data.status===200){
+                        this.props.navigation.navigate('Login');
+                    }else{
+                        Toast.show({
+                            text: "OTP verification Failed. Please try again!",
+                            buttonText: "Okay",
+                            duration: 3000
+                          })
+                    }
+                })
+            }else{
+                this.setState({isValidOtpForm:false})
+
+            }
     }
 
     render() {
@@ -756,7 +809,7 @@ export default class RegisterFormScreen extends Component {
                         <H2 style={{ color: '#10d4f4', paddingBottom: 10 }}>Create Kargo Account</H2>
                     </View>
                     <View style={styles.inputContainer}>
-                        <Item style={styles.inputView} error={this.state.errorObj.mobileNumberError.status}>
+                        <Item style={styles.inputView} error={!this.state.isValidOtpForm}>
                             <Icon style={styles.icon} name="mobile" />
                             <Input
                                 style={styles.input}
@@ -767,19 +820,19 @@ export default class RegisterFormScreen extends Component {
                                 keyboardType='numeric'
                                 returnKeyType='next'
                                 returnKeyLabel='next'
-                                onChangeText={(value) => this.onChangeText('mobileNumber', value)}
+                                onChangeText={(value) => this.setState({verificationOtp:value})}
                             />
                         </Item>
                         <Text style={styles.error}>
                             {
-                                !this.state.errorObj.mobileNumberError.status ? '' : this.state.errorObj.mobileNumberError.errorType
+                                this.state.isValidOtpForm ? '' : 'Please enter OTP sent to your mobilenumber'
                             }
                         </Text>
                     </View>
                     <TouchableOpacity
                             style={styles.submitButton}
                         >
-                            <Text style={styles.submitButtonText} onPress={this.onSubmitForm}> SUBMIT OTP </Text>
+                            <Text style={styles.submitButtonText} onPress={this.onOtpSubmitForm}> SUBMIT OTP </Text>
                         </TouchableOpacity>
                     </View>)
 

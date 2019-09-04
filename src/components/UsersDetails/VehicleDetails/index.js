@@ -6,6 +6,9 @@ import {Dropdown} from 'react-native-material-dropdown';
 import MultiSelect from 'react-native-multiple-select';
 import errroMessages from './../../../constant';
 import truckImages from './../../../../img/truckUploaded.jpg';
+import VehicleDetailsController from '../../../services/api/vehicleDetailsService'
+
+const vehicleDetailsControllerobj = new VehicleDetailsController();
 
 export default class VehicleDescriptionComponent extends Component {
     static navigationOptions = {
@@ -27,6 +30,7 @@ export default class VehicleDescriptionComponent extends Component {
         RCNumber: '',
         allowedLoad: '',
         insuranceDetails: '',
+        stateObjItems:[],
         errorObj: {
             vehicleNumberError:
                 {
@@ -198,29 +202,46 @@ export default class VehicleDescriptionComponent extends Component {
         this.setErrorStatus('lastName', '');
         this.setErrorStatus('mobileNumber', '');
     };
+    componentDidMount() {
+        vehicleDetailsControllerobj.getState().then(data=>{
+            if(data.states){
+                console.log('data is',data.states);
+                let stateObj = [];
+                data.states.forEach((element,index) =>
+                {
+                let obj = {name:element,id:index.toString()};
+                stateObj.push(obj)
+                })
+                this.setState({stateObjItems:stateObj});
+        // const Items = stateObj;
+            }else{
+
+            }
+        })
+    }
 
     render() {
         const { selectedItems } = this.state;
 
-        const items = [{
-            id: '101',
-            name: 'Bihar',
-        }, {
-            id: '102',
-            name: 'West Bengal',
-        }, {
-            id: '103',
-            name: 'Jharkhand',
-        }, {
-            id: '104',
-            name: 'Uttar Pardesh',
-        }, {
-            id: '105',
-            name: 'Madhya Pardesh',
-        }, {
-            id: '106',
-            name: 'Odisha',
-        }];
+        // const items = [{
+        //     id: '101',
+        //     name: 'Bihar',
+        // }, {
+        //     id: '102',
+        //     name: 'West Bengal',
+        // }, {
+        //     id: '103',
+        //     name: 'Jharkhand',
+        // }, {
+        //     id: '104',
+        //     name: 'Uttar Pardesh',
+        // }, {
+        //     id: '105',
+        //     name: 'Madhya Pardesh',
+        // }, {
+        //     id: '106',
+        //     name: 'Odisha',
+        // }];
 
         let data = [
             {
@@ -473,7 +494,7 @@ export default class VehicleDescriptionComponent extends Component {
                                         <View style={{ flex: 1,marginBottom:15, marginTop:-5, marginLeft:20, marginRight:20}}>
                                             <MultiSelect
                                                 hideTags
-                                                items={items}
+                                                items={this.state.stateObjItems}
                                                 uniqueKey="id"
                                                 ref={(component) => { this.multiSelect = component }}
                                                 onSelectedItemsChange={this.onSelectedItemsChange}

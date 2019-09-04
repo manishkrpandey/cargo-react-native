@@ -22,29 +22,40 @@ import axios from 'axios';
 
 export default class ApiService {
     constructor() { }
-    getRequest(url) {
-        axios.get(url).then(function (response) {
-            console.log(response);
-            return response.json();
 
+   //GET REQUEST
+    getRequest(url) {
+        console.log('In GET res');
+      return  axios.get(url).then(function (response) {
+        console.log('In GET res',response);
+            return response.data;
         })
         .catch(function (error) {
-            console.log(response);
+            console.log(error);
             alert('There is some error on Page, Please try again..');
             return;
         });
     }
-    postRequest(requestUrl, data){
-        axios.post(requestUrl, data).then(function (response) {
-            console.log(response);
-            return response.json();
 
+    //POST REQUEST
+    postRequest(requestUrl, data){
+        console.log('In Post')
+        return fetch(requestUrl, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        }).then((response) => {
+            return response.json();
+        }).then(res => {
+            console.log('In Post res',res);
+            return res
         })
-        .catch(function (error) {
-            console.log(response);
-            alert('There is some error on Page, Please try again..');
-            return;
-        });
+        .catch(error => {
+            console.log(error);
+        })
     }
 }
 
