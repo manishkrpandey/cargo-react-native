@@ -3775,6 +3775,11 @@ lodash@4.17.11, lodash@^4.0.0, lodash@^4.17.11, lodash@^4.17.5, lodash@^4.3.0, l
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
   integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
 
+lodash@^4.17.15:
+  version "4.17.15"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
+  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+
 loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.3.1, loose-envify@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
@@ -4303,6 +4308,11 @@ mkdirp@^0.5.0, mkdirp@^0.5.1:
   integrity sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
   dependencies:
     minimist "0.0.8"
+
+moment@^2.22.0:
+  version "2.24.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
+  integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
 
 morgan@^1.9.0:
   version "1.9.1"
@@ -4979,7 +4989,7 @@ prompts@^2.0.1:
     kleur "^3.0.2"
     sisteransi "^1.0.0"
 
-prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.5.9, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -5089,12 +5099,26 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
+react-native-animatable@^1.3.1:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.3.2.tgz#4783ee1a73dc98815aef234ce6b819f80bfe7d80"
+  integrity sha512-rmah3KQ63ft8DxkzFUwJSuZeq+oSYwldoGF4DTOR5WM2WR5wiWLgBAtrAHlI3Di3by323uOR21s+MlqPcHz2Kw==
+  dependencies:
+    prop-types "^15.5.10"
+
 react-native-axios@^0.17.1:
   version "0.17.1"
   resolved "https://registry.yarnpkg.com/react-native-axios/-/react-native-axios-0.17.1.tgz#44292950aa07ceee2e4bd349106ff773bef81f8f"
   integrity sha1-RCkpUKoHzu4uS9NJEG/3c774H48=
   dependencies:
     follow-redirects "0.0.7"
+
+react-native-datepicker@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/react-native-datepicker/-/react-native-datepicker-1.7.2.tgz#58d0822591a0ac9b32aba082650222a0ee29669d"
+  integrity sha1-WNCCJZGgrJsyq6CCZQIioO4pZp0=
+  dependencies:
+    moment "^2.22.0"
 
 react-native-drawer@2.5.1:
   version "2.5.1"
@@ -5110,6 +5134,13 @@ react-native-easy-grid@0.2.1:
   integrity sha512-u90U4lf5L/PUmq7HoczFKgyElmBCpb3gu21TOWL7pq4gSH2Hz0EGm1Bgu0SQacO9v6jfQbS7JfE+xtMg6MHluQ==
   dependencies:
     lodash "4.17.11"
+
+react-native-easy-grid@^0.2.1:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-easy-grid/-/react-native-easy-grid-0.2.2.tgz#f0be33620be1ebe2d2295918eb58b0a27e8272ab"
+  integrity sha512-MlYrNIldnEMKn6TVatQN1P64GoVlwGIuz+8ncdfJ0Wq/xtzUkQwlil8Uksyp7MhKfENE09MQnGNcba6Mx3oSAA==
+  dependencies:
+    lodash "^4.17.15"
 
 react-native-firebase@^5.4.3:
   version "5.5.3"
@@ -5151,6 +5182,60 @@ react-native-keyboard-aware-scroll-view@0.8.0, react-native-keyboard-aware-scrol
     prop-types "^15.6.2"
     react-native-iphone-x-helper "^1.0.3"
 
+react-native-material-buttons@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-material-buttons/-/react-native-material-buttons-0.5.0.tgz#ab2b3e3fc3f500ca713f51e9d75978aff602152a"
+  integrity sha1-qys+P8P1AMpxP1Hp11l4r/YCFSo=
+  dependencies:
+    prop-types "^15.5.9"
+    react-native-material-ripple "^0.7.0"
+
+react-native-material-dropdown@^0.11.1:
+  version "0.11.1"
+  resolved "https://registry.yarnpkg.com/react-native-material-dropdown/-/react-native-material-dropdown-0.11.1.tgz#c0fe434a8e617941ef910ba44d2f07c8f37584fe"
+  integrity sha1-wP5DSo5heUHvkQukTS8HyPN1hP4=
+  dependencies:
+    prop-types "^15.5.9"
+    react-native-material-buttons "^0.5.0"
+    react-native-material-ripple "^0.8.0"
+    react-native-material-textfield "^0.12.0"
+
+react-native-material-ripple@^0.7.0:
+  version "0.7.5"
+  resolved "https://registry.yarnpkg.com/react-native-material-ripple/-/react-native-material-ripple-0.7.5.tgz#e2af5110680532f14aea3c3a438247be2ffef659"
+  integrity sha1-4q9REGgFMvFK6jw6Q4JHvi/+9lk=
+  dependencies:
+    prop-types "^15.5.10"
+
+react-native-material-ripple@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-material-ripple/-/react-native-material-ripple-0.8.0.tgz#b8c24e6fdea2af2a21e8468b1f40b35483019e2f"
+  integrity sha1-uMJOb96iryoh6EaLH0CzVIMBni8=
+  dependencies:
+    prop-types "^15.5.10"
+
+react-native-material-textfield@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/react-native-material-textfield/-/react-native-material-textfield-0.12.0.tgz#3fba19d76ab89f67052c81e082152fc243d82a3f"
+  integrity sha1-P7oZ12q4n2cFLIHgghUvwkPYKj8=
+  dependencies:
+    prop-types "^15.5.9"
+
+react-native-modal@^11.3.1:
+  version "11.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-11.3.1.tgz#9f67728b36fdc299f97d3da1d131190a0337b89b"
+  integrity sha512-3rRuXwvObknVijVNS8iamjMXWLjlb9xK90o+WtEcJ3C7HKuR2SOH578SoltIC6ZmVjO3vZwOApGVdSfR3LtPQg==
+  dependencies:
+    prop-types "^15.6.2"
+    react-native-animatable "^1.3.1"
+
+react-native-multiple-select@^0.5.3:
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/react-native-multiple-select/-/react-native-multiple-select-0.5.3.tgz#185404ec04f993aeadc1b2ae5f995b13d52fab16"
+  integrity sha512-fjcoa7ekKG/ffXZjyOWqSTFqeRVKaArGYCOWqfLbWOWRugQzVPpjO95iWdG8SuZmGixYpYi642g8rmTrjeOQ5Q==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-native-safe-area-view@^0.14.1:
   version "0.14.5"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.14.5.tgz#eeded66bbeb0807f0a7f5f449e7fb2871f7ecf76"
@@ -5162,6 +5247,11 @@ react-native-safe-area-view@^0.14.1:
   version "1.0.0-alpha.22"
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-1.0.0-alpha.22.tgz#7a120377b52aa9bbb94d0b8541a014026be9289b"
   integrity sha512-kSyAt0AeVU6N7ZonfV6dP6iZF8B7Bce+tk3eujXhzBGsLg0VSLnU7uE9VqJF0xdQrHR91ZjGgVMieo/8df9KTA==
+
+react-native-simple-dialogs@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-simple-dialogs/-/react-native-simple-dialogs-1.2.0.tgz#d3fa8e7b46ea563eed9ee4882e804b9d1b9f3c59"
+  integrity sha512-vH6uYovNeeZmYJbMVWVDF4n8acuPxO/D+iGdnF63j62sVfoR9+4ib7LzqBhYKp6jfwy8keEa/c1hOyabMQx3gQ==
 
 react-native-step-indicator@0.0.11:
   version "0.0.11"

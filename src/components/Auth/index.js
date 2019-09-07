@@ -4,7 +4,7 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { Root } from "native-base";
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
-// import Tutorial from './../Tutorial';
+import Tutorial from './../Tutorial';
 
 const RootStack = createStackNavigator(
     {
@@ -27,18 +27,17 @@ export default class Auth extends Component {
             <Text>Kargo App</Text>
             <View style={styles.btnView}>
               <Button
-                title="LOG IN "      
+                title="LOG IN "
                 onPress={() => this.props.navigation.navigate('Login')}
               />
             </View>
-    
+
             <View style={styles.btnView}>
               <Button
                 title="REGISTER"
                 onPress={() => this.props.navigation.navigate('Register')}
               />
             </View>
-            {/*<Tutorial />*/}
           </View>
           </Root>
         );

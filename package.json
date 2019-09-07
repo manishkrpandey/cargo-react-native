@@ -7,6 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.6.1",
     "@react-native-community/viewpager": "^1.1.7",
     "axios": "^0.18.0",
     "native-base": "^2.12.1",
@@ -26,7 +27,10 @@
     "react-native-simple-dialogs": "^1.2.0",
     "react-native-step-indicator": "0.0.11",
     "react-native-vector-icons": "^6.5.0",
+    "react-native-video": "^5.0.0",
     "react-navigation": "^3.11.0",
+    "react-redux": "^7.1.1",
+    "redux": "^4.0.4",
     "rn-viewpager": "^1.2.9"
   },
   "devDependencies": {
