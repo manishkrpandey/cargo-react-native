@@ -5,7 +5,7 @@ import {
     StyleSheet
 } from 'react-native';
 
-import { Icon, Button, Container, Header, Content, Left } from 'native-base';
+import {Icon, Button, Container, Header, Content, Left, Body} from 'native-base';
 
  class Help extends Component {
     render() {
@@ -15,6 +15,9 @@ import { Icon, Button, Container, Header, Content, Left } from 'native-base';
                     <Left>
                         <Icon name="menu" style={{marginTop:-12}} onPress={() => this.props.navigation.openDrawer()} />
                     </Left>
+                    <Text style={{color:'#20336b', fontSize:20, fontWeight: 'bold', paddingBottom:0, marginLeft: -100}}>
+                        HELP
+                    </Text>
                 </Header>
                 <View>
                     <Text style={styles.stripHeader}>
@@ -51,9 +54,9 @@ const styles = StyleSheet.create({
         paddingBottom:10,
         marginBottom:5,
         color:'#fff',
-        backgroundColor:'#20336b',
+        backgroundColor:'#10d4f4',
         marginLeft:15,
         marginRight:15,
-        borderRadius:10
+        borderRadius:4
     }
 })

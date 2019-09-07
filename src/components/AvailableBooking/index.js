@@ -5,7 +5,7 @@ import {
     StyleSheet
 } from 'react-native';
 
-import { Icon, Header, Left } from 'native-base';
+import {Icon, Header, Left, Body} from 'native-base';
 
 class AvailableBooking extends Component {
     render() {
@@ -15,6 +15,9 @@ class AvailableBooking extends Component {
                     <Left>
                         <Icon name="menu" style={{marginTop:-12}} onPress={() => this.props.navigation.openDrawer()} />
                     </Left>
+                    <Body style={{marginTop:-12}}>
+                        <Text style={{color:'#20336b', fontSize:20, fontWeight: 'bold', paddingBottom:0}}>Bookings</Text>
+                    </Body>
                 </Header>
                 <View>
                     <Text style={styles.pageTitle}>
@@ -40,10 +43,10 @@ const styles = StyleSheet.create({
     pageTitle: {
         color: '#fff',
         backgroundColor: '#20336b',
-        textAlign: 'center',
-        fontSize: 18,
+        fontSize: 15,
         fontWeight: 'bold',
         height: 50,
         lineHeight: 50,
+        paddingLeft: 15
     },
 });

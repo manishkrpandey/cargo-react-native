@@ -1,16 +1,18 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import { Container, Content, Item, Input, Text } from "native-base";
+import {View, StyleSheet, TouchableOpacity, Image,Text} from 'react-native';
+import { Container, Content, Item, Input, Card,Thumbnail,Left,CardItem,Body} from "native-base";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Dropdown} from 'react-native-material-dropdown';
 import MultiSelect from 'react-native-multiple-select';
 import errroMessages from './../../../constant';
-import truckImages from './../../../../img/truckUploaded.jpg';
-import VehicleDetailsController from '../../../services/api/vehicleDetailsService'
+import truckImages from './../../../../img/desitruck.jpg';
+import VehicleDetailsController from '../../../services/api/vehicleDetailsService';
+import AsyncStorage from '@react-native-community/async-storage';
+import { connect } from "react-redux";
 
 const vehicleDetailsControllerobj = new VehicleDetailsController();
 
-export default class VehicleDescriptionComponent extends Component {
+class VehicleDescriptionComponent extends Component {
     static navigationOptions = {
         title: 'Register',
         headerStyle: {
@@ -31,6 +33,7 @@ export default class VehicleDescriptionComponent extends Component {
         allowedLoad: '',
         insuranceDetails: '',
         stateObjItems:[],
+        allVehiclesDetails:[],
         errorObj: {
             vehicleNumberError:
                 {
@@ -202,14 +205,36 @@ export default class VehicleDescriptionComponent extends Component {
         this.setErrorStatus('lastName', '');
         this.setErrorStatus('mobileNumber', '');
     };
+
+    getuserData = async () => {
+        try {
+          const value = await AsyncStorage.getItem('user');
+          if(value !== null) {
+              console.log('value.phone',value.phone);
+            return value.phone;
+          }
+        } catch(e) {
+          // error reading value
+        }
+      }
+
+
     componentDidMount() {
+        console.log('places inside vehicle details',this.props.places);
+        const { token,user } = this.props.places;
+        vehicleDetailsControllerobj.getAllVehicle(token,{"phone":user.phone}).then(data=>{
+            this.setState({
+                allVehiclesDetails:data.result});
+          //  console.log('data arrived',data);
+        }).catch(err=>err);
+
         vehicleDetailsControllerobj.getState().then(data=>{
             if(data.states){
                 console.log('data is',data.states);
                 let stateObj = [];
                 data.states.forEach((element,index) =>
                 {
-                let obj = {name:element,id:index.toString()};
+                let obj = {name:element,id:index.toString(),value:element};
                 stateObj.push(obj)
                 })
                 this.setState({stateObjItems:stateObj});
@@ -221,157 +246,76 @@ export default class VehicleDescriptionComponent extends Component {
     }
 
     render() {
-        const { selectedItems } = this.state;
+        const { selectedItems, allVehiclesDetails,stateObjItems } = this.state;
+       const  dataStateObject = stateObjItems.map(element => {
+            return {value:element};
+        })
+        
+        let truckDetailsCard= [];
 
-        // const items = [{
-        //     id: '101',
-        //     name: 'Bihar',
-        // }, {
-        //     id: '102',
-        //     name: 'West Bengal',
-        // }, {
-        //     id: '103',
-        //     name: 'Jharkhand',
-        // }, {
-        //     id: '104',
-        //     name: 'Uttar Pardesh',
-        // }, {
-        //     id: '105',
-        //     name: 'Madhya Pardesh',
-        // }, {
-        //     id: '106',
-        //     name: 'Odisha',
-        // }];
-
-        let data = [
-            {
-                value: 'New Delhi',
-            },
-            {
-                value: 'Bihar',
-            },
-            {
-                value: 'West Bengal'
-            },
-            {
-                value: 'Uttar Pardesh'
-            },
-            {
-                value: 'Jharkhand',
-            }];
+        if(allVehiclesDetails) {
+            truckDetailsCard =  allVehiclesDetails.map((data,i) => {
+                return (
+                    <Card key={i} style={{marginLeft:10, marginRight:10, marginBottom:20}}>
+                             <CardItem>
+                  <Left>
+                    <Thumbnail source={{uri:truckImages.uri }} />
+                    <Body>
+                        <View style={styles.data}>
+                            <Text>Driver Name:</Text>
+                            <Text style={styles.details}>Ram Babu</Text>
+                        </View>
+                    </Body>
+                  </Left>
+                </CardItem>
+                        <View style={styles.dataRow}>
+                            <Image style={styles.uploadImages}
+                                   source={truckImages}/>
+                        </View>
+    
+                        <View style={styles.dataRow}>
+                            <View style={styles.data}>
+                                <Text>Truck Number:</Text>
+                                <Text style={styles.details}>{data.vehileDetails.vehicleNumber}</Text>
+                            </View>
+                            <View style={styles.data}>
+                                <Text>Owner Name:</Text>
+                                <Text style={styles.details}>{data.ownerDetails.name}</Text>
+                            </View>
+                        </View>
+    
+                        <View style={styles.dataRow}>
+                            <View style={styles.data}>
+                                <Text>Current State:</Text>
+                                <Text style={styles.details}>{data.vehileDetails.currentState}</Text>
+                            </View>
+    
+                            <View style={styles.data}>
+                                <Text>Permit State:</Text>
+                                <Text style={styles.details}>{data.vehileDetails.permitState[0]}</Text>
+                            </View>
+                        </View>
+                    </Card>
+                )
+            });
+        }
 
         return (
             <Container style={{flex: 1}}>
                 <Content style={{marginBottom: 30}}>
-
                     <View style={styles.pageHeader}>
-                        <Text style={styles.uploadDocuments}>
-                            Vehicle Details
+                        <Text style={styles.uploadDocuments} onPress={this.showVehicleForms}>
+                            Add New Vehicle
                         </Text>
-                        <Text style={{alignSelf:'flex-end', position:'absolute', right:15, top:5}}>
-                            <Icon style={styles.Addicon} name="plus-circle" onPress={this.showVehicleForms}/>
+                        <Text style={{alignSelf:'flex-end', position:'absolute', right:15, top:10}} onPress={this.showVehicleForms}>
+                            <Icon style={styles.Addicon} name="plus"/>
                         </Text>
                     </View>
 
                     {
                         this.state.showVehicleInputForm ? (
                                 <View>
-                                    <View style={styles.cardView}>
-                                        <View style={styles.dataRow}>
-                                            <Image style={styles.uploadImages}
-                                                   source={truckImages}/>
-                                        </View>
-                                        <View style={styles.dataRow}>
-                                            <View style={styles.title}>
-                                                <Text>Truck Number:</Text>
-                                            </View>
-                                            <View style={styles.data}>
-                                                <Text style={{fontWeight:'bold'}}>BR21S5423</Text>
-                                            </View>
-                                        </View>
-
-                                        <View style={styles.dataRow}>
-                                            <View style={styles.title}>
-                                                <Text>Driver Name:</Text>
-                                            </View>
-                                            <View style={styles.data}>
-                                                <Text style={{fontWeight:'bold'}}>Manish Kumar</Text>
-                                            </View>
-                                        </View>
-
-                                        <View style={styles.dataRow}>
-                                            <View style={styles.title}>
-                                                <Text>Last Updated:</Text>
-                                            </View>
-                                            <View style={styles.data}>
-                                                <Text style={{fontWeight:'bold'}}>15th, Sep 2019 | 10:30 PM</Text>
-                                            </View>
-                                        </View>
-                                    </View>
-                                    <View style={styles.cardView}>
-                                        <View style={styles.dataRow}>
-                                            <Image style={styles.uploadImages}
-                                                   source={truckImages}/>
-                                        </View>
-                                        <View style={styles.dataRow}>
-                                            <View style={styles.title}>
-                                                <Text>Truck Number:</Text>
-                                            </View>
-                                            <View style={styles.data}>
-                                                <Text style={{fontWeight:'bold'}}>BR21S5423</Text>
-                                            </View>
-                                        </View>
-
-                                        <View style={styles.dataRow}>
-                                            <View style={styles.title}>
-                                                <Text>Driver Name:</Text>
-                                            </View>
-                                            <View style={styles.data}>
-                                                <Text style={{fontWeight:'bold'}}>Manish Kumar</Text>
-                                            </View>
-                                        </View>
-
-                                        <View style={styles.dataRow}>
-                                            <View style={styles.title}>
-                                                <Text>Last Updated:</Text>
-                                            </View>
-                                            <View style={styles.data}>
-                                                <Text style={{fontWeight:'bold'}}>15th, Sep 2019 | 10:30 PM</Text>
-                                            </View>
-                                        </View>
-                                    </View>
-                                    <View style={styles.cardView}>
-                                        <View style={styles.dataRow}>
-                                            <Image style={styles.uploadImages}
-                                                   source={truckImages}/>
-                                        </View>
-                                        <View style={styles.dataRow}>
-                                            <View style={styles.title}>
-                                                <Text>Truck Number:</Text>
-                                            </View>
-                                            <View style={styles.data}>
-                                                <Text style={{fontWeight:'bold'}}>BR21S5423</Text>
-                                            </View>
-                                        </View>
-
-                                        <View style={styles.dataRow}>
-                                            <View style={styles.title}>
-                                                <Text>Driver Name:</Text>
-                                            </View>
-                                            <View style={styles.data}>
-                                                <Text style={{fontWeight:'bold'}}>Manish Kumar</Text>
-                                            </View>
-                                        </View>
-
-                                        <View style={styles.dataRow}>
-                                            <View style={styles.title}>
-                                                <Text>Last Updated:</Text>
-                                            </View>
-                                            <View style={styles.data}>
-                                                <Text style={{fontWeight:'bold'}}>15th, Sep 2019 | 10:30 PM</Text>
-                                            </View>
-                                        </View>
-                                    </View>
+                                    {truckDetailsCard}
                                 </View>
                         ):
                             (
@@ -486,12 +430,12 @@ export default class VehicleDescriptionComponent extends Component {
                                         <View style={{marginBottom:15, marginTop:-15, marginLeft:20, marginRight:20}}>
                                             <Dropdown
                                                 label='Current State'
-                                                data={data}
+                                                data={stateObjItems}
                                                 overlayStyle={{marginTop:86, marginLeft:17}}
                                             />
                                         </View>
 
-                                        <View style={{ flex: 1,marginBottom:15, marginTop:-5, marginLeft:20, marginRight:20}}>
+                                        <View style={{ flex: 1, marginBottom:15, marginTop:-5, marginLeft:20, marginRight:20}}>
                                             <MultiSelect
                                                 hideTags
                                                 items={this.state.stateObjItems}
@@ -514,6 +458,7 @@ export default class VehicleDescriptionComponent extends Component {
                                                 submitButtonColor="#10d4f4"
                                                 submitButtonText="Submit"
                                                 styleDropdownMenuSubsection={{paddingRight:0}}
+                                                // fixedHeight={true}
                                             />
                                             <View>
                                                 {this.multiSelect && this.multiSelect.getSelectedItemsExt(selectedItems)}
@@ -653,25 +598,27 @@ const styles = StyleSheet.create({
     },
     Addicon: {
         color: '#fff',
-        fontSize: 30,
+        fontSize: 22,
         paddingLeft:10,
-        paddingRight: 10
+        paddingRight: 10,
+        marginTop:10
     },
     uploadDocuments: {
         color: '#fff',
-        fontSize: 18,
+        fontSize: 15,
         fontWeight: 'bold',
         textTransform:'uppercase',
-        alignSelf: 'flex-start',
-        paddingTop:5
+        alignSelf: 'flex-end',
+        paddingTop:0,
+        marginRight:50
     },
     pageHeader: {
         backgroundColor:'#20336b',
         marginBottom:10,
         position: 'relative',
         paddingLeft: 15,
-        paddingTop: 5,
-        paddingBottom:5
+        paddingTop: 10,
+        paddingBottom:10
     },
     cardView: {
         marginLeft:15,
@@ -694,13 +641,25 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         paddingBottom: 10
     },
-    title: {
-        width: '40%' // is 50% of container width
-    },
     data: {
-        width: '60%',
+        width: '45%',
+        fontSize: 10,
+        fontWeight: 'bold',
+        paddingLeft: 10,
+        marginBottom: 5
     },
     uploadImages: {
         width:'100%'
+    },
+    details:{
+        color:'#10d4f4',
     }
 });
+const mapStateToProps = state => {
+    return {
+      places: state.places.places,
+      selectedPlace: state.places.selectedPlace
+    };
+  };
+
+  export default connect(mapStateToProps)(VehicleDescriptionComponent);

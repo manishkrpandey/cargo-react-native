@@ -4,6 +4,7 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import { Root } from "native-base";
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
+// import Tutorial from './../Tutorial';
 
 const RootStack = createStackNavigator(
     {
@@ -37,6 +38,7 @@ export default class Auth extends Component {
                 onPress={() => this.props.navigation.navigate('Register')}
               />
             </View>
+            {/*<Tutorial />*/}
           </View>
           </Root>
         );

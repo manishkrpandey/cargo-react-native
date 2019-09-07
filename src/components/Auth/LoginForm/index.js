@@ -2,17 +2,27 @@ import React, {Component} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Alert, Button} from 'react-native';
 import {Container, Header, Content, Form, Item, Input, Label, H2, Icon} from 'native-base';
 import WelcomeScreen from '../../WelcomeScreen/index'
-import {AsyncStorage} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import AuthenticationController from './../../../services/api/Authentication'
 import ForgotPassword from './../ForgotPassword';
+import { connect } from "react-redux";
+import {
+  addPlace,
+  deletePlace,
+  selectPlace,
+  deselectPlace
+} from "./../../../store/actions/index"
 
 
 const authenticationController = new AuthenticationController();
-export default class LoginFormScreen extends Component {
+ class LoginFormScreen extends Component {
     constructor(props) {
         super(props);
 
     }
+ placeAddedHandler = placeName => {
+    this.props.onAddPlace(placeName);
+  };
 
     static navigationOptions = {
         title: 'Login',
@@ -21,24 +31,22 @@ export default class LoginFormScreen extends Component {
         },
         headerTintColor: '#fff',
     };
-    _storeData = async () => {
+
+    storeTokenData = async (token) => {
         try {
-            await AsyncStorage.setItem('key', 'I like to save it.');
-        } catch (error) {
-            // Error saving data
+          await AsyncStorage.setItem('token', token)
+        } catch (e) {
+          // saving error
         }
-    };
-    _retrieveData = async () => {
+      }
+
+      storeUserData = async (userData) => {
         try {
-            const value = await AsyncStorage.getItem('key');
-            if (value !== null) {
-                // We have data!!
-                // alert(value);
-            }
-        } catch (error) {
-            // Error retrieving data
+          await AsyncStorage.setItem('userdata', userData);
+        } catch (e) {
+          // saving error
         }
-    };
+      }
 
     state = {
         mobileNumber: '',
@@ -55,8 +63,6 @@ export default class LoginFormScreen extends Component {
     };
 
     login = (mobileNumber, pass) => {
-        this._storeData();
-        this._retrieveData();
         const {navigate} = this.props.navigation;
         let responseData;
         const data = {
@@ -67,7 +73,10 @@ export default class LoginFormScreen extends Component {
          authenticationController.loginUser(data).then(data=>{
              if(data.token){
                 //  navigate.navigate('WelcomeScreen');
-                 this.props.navigation.navigate('WelcomeScreen')
+                //  this.storeTokenData(data);
+                this.placeAddedHandler(data);
+                 this.storeUserData(data);
+                 this.props.navigation.navigate('WelcomeScreen',data)
              }else{
                  alert(data.message);
              }
@@ -252,3 +261,20 @@ const styles = StyleSheet.create({
         paddingBottom:5
     }
 });
+const mapStateToProps = state => {
+  return {
+    places: state.places.places,
+    selectedPlace: state.places.selectedPlace
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onAddPlace: name => dispatch(addPlace(name)),
+    onDeletePlace: () => dispatch(deletePlace()),
+    onSelectPlace: key => dispatch(selectPlace(key)),
+    onDeselectPlace: () => dispatch(deselectPlace())
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginFormScreen);

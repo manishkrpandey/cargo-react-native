@@ -1,0 +1,137 @@
+{
+  "result": [
+    {
+      "assignedDriverRef": {
+        "isDriverAssigned": false
+      },
+      "vehileDetails": {
+        "permitState": [
+          "Karnataka",
+          "Delhi",
+          "Jharkhand"
+        ],
+        "serviceStatus": false,
+        "vehicleNumber": "BR-12345",
+        "chassisNumber": "ch1234533444",
+        "currentState": "Delhi",
+        "rcNumber": "rc12345",
+        "loadCapacity": 500,
+        "insuranceId": "ins12345",
+        "vehicleType": "DL",
+        "vehicleAvaibility": "Running"
+      },
+      "ownerDetails": {
+        "name": "Manish Pandey",
+        "phone": 9711189363,
+        "address": "Delhi"
+      },
+      "bankDetails": {
+        "accountNumber": 123455555,
+        "ifscCode": "hdfc015"
+      },
+      "_id": "5d6ec91bdd363a1a043a820f",
+      "createdAt": "2019-09-03T20:12:11.729Z",
+      "updatedAt": "2019-09-03T20:16:28.774Z",
+      "__v": 0
+    },
+    {
+      "assignedDriverRef": {
+        "isDriverAssigned": false
+      },
+      "vehileDetails": {
+        "permitState": [
+          "Karnataka",
+          "Delhi"
+        ],
+        "serviceStatus": false,
+        "vehicleNumber": "BR-12347",
+        "chassisNumber": "ch1234533444",
+        "currentState": "Karnataka",
+        "rcNumber": "rc12345",
+        "loadCapacity": 500,
+        "insuranceId": "ins12345",
+        "vehicleType": "L1",
+        "vehicleAvaibility": "available"
+      },
+      "ownerDetails": {
+        "name": "Dharmesh",
+        "phone": 9711189363,
+        "address": "Bangalore"
+      },
+      "bankDetails": {
+        "accountNumber": 123455555,
+        "ifscCode": "hdfc015"
+      },
+      "_id": "5d6fbddb558e1c001703d485",
+      "createdAt": "2019-09-04T13:36:27.668Z",
+      "updatedAt": "2019-09-04T13:36:27.668Z",
+      "__v": 0
+    },
+    {
+      "assignedDriverRef": {
+        "isDriverAssigned": false
+      },
+      "vehileDetails": {
+        "permitState": [
+          "Karnataka",
+          "Delhi"
+        ],
+        "serviceStatus": false,
+        "vehicleNumber": "BR-12348",
+        "chassisNumber": "ch1234533444",
+        "currentState": "Karnataka",
+        "rcNumber": "rc12345",
+        "loadCapacity": 500,
+        "insuranceId": "ins12345",
+        "vehicleType": "L1",
+        "vehicleAvaibility": "available"
+      },
+      "ownerDetails": {
+        "name": "Dharmesh",
+        "phone": 9711189363,
+        "address": "Bangalore"
+      },
+      "bankDetails": {
+        "accountNumber": 123455555,
+        "ifscCode": "hdfc015"
+      },
+      "_id": "5d6fbdec558e1c001703d486",
+      "createdAt": "2019-09-04T13:36:44.460Z",
+      "updatedAt": "2019-09-04T13:36:44.460Z",
+      "__v": 0
+    },
+    {
+      "assignedDriverRef": {
+        "isDriverAssigned": false
+      },
+      "vehileDetails": {
+        "permitState": [
+          "Karnataka",
+          "Delhi"
+        ],
+        "serviceStatus": false,
+        "vehicleNumber": "BR-12349",
+        "chassisNumber": "ch1234533444",
+        "currentState": "Karnataka",
+        "rcNumber": "rc12345",
+        "loadCapacity": 500,
+        "insuranceId": "ins12345",
+        "vehicleType": "L1",
+        "vehicleAvaibility": "available"
+      },
+      "ownerDetails": {
+        "name": "Dharmesh",
+        "phone": 9711189363,
+        "address": "Bangalore"
+      },
+      "bankDetails": {
+        "accountNumber": 123455555,
+        "ifscCode": "hdfc015"
+      },
+      "_id": "5d6fbdfd558e1c001703d487",
+      "createdAt": "2019-09-04T13:37:01.464Z",
+      "updatedAt": "2019-09-04T13:37:01.464Z",
+      "__v": 0
+    }
+  ]
+}

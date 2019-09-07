@@ -19,14 +19,32 @@
 // });
 
 import axios from 'axios';
+import AsyncStorage from '@react-native-community/async-storage';
+
 
 export default class ApiService {
-    constructor() { }
+    constructor() {
+        // console.log('In cons',this.getTokenData())
+     }
 
+    // getTokenData = async () => {
+    //     try {
+    //       const value = await AsyncStorage.getItem('userdata');
+    //       if(value !== null) {
+    //         console.log('In GET token func',value);
+    //         return value;
+    //       }else{
+    //           return '';
+    //       }
+    //     } catch(e) {
+    //       // error reading value
+    //     }
+    //   }
    //GET REQUEST
-    getRequest(url) {
-        console.log('In GET res');
-      return  axios.get(url).then(function (response) {
+    getRequest(url,reqobj,token) {
+        let bearer = 'Bearer ' + token;
+        console.log('In GET',reqobj,token);
+      return  axios.get(url,reqobj,{ headers: { Authorization: bearer } }).then(function (response) {
         console.log('In GET res',response);
             return response.data;
         })
@@ -38,11 +56,14 @@ export default class ApiService {
     }
 
     //POST REQUEST
-    postRequest(requestUrl, data){
-        console.log('In Post')
-        return fetch(requestUrl, {
+    postRequest(requestUrl, data,token){
+        let AuthToken = token?token:'';
+        console.log('In Post',AuthToken);
+        let bearer = 'Bearer ' + AuthToken;
+        return  fetch(requestUrl, {
             method: 'POST',
             headers: {
+                'Authorization': bearer,
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },

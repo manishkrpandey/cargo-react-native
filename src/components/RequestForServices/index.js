@@ -5,7 +5,7 @@ import {
     StyleSheet, TextInput, TouchableOpacity
 } from 'react-native';
 
-import { Icon, Container, Header, Content, Left, Item, Input} from 'native-base';
+import {Icon, Container, Header, Content, Left, Item, Input, Body} from 'native-base';
 import {Dropdown} from "react-native-material-dropdown";
 import DatePicker from "react-native-datepicker";
 
@@ -104,11 +104,16 @@ class RequestForServices extends Component {
                                 <Icon name="menu" style={{marginTop: -12}}
                                       onPress={() => this.props.navigation.openDrawer()}/>
                             </Left>
+                            <Body style={{marginTop:-12}}>
+                                <Text style={{color:'#20336b', fontSize:20, fontWeight: 'bold', paddingBottom:0}}>
+                                    Services
+                                </Text>
+                            </Body>
                         </Header>
 
                         <View>
                             <Text style={styles.pageTitle}>
-                                Request for Services
+                                Request for Goods
                             </Text>
                         </View>
 
@@ -290,14 +295,11 @@ const styles = StyleSheet.create({
     pageTitle: {
         color: '#fff',
         backgroundColor: '#20336b',
-        textAlign: 'center',
-        fontSize: 18,
+        paddingLeft:15,
+        fontSize: 15,
         fontWeight: 'bold',
         height: 50,
         lineHeight: 50,
-        textDecorationLine: "underline",
-        textDecorationStyle: "solid",
-        textDecorationColor: "#000",
         textTransform: 'uppercase'
     },
     inputContainer: {

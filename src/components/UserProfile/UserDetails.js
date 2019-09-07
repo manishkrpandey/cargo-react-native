@@ -6,7 +6,7 @@ import {
     StyleSheet,
     Image, TouchableHighlight,ScrollView
 } from 'react-native';
-import { Icon, Button, Container, Header, Content, Left, Right, Label, Input, Item } from 'native-base';
+import {Icon, Button, Container, Header, Content, Left, Right, Label, Input, Item, Body} from 'native-base';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import ImagePicker from 'react-native-image-picker';
 
@@ -116,6 +116,11 @@ class UserDetails extends Component {
                     <Left>
                         <Icon style={{color:'#fff'}} name="menu" onPress={() => this.props.navigation.openDrawer()} />
                     </Left>
+                    <Body style={{marginTop:0}}>
+                        <Text style={{color:'#fff', fontSize:15, fontWeight: 'bold', paddingBottom:0, paddingLeft:35}}>
+                            User Details
+                        </Text>
+                    </Body>
                 </Header>
                 <Grid>
                     <Row size={5}>
