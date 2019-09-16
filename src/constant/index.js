@@ -13,6 +13,7 @@ const errroMessages = {
     // vehicleSnapshotMsgError: 'Please upload vehicle Snapshot image',
     // dlSnapshotMsgError: 'Please upload DL snapshot image',
     driverNameError: 'Driver Name should be 5 characters',
+    currentStateError:'Please select Current State',
 
 };
 

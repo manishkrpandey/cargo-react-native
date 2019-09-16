@@ -8,6 +8,9 @@ import {
 import {Icon, Container, Header, Content, Left, Item, Input, Body} from 'native-base';
 import {Dropdown} from "react-native-material-dropdown";
 import DatePicker from "react-native-datepicker";
+import VehicleDetailsController from '../../services/api/vehicleDetailsService'
+
+const vehicleDetailsControllerobj = new VehicleDetailsController();
 
 class RequestForServices extends Component {
     constructor(props) {
@@ -17,6 +20,9 @@ class RequestForServices extends Component {
             destinationAddressDetails: '',
             date: '',
             weight:'',
+            stateObjItems:[],
+            citiesObjPickup:[],
+            citiesObjDrop:[],
             errorObj: {
                 weightError: {
                     status: false,
@@ -42,6 +48,62 @@ class RequestForServices extends Component {
         await this.setState({ [key]: val});
         await this.setErrorStatus(key,val);
     };
+
+    getCities = (value,type) =>{
+        console.log('value is',value);
+        this.setState({spinner:true});
+        vehicleDetailsControllerobj.getCities({"state":value}).then(data=>{
+            this.setState({spinner:false});
+            if(data.cities){
+                this.setState({spinner:true});
+                console.log('data is',data.cities);
+                let cityNameObjPick = [];
+                let cityNameObjDrop = [];
+                if(type==='pick'){
+                    data.cities.forEach((element,index) =>
+                    {
+                    let obj = {name:element,id:index.toString(),value:element};
+                    cityNameObjPick.push(obj)
+                    })
+                }else{
+                    data.cities.forEach((element,index) =>
+                    {
+                    let obj = {name:element,id:index.toString(),value:element};
+                    cityNameObjDrop.push(obj)
+                    })
+                }
+
+                if(type==='pick'){
+                    this.setState({citiesObjPickup:cityNameObjPick});
+                }else{
+                    this.setState({citiesObjDrop:cityNameObjDrop});
+                }
+        // const Items = stateObj;
+            }else{
+            }
+        }).catch(err=>err);
+      }
+
+    componentDidMount() {
+        this.setState({spinner:true});
+        vehicleDetailsControllerobj.getState().then(data=>{
+            if(data.states){
+                this.setState({spinner:true});
+                console.log('data is',data.states);
+                let stateObj = [];
+                data.states.forEach((element,index) =>
+                {
+                let obj = {name:element,id:index.toString(),value:element};
+                stateObj.push(obj)
+                })
+                this.setState({stateObjItems:stateObj});
+        // const Items = stateObj;
+            }else{
+
+            }
+            this.setState({spinner:false});
+        }).catch(err=>err);
+    }
 
     render() {
         let stateName = [
@@ -97,26 +159,22 @@ class RequestForServices extends Component {
 
         return (
             <Container style={{flex: 1}}>
+                <Header style={styles.topHeader}>
+                    <Left>
+                        <Icon name="menu" style={{marginTop:-12}} onPress={() => this.props.navigation.openDrawer()} />
+                    </Left>
+                    <Text style={{color:'#20336b', fontSize:20, fontWeight: 'bold', paddingBottom:0, marginLeft: -100}}>
+                        Services
+                    </Text>    
+                </Header>
+                <View>
+                    <Text style={styles.pageTitle}>
+                        Request for Goods
+                    </Text>
+                </View>
+
                 <Content style={{marginBottom: 30}}>
                     <View style={StyleSheet.Container}>
-                        <Header style={styles.topHeader}>
-                            <Left>
-                                <Icon name="menu" style={{marginTop: -12}}
-                                      onPress={() => this.props.navigation.openDrawer()}/>
-                            </Left>
-                            <Body style={{marginTop:-12}}>
-                                <Text style={{color:'#20336b', fontSize:20, fontWeight: 'bold', paddingBottom:0}}>
-                                    Services
-                                </Text>
-                            </Body>
-                        </Header>
-
-                        <View>
-                            <Text style={styles.pageTitle}>
-                                Request for Goods
-                            </Text>
-                        </View>
-
                         <View style={styles.inputContainer}>
                             <Item style={{borderColor: 'transparent', marginTop: 15, marginLeft: 20, marginRight: 20}}>
                                 <Text style={{
@@ -135,8 +193,9 @@ class RequestForServices extends Component {
                         <View style={{marginBottom: 15, marginTop: -15, marginLeft: 20, marginRight: 20}}>
                             <Dropdown
                                 label='Select State'
-                                data={stateName}
+                                data={this.state.stateObjItems}
                                 overlayStyle={{marginTop: 86, marginLeft: 12}}
+                                onChangeText = {value => this.getCities(value,'pick')}
                             />
 
                         </View>
@@ -144,8 +203,9 @@ class RequestForServices extends Component {
                         <View style={{marginBottom: 15, marginTop: -15, marginLeft: 20, marginRight: 20}}>
                             <Dropdown
                                 label='Select City'
-                                data={cityName}
+                                data={this.state.citiesObjPickup}
                                 overlayStyle={{marginTop: 86, marginLeft: 12}}
+                                
                             />
                         </View>
 
@@ -178,15 +238,16 @@ class RequestForServices extends Component {
                         <View style={{marginBottom: 15, marginTop: -15, marginLeft: 20, marginRight: 20}}>
                             <Dropdown
                                 label='Select State'
-                                data={stateName}
+                                data={this.state.stateObjItems}
                                 overlayStyle={{marginTop: 86, marginLeft: 12}}
+                                onChangeText = {value => this.getCities(value,'drop')}
                             />
                         </View>
 
                         <View style={{marginBottom: 15, marginTop: -15, marginLeft: 20, marginRight: 20}}>
                             <Dropdown
                                 label='Select City'
-                                data={cityName}
+                                data={this.state.citiesObjDrop}
                                 overlayStyle={{marginTop: 86, marginLeft: 12}}
                             />
                         </View>

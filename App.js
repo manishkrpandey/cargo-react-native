@@ -101,10 +101,13 @@ const RootStack = createStackNavigator(
 const AppContainer = createAppContainer(RootStack);
 
 class App extends React.Component {
+  constructor(props){
+    super(props);
+  }
   render() {
     return (
     <Root>
-      <AppContainer />
+      <AppContainer navigation={this.props.navigation} />
     </Root>  
     )
   }

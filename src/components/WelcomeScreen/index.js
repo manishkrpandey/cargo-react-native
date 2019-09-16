@@ -5,6 +5,7 @@ import { createDrawerNavigator, createAppContainer, DrawerItems } from 'react-na
 import YourVehicles from '../AddNewVehicle'
 import UserDetails from '../UserProfile/UserDetails';
 import Help from '../Help';
+import Logout from '../Logout';
 import AvailableBooking from '../AvailableBooking';
 import RequestForServices from '../RequestForServices';
 import { Root } from "native-base";
@@ -40,6 +41,7 @@ const AppDrawerNavigator = createDrawerNavigator({
     'Your Vehicles': YourVehicles,
     'Account Details': UserDetails,
     'Help': Help,
+    'Logout': Logout
 }, {
         contentComponent: CustomDrawerComponent
     })

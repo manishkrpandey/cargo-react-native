@@ -3,7 +3,7 @@ import ApiService from './api'
 
 const apiService = new ApiService();
 
-export default class VehicleDetailsController {
+export default class AvailableBookingsServiceController {
     constructor() {
     }
 
@@ -28,7 +28,9 @@ export default class VehicleDetailsController {
     updateVehicle = (vehicledetailsObject) => {
         return apiService.postRequest('https://ancient-atoll-80049.herokuapp.com/vehicle',vehicledetailsObject,'');
     }
-    AddNewDriver = (driverObj,token) =>{
-        return apiService.postRequest('https://ancient-atoll-80049.herokuapp.com/driver',driverObj,token);
+
+    getAvailableBookingsFromAgent = (requestStateCityObj,token) => {
+        return apiService.postRequest('https://ancient-atoll-80049.herokuapp.com//request/getDriverRequest',requestStateCityObj,token)
     }
+
 }

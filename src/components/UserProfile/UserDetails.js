@@ -110,7 +110,6 @@ class UserDetails extends Component {
             />
         }
         return (
-            <ScrollView>
             <Container>
                 <Header style={{ backgroundColor: '#10d4f4', paddingTop: 15, paddingLeft: 15, justifyContent: 'flex-start' }}>
                     <Left>
@@ -122,6 +121,7 @@ class UserDetails extends Component {
                         </Text>
                     </Body>
                 </Header>
+                <ScrollView>
                 <Grid>
                     <Row size={5}>
                         <Col style={{ backgroundColor: '#10d4f4' }}>
@@ -302,8 +302,8 @@ class UserDetails extends Component {
                     }
 
                 </Grid>
+                </ScrollView>
             </Container>
-            </ScrollView>
         )
     }
 }
@@ -374,6 +374,8 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: "center",
+        marginBottom:15,
+        marginTop:15
     },
     changeImgLink: {
         color: '#000',
@@ -381,7 +383,8 @@ const styles = StyleSheet.create({
         fontSize: 14,
         borderColor: '#ebebeb',
         textAlign: 'center',
-        marginTop: 40
+        marginTop: 20,
+        marginBottom:15
 
     }
 });

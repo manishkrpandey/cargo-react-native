@@ -1,14 +1,17 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, TouchableOpacity, Image,Text} from 'react-native';
-import { Container, Content, Item, Input, Card,Thumbnail,Left,CardItem,Body} from "native-base";
+import { Container, Content, Item, Input, Card,Thumbnail,Left,CardItem,Body, Right,Toast} from "native-base";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Dropdown} from 'react-native-material-dropdown';
 import MultiSelect from 'react-native-multiple-select';
 import errroMessages from './../../../constant';
 import truckImages from './../../../../img/desitruck.jpg';
+import driver from './../../../../img/driver.png';
 import VehicleDetailsController from '../../../services/api/vehicleDetailsService';
 import AsyncStorage from '@react-native-community/async-storage';
 import { connect } from "react-redux";
+import Spinner from 'react-native-loading-spinner-overlay';
+import ToggleSwitch from 'toggle-switch-react-native';
 
 const vehicleDetailsControllerobj = new VehicleDetailsController();
 
@@ -33,7 +36,13 @@ class VehicleDescriptionComponent extends Component {
         allowedLoad: '',
         insuranceDetails: '',
         stateObjItems:[],
+        citiesObject:[],
         allVehiclesDetails:[],
+        accountNumber: '',
+        ifscCode: '',
+        spinner:false,
+        isValidForm:false,
+        addNewVehicleText:'Add New Vehicle',
         errorObj: {
             vehicleNumberError:
                 {
@@ -76,9 +85,20 @@ class VehicleDescriptionComponent extends Component {
                 status: false,
                 errorType: ''
             },
+            accountNumberError: {
+                status: false,
+                errorType: ''
+            },
+            ifscCodeError: {
+                status: false,
+                errorType: ''
+            },
         },
         selectedItems : [],
-        showVehicleInputForm:true
+        showVehicleInputForm:true,
+        isOnDefaultToggleSwitch: true,
+        isOnLargeToggleSwitch: false,
+        isOnBlueToggleSwitch: false
     };
 
     onSelectedItemsChange = selectedItems => {
@@ -91,32 +111,37 @@ class VehicleDescriptionComponent extends Component {
             ...prevState,
             showVehicleInputForm: !prevState.showVehicleInputForm
         }))
+        if(!this.state.showVehicleInputForm){
+            this.setState({addNewVehicleText:'Add New Vehicle'})
+        }else{
+            this.setState({addNewVehicleText:'My Vehicles'})
+        }
     };
 
     setErrorStatus = (key, val) => {
 
-        if (key === 'firstName') {
-            if (this.state.firstName.length < 1) {
+        if (key === 'vehicleNumber') {
+            if (this.state.vehicleNumber.length < 1) {
                 this.setState(prevState => ({
                     ...prevState,
                     errorObj: {
                         ...prevState.errorObj,
-                        firstNameError: {
-                            ...prevState.errorObj.firstNameError,
+                        vehicleNumberError: {
+                            ...prevState.errorObj.vehicleNumberError,
                             status: true,
                             errorType: errroMessages.genericError
 
                         }
                     }
                 }))
-            } else if (this.state.firstName.length <= 4) {
+            } else if (this.state.vehicleNumber.length <= 4) {
 
                 this.setState(prevState => ({
                     ...prevState,
                     errorObj: {
                         ...prevState.errorObj,
-                        firstNameError: {
-                            ...prevState.errorObj.firstNameError,
+                        vehicleNumberError: {
+                            ...prevState.errorObj.vehicleNumberError,
                             status: true,
                             errorType: errroMessages.fnameError
 
@@ -131,42 +156,42 @@ class VehicleDescriptionComponent extends Component {
                     ...prevState,
                     errorObj: {
                         ...prevState.errorObj,
-                        firstNameError: {
-                            ...prevState.errorObj.firstNameError,
+                        vehicleNumberError: {
+                            ...prevState.errorObj.vehicleNumberError,
                             status: false,
                             errorType: errroMessages.genericError
 
                         }
                     }
-                }))
-
+                }));
+                this.setState({isValidForm:true});
 
             }
         }
 
-        if (key === 'mobileNumber') {
+        if (key === 'RCNumber') {
             let reg = /^[6-9]\d{9}$/;
-            if (this.state.mobileNumber.length < 1) {
+            if (this.state.RCNumber.length < 1) {
                 this.setState(prevState => ({
                     ...prevState,
                     errorObj: {
                         ...prevState.errorObj,
-                        mobileNumberError: {
-                            ...prevState.errorObj.mobileNumberError,
+                        RCNumberError: {
+                            ...prevState.errorObj.RCNumberError,
                             status: true,
                             errorType: errroMessages.genericError
 
                         }
                     }
                 }))
-            } else if (!reg.test(this.state.mobileNumber)) {
+            } else if (!reg.test(this.state.RCNumber)) {
 
                 this.setState(prevState => ({
                     ...prevState,
                     errorObj: {
                         ...prevState.errorObj,
-                        mobileNumberError: {
-                            ...prevState.errorObj.mobileNumberError,
+                        RCNumberError: {
+                            ...prevState.errorObj.RCNumberError,
                             status: true,
                             errorType: errroMessages.mobileError
 
@@ -181,14 +206,18 @@ class VehicleDescriptionComponent extends Component {
                     ...prevState,
                     errorObj: {
                         ...prevState.errorObj,
-                        mobileNumberError: {
-                            ...prevState.errorObj.mobileNumberError,
+                        RCNumberError: {
+                            ...prevState.errorObj.RCNumberError,
                             status: false,
                             errorType: errroMessages.genericError
-
                         }
                     }
                 }))
+            }
+            if(this.state.isValidForm){
+                this.setState({isValidForm:true});
+            }else{
+                this.setState({isValidForm:false});
             }
 
         }
@@ -201,11 +230,58 @@ class VehicleDescriptionComponent extends Component {
     };
 
     onSubmitForm = () => {
-        this.setErrorStatus('firstName', '');
-        this.setErrorStatus('lastName', '');
-        this.setErrorStatus('mobileNumber', '');
+        this.setErrorStatus('vehicleNumber', '');
+        this.setErrorStatus('RCNumber', '');
+        console.log('this.state.isValidForm',this.state.isValidForm);
+        if(this.state.isValidForm){
+            this.AddNewVehicle();
+        }
     };
 
+    AddNewVehicle = () => {
+        console.log('this.state.isValidForm2',this.state.isValidForm);
+        const { token,user } = this.props.places;
+        let reqObj = {
+            "driverPhone":  7892538128,
+            "isDriverAssigned": true,
+            "vehileDetails": {
+                "vehicleNumber": this.state.vehicleNumber,
+                "chassisNumber": this.state.chassisNumber,
+                "currentState": this.state.currentState,
+                "permitState": ["Karnataka","Delhi"],
+                "rcNumber": this.state.RCNumber,
+                "loadCapacity": this.state.allowedLoad,
+                "insuranceId": this.state.insuranceDetails,
+                "serviceStatus": true,
+                "vehicleType": "L1",
+                 "vehicleAvaibility": "available"
+            },
+            "ownerDetails": {
+                "name": "Dharmesh",
+                "phone": "9711189363",
+                "address": "Bangalore"
+            },
+            "bankDetails": {
+                "accountNumber":this.state.accountNumber,
+                "ifscCode": this.state.ifscCode
+            }
+        }
+        vehicleDetailsControllerobj.AddNewVehicle(reqObj,token).then(data=>{
+            if(data && data.data[0] && data.data[0].msg.status===422){
+                Toast.show({
+                    text: `Already Exist`,
+                    buttonText: "Okay",
+                    duration: 3000
+                  });
+                  this.getAllVehicleData();
+                  return 
+            }
+            this.showVehicleForms();
+            this.getAllVehicleData();
+            console.log('Hi Addded vehicle',data)
+        }).catch(err=>err);
+        
+    }
     getuserData = async () => {
         try {
           const value = await AsyncStorage.getItem('user');
@@ -213,36 +289,51 @@ class VehicleDescriptionComponent extends Component {
               console.log('value.phone',value.phone);
             return value.phone;
           }
-        } catch(e) {
-          // error reading value
-        }
+        } catch(e) {}
       }
-
+    onToggle(isOn,indexTochange) {
+        console.log("Changed to ",isOn,indexTochange);
+        // this.setState(prevState => ({
+        //     allVehiclesDetails: prevState.allVehiclesDetails.map(
+        //    ( obj,index )=> (index === indexTochange ? Object.assign(obj.vehileDetails.serviceStatus, isOn) : obj)
+        //   )
+        // }));
+        console.log("state to " ,this.state,this.state.allVehiclesDetails[indexTochange]);
+    }
+ 
+    getAllVehicleData = () =>{
+        const { token,user } = this.props.places;
+        vehicleDetailsControllerobj.getAllVehicle(token,{"phone":user.phone}).then(data=>
+            {
+                if(data && data.result){
+                    this.setState({
+                    allVehiclesDetails:data.result});
+            }
+        }).catch(err=>err);
+    }
 
     componentDidMount() {
+        this.setState({spinner:true});
         console.log('places inside vehicle details',this.props.places);
         const { token,user } = this.props.places;
-        vehicleDetailsControllerobj.getAllVehicle(token,{"phone":user.phone}).then(data=>{
-            this.setState({
-                allVehiclesDetails:data.result});
-          //  console.log('data arrived',data);
-        }).catch(err=>err);
-
+        this.getAllVehicleData();
         vehicleDetailsControllerobj.getState().then(data=>{
             if(data.states){
+                this.setState({spinner:true});
                 console.log('data is',data.states);
                 let stateObj = [];
                 data.states.forEach((element,index) =>
                 {
                 let obj = {name:element,id:index.toString(),value:element};
                 stateObj.push(obj)
-                })
+                });
                 this.setState({stateObjItems:stateObj});
         // const Items = stateObj;
             }else{
 
             }
-        })
+            this.setState({spinner:false});
+        }).catch(err=>err);
     }
 
     render() {
@@ -254,20 +345,38 @@ class VehicleDescriptionComponent extends Component {
         let truckDetailsCard= [];
 
         if(allVehiclesDetails) {
-            truckDetailsCard =  allVehiclesDetails.map((data,i) => {
+            truckDetailsCard =  allVehiclesDetails.map((data,index) => {
                 return (
-                    <Card key={i} style={{marginLeft:10, marginRight:10, marginBottom:20}}>
-                             <CardItem>
-                  <Left>
-                    <Thumbnail source={{uri:truckImages.uri }} />
-                    <Body>
-                        <View style={styles.data}>
-                            <Text>Driver Name:</Text>
-                            <Text style={styles.details}>Ram Babu</Text>
-                        </View>
-                    </Body>
-                  </Left>
-                </CardItem>
+                    <Card key={index} style={{marginLeft:10, marginRight:10, marginBottom:20}}>
+                        <CardItem style={{paddingBottom:0}}>
+                            <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
+                                <ToggleSwitch
+                                    style={{padding:10}}
+                                    onColor="green"
+                                    offColor="#ddd"
+                                    label="Status:"
+                                    labelStyle={{ fontWeight: "900" }}
+                                    size="small"
+                                    isOn={this.state.allVehiclesDetails[index].serviceStatus}
+                                    onToggle={(value )=> {
+                                        console.log('index',index);
+                                        this.onToggle(value,index);
+                                    }}
+
+                                />
+                            </View>
+                        </CardItem>
+                        <CardItem>
+                          <Left style={{marginTop:-30}}>
+                              <Image source={driver}/>
+                            <Body>
+                                <View style={styles.data}>
+                                    <Text>Driver Name: </Text>
+                                    <Text style={styles.details}>{data.ownerDetails.name}</Text>
+                                </View>
+                            </Body>
+                          </Left>
+                        </CardItem>
                         <View style={styles.dataRow}>
                             <Image style={styles.uploadImages}
                                    source={truckImages}/>
@@ -292,7 +401,9 @@ class VehicleDescriptionComponent extends Component {
     
                             <View style={styles.data}>
                                 <Text>Permit State:</Text>
-                                <Text style={styles.details}>{data.vehileDetails.permitState[0]}</Text>
+                                <Text style={styles.details}>{
+                                    data.vehileDetails.permitState.map(data=>data + ', ')
+                                    }</Text>
                             </View>
                         </View>
                     </Card>
@@ -302,10 +413,14 @@ class VehicleDescriptionComponent extends Component {
 
         return (
             <Container style={{flex: 1}}>
+                  <Spinner
+          visible={this.state.spinner}
+          textStyle={styles.spinnerTextStyle}
+        />
                 <Content style={{marginBottom: 30}}>
                     <View style={styles.pageHeader}>
                         <Text style={styles.uploadDocuments} onPress={this.showVehicleForms}>
-                            Add New Vehicle
+                            {this.state.addNewVehicleText}
                         </Text>
                         <Text style={{alignSelf:'flex-end', position:'absolute', right:15, top:10}} onPress={this.showVehicleForms}>
                             <Icon style={styles.Addicon} name="plus"/>
@@ -375,7 +490,7 @@ class VehicleDescriptionComponent extends Component {
                                                 autoCapitalize="none"
                                                 returnKeyType='next'
                                                 returnKeyLabel='next'
-                                                onChangeText={(value) => this.onChangeText('alternateContact', value)}
+                                                onChangeText={(value) => this.onChangeText('ownerName', value)}
                                             />
                                         </Item>
                                         <Text style={styles.error}>
@@ -432,6 +547,7 @@ class VehicleDescriptionComponent extends Component {
                                                 label='Current State'
                                                 data={stateObjItems}
                                                 overlayStyle={{marginTop:86, marginLeft:17}}
+                                                onChangeText={(value) => this.onChangeText('currentState', value)}
                                             />
                                         </View>
 
@@ -441,9 +557,9 @@ class VehicleDescriptionComponent extends Component {
                                                 items={this.state.stateObjItems}
                                                 uniqueKey="id"
                                                 ref={(component) => { this.multiSelect = component }}
-                                                onSelectedItemsChange={this.onSelectedItemsChange}
+                                                onSelectedItemsChange={(value) => this.onChangeText('permittedState', value)}
                                                 selectedItems={selectedItems}
-                                                selectText="Select State"
+                                                selectText="Select  Allowed State"
                                                 searchInputPlaceholderText="Search State Name..."
                                                 onChangeInput={ (text)=> console.log(text)}
                                                 altFontFamily="ProximaNova-Light"
@@ -529,6 +645,62 @@ class VehicleDescriptionComponent extends Component {
                                             </Text>
 
                                         </View>
+
+                    <View style={styles.inputContainer}>
+                        <Item style={{borderColor: 'transparent', marginLeft: 20, marginRight: 20}}>
+                            <Text style={{
+                                fontWeight: 'bold',
+                                textDecorationLine: "underline",
+                                textDecorationStyle: "solid",
+                                textDecorationColor: "#000"
+                            }}>
+                                Bank Account Details:
+                            </Text>
+                        </Item>
+                    </View>
+
+                    <View style={styles.inputContainer}>
+                        <Item style={styles.inputView} error={this.state.errorObj.accountNumberError.status}>
+                            <Icon style={styles.icon} name="user"/>
+                            <Input
+                                style={styles.input}
+                                underlineColorAndroid="transparent"
+                                placeholder="Account Number"
+                                placeholderTextColor="#897d7b"
+                                keyboardType='number-pad'
+                                returnKeyType='next'
+                                returnKeyLabel='next'
+                                onChangeText={(value) => this.onChangeText('accountNumber', value)}
+                            />
+                        </Item>
+                        <Text style={styles.error}>
+                            {
+                                !this.state.errorObj.accountNumberError.status ? '' : this.state.errorObj.accountNumberError.errorType
+                            }
+                        </Text>
+
+                    </View>
+
+                    <View style={styles.inputContainer}>
+                        <Item style={styles.inputView} error={this.state.errorObj.ifscCodeError.status}>
+                            <Icon style={styles.icon} name="user"/>
+                            <Input
+                                style={styles.input}
+                                underlineColorAndroid="transparent"
+                                placeholder="IFSC Code"
+                                placeholderTextColor="#897d7b"
+                                returnKeyType='next'
+                                returnKeyLabel='next'
+                                onChangeText={(value) => this.onChangeText('ifscCode', value)}
+                            />
+                        </Item>
+                        <Text style={styles.error}>
+                            {
+                                !this.state.errorObj.ifscCodeError.status ? '' : this.state.errorObj.ifscCodeError.errorType
+                            }
+                        </Text>
+
+                    </View>
                                     </View>
 
                                     <TouchableOpacity

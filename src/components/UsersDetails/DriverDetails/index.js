@@ -14,8 +14,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import DatePicker from 'react-native-datepicker';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import errroMessages from './../../../constant';
+import { connect } from "react-redux";
+import VehicleDetailsController from '../../../services/api/vehicleDetailsService';
+const vehicleDetailsControllerobj = new VehicleDetailsController();
 
-export default class DriverDescriptionComponent extends Component {
+class DriverDescriptionComponent extends Component {
     static navigationOptions = {
         title: 'Register',
         headerStyle: {
@@ -34,6 +37,7 @@ export default class DriverDescriptionComponent extends Component {
         insuranceValidTo: '',
         accountNumber: '',
         ifscCode: '',
+        isValidForm:false,
         errorObj: {
             driverNameError: {
                 status: false,
@@ -64,14 +68,6 @@ export default class DriverDescriptionComponent extends Component {
                 errorType: ''
             },
             insuranceValidToError: {
-                status: false,
-                errorType: ''
-            },
-            accountNumberError: {
-                status: false,
-                errorType: ''
-            },
-            ifscCodeError: {
                 status: false,
                 errorType: ''
             },
@@ -125,34 +121,33 @@ export default class DriverDescriptionComponent extends Component {
                         }
                     }
                 }))
-
-
+                    this.setState({isValidForm:true});
             }
         }
 
-        if (key === 'mobileNumber') {
+        if (key === 'driverContact') {
             let reg = /^[6-9]\d{9}$/;
-            if (this.state.mobileNumber.length < 1) {
+            if (this.state.driverContact.length < 1) {
                 this.setState(prevState => ({
                     ...prevState,
                     errorObj: {
                         ...prevState.errorObj,
-                        mobileNumberError: {
-                            ...prevState.errorObj.mobileNumberError,
+                        driverContactError: {
+                            ...prevState.errorObj.driverContactError,
                             status: true,
                             errorType: errroMessages.genericError
 
                         }
                     }
                 }))
-            } else if (!reg.test(this.state.mobileNumber)) {
+            } else if (!reg.test(this.state.driverContact)) {
 
                 this.setState(prevState => ({
                     ...prevState,
                     errorObj: {
                         ...prevState.errorObj,
-                        mobileNumberError: {
-                            ...prevState.errorObj.mobileNumberError,
+                        driverContactError: {
+                            ...prevState.errorObj.driverContactError,
                             status: true,
                             errorType: errroMessages.mobileError
 
@@ -176,26 +171,13 @@ export default class DriverDescriptionComponent extends Component {
                     }
                 }))
 
-
+                if(this.state.isValidForm){
+                    this.setState({isValidForm:true});
+                }
             }
 
         }
 
-        if (key === 'alternateContact') {
-            this.state.errorObj.alternateContactError = val === '' || val.length < 10;
-        }
-
-        if (key === 'email') {
-            this.state.errorObj.emailError = val === '';
-        }
-
-        if (key === 'password') {
-            this.state.errorObj.passwordError = val === '' || val.length <= 4;
-        }
-
-        if (key === 'confirmPassword') {
-            this.state.errorObj.confirmPasswordError = val === '' || val !== this.state.password;
-        }
     };
 
     onChangeText = async (key, val) => {
@@ -203,14 +185,42 @@ export default class DriverDescriptionComponent extends Component {
         await this.setErrorStatus(key, val);
     };
     onSubmitForm = () => {
-        this.setErrorStatus('firstName', '');
-        this.setErrorStatus('lastName', '');
-        this.setErrorStatus('mobileNumber', '');
+        this.setErrorStatus('driverName', '');
+        this.setErrorStatus('driverContact', '');
+        if(this.state.isValidForm){
+            this.submitRequestForAdd();
+        }
     };
+    submitRequestForAdd = () => {
+        const { token,user } = this.props.places;
+        let AddingDriverRequestObj = {    
+                "name": this.state.driverName,
+                "phone": this.state.driverContact,
+                "gender": "Male",
+                "dob": this.state.DOB,
+                "dlNumber": this.state.DLNumber,
+                "insuranceDetails": {
+                        "insuranceId": "ins12345",
+                         "validFrom": "03/12/2010",
+                        "validTo":"15/11/2030"
+                },
+                "bankDetails": {
+                        "accountNumber": 1235455555,
+                        "ifscCode": "HDFC10125"
+                }
+        } 
+
+        vehicleDetailsControllerobj.AddNewDriver(AddingDriverRequestObj,token).then(data=>{
+            if(data.status===201){
+                alert(data.message);
+            }
+        }).catch(err=>err);
+               
+    }
 
     render() {
         return (
-            <Container style={{flex: 1}}>
+            <Container style={{flex: 1, marginRight:-20}}>
                 <Content style={{marginBottom: 30}}>
                     <View>
                         <Text style={styles.uploadDocuments}>
@@ -316,7 +326,7 @@ export default class DriverDescriptionComponent extends Component {
                     <View style={{marginLeft:15, marginRight:20, marginBottom:20}}>
                         <DatePicker
                             style={{width: 150}}
-                            date={this.state.date}
+                            date={this.state.DOB}
                             mode="date"
                             placeholder="Select Date"
                             format="DD-MM-YYYY"
@@ -336,7 +346,7 @@ export default class DriverDescriptionComponent extends Component {
                                     marginRight: -10
                                 }
                             }}
-                            onDateChange={(date) => {this.setState({date: date})}}
+                            onDateChange={(date) => {this.setState({DOB: date})}}
                         />
                     </View>
 
@@ -459,61 +469,6 @@ export default class DriverDescriptionComponent extends Component {
                         </Row>
                     </Grid>
 
-                    <View style={styles.inputContainer}>
-                        <Item style={{borderColor: 'transparent', marginLeft: 20, marginRight: 20}}>
-                            <Text style={{
-                                fontWeight: 'bold',
-                                textDecorationLine: "underline",
-                                textDecorationStyle: "solid",
-                                textDecorationColor: "#000"
-                            }}>
-                                Bank Account Details:
-                            </Text>
-                        </Item>
-                    </View>
-
-                    <View style={styles.inputContainer}>
-                        <Item style={styles.inputView} error={this.state.errorObj.accountNumberError.status}>
-                            <Icon style={styles.icon} name="user"/>
-                            <Input
-                                style={styles.input}
-                                underlineColorAndroid="transparent"
-                                placeholder="Account Number"
-                                placeholderTextColor="#897d7b"
-                                keyboardType='number-pad'
-                                returnKeyType='next'
-                                returnKeyLabel='next'
-                                onChangeText={(value) => this.onChangeText('accountNumber', value)}
-                            />
-                        </Item>
-                        <Text style={styles.error}>
-                            {
-                                !this.state.errorObj.accountNumberError.status ? '' : this.state.errorObj.accountNumberError.errorType
-                            }
-                        </Text>
-
-                    </View>
-
-                    <View style={styles.inputContainer}>
-                        <Item style={styles.inputView} error={this.state.errorObj.ifscCodeError.status}>
-                            <Icon style={styles.icon} name="user"/>
-                            <Input
-                                style={styles.input}
-                                underlineColorAndroid="transparent"
-                                placeholder="IFSC Code"
-                                placeholderTextColor="#897d7b"
-                                returnKeyType='next'
-                                returnKeyLabel='next'
-                                onChangeText={(value) => this.onChangeText('ifscCode', value)}
-                            />
-                        </Item>
-                        <Text style={styles.error}>
-                            {
-                                !this.state.errorObj.ifscCodeError.status ? '' : this.state.errorObj.ifscCodeError.errorType
-                            }
-                        </Text>
-
-                    </View>
 
                     <TouchableOpacity
                         style={styles.submitButton}
@@ -530,7 +485,8 @@ export default class DriverDescriptionComponent extends Component {
 
 const styles = StyleSheet.create({
     inputContainer: {
-        marginBottom: 15
+        marginBottom: 15,
+        marginRight:10
     },
     inputView: {
         marginBottom: 0,
@@ -582,3 +538,12 @@ const styles = StyleSheet.create({
         textTransform:'uppercase'
     }
 });
+
+const mapStateToProps = state => {
+    return {
+      places: state.places.places,
+      selectedPlace: state.places.selectedPlace
+    };
+  };
+
+  export default connect(mapStateToProps)(DriverDescriptionComponent);

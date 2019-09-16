@@ -23,7 +23,7 @@ class Tutorial extends Component {
             currentTime: 0.0,
             paused: false,
             pickerValueHolder: '1.0',
-            pausedText: 'Play',
+            pausedText: 'PLAY',
             hideControls: false,
             isModalVisible: false
         };
@@ -47,21 +47,23 @@ class Tutorial extends Component {
 
     // video ends
     onEnd = () => {
-        this.setState({ paused: true, pausedText: 'Play'})
+        this.setState({ paused: true, pausedText: 'PLAY'})
         this.video.seek(0);
     };
 
     getCurrentTimePercentage() {
-        if (this.state.currentTime > 0) {
-            return parseFloat(this.state.currentTime) / parseFloat(this.state.duration);
+        const { currentTime, duration } = this.state;
+        if (currentTime > 0) {
+            return parseFloat(currentTime) / parseFloat(duration);
         }
         return 0;
     };
 
     // pressing on 'play' button
     onPressBtnPlay() {
-        var pausedText = '';
-        if(!this.state.paused){
+        const { paused } = this.state;
+        let pausedText = '';
+        if(!paused){
             pausedText = 'PLAY';
 
             // always show controls
@@ -76,7 +78,7 @@ class Tutorial extends Component {
                 this.setState({hideControls: true});
             }, 5000);
         }
-        this.setState({ paused: !this.state.paused, pausedText: pausedText });
+        this.setState({ paused: !paused, pausedText: pausedText });
     }
 
     // on press video event

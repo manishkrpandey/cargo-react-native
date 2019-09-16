@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import AuthenticationController from './../../../services/api/Authentication'
 import ForgotPassword from './../ForgotPassword';
 import { connect } from "react-redux";
+import Spinner from 'react-native-loading-spinner-overlay';
 import {
   addPlace,
   deletePlace,
@@ -51,7 +52,8 @@ const authenticationController = new AuthenticationController();
     state = {
         mobileNumber: '',
         password: '',
-        modalOpen: false
+        modalOpen: false,
+        spinner: false
     };
 
     handleEmail = (text) => {
@@ -63,6 +65,7 @@ const authenticationController = new AuthenticationController();
     };
 
     login = (mobileNumber, pass) => {
+        this.setState({spinner:true});
         const {navigate} = this.props.navigation;
         let responseData;
         const data = {
@@ -76,9 +79,13 @@ const authenticationController = new AuthenticationController();
                 //  this.storeTokenData(data);
                 this.placeAddedHandler(data);
                  this.storeUserData(data);
+                 this.setState({spinner:false});
                  this.props.navigation.navigate('WelcomeScreen',data)
+                 
              }else{
+                this.setState({spinner:false});
                  alert(data.message);
+                 
              }
          }).catch(err=>console.log(err)); 
         //     fetch(loginUrl,{
@@ -172,6 +179,10 @@ const authenticationController = new AuthenticationController();
     render() {
         return (
             <View style={{paddingTop: 75}}>
+                   <Spinner
+          visible={this.state.spinner}
+          textStyle={styles.spinnerTextStyle}
+        />
                 {/* <ForgotPassword /> */}
                 <View style={{alignItems: 'center'}}>
                     <Icon name="person" style={{color: "#10d4f4", fontSize: 50, paddingBottom: 35}}/>
