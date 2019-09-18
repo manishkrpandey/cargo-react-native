@@ -78,15 +78,85 @@ class AvailableBooking extends Component {
         let requstStateCityObject = {
             "state": "Bihar",
             "cities": ["patna"]
+        };        
+        // // this.setState({spinner:true});
+        // availableBookingsServiceController.getAvailableBookingsFromAgent(requstStateCityObject,token).then(data=>{
+        //     console.log('availabele bookings',data)
+        //     if(data.response){
+        //         this.setState({AvailableBooking:data.response});
+        //         // this.setState({spinner:false});
+        //     }
+        // }).catch(err=>this.setState({spinner:false}));
+        let availObj = {
+            "status": "Booking Request  for driver fetched successfully!",
+            "response": [
+                {
+                    "sourceDetais": {
+                        "state": "Bihar",
+                        "city": "Patna",
+                        "adress": "203 B complex delhi"
+                    },
+                    "destDetais": {
+                        "state": "Bihar",
+                        "city": "Motihari",
+                        "adress": "C Complexe ground floor motihari"
+                    },
+                    "isRequstApproved": false,
+                    "_id": "5d76b3a72e03d62e687a2139",
+                    "vehicleNumber": "vh123470",
+                    "pickUpDate": "15/11/2019",
+                    "goodType": "Koila",
+                    "loadingCapacity": 5,
+                    "createdAt": "2019-09-09T20:18:47.387Z",
+                    "updatedAt": "2019-09-09T20:18:47.387Z",
+                    "__v": 0
+                },
+                {
+                    "sourceDetais": {
+                        "state": "Bihar",
+                        "city": "Motihari",
+                        "adress": "203 B complex delhi"
+                    },
+                    "destDetais": {
+                        "state": "Bihar",
+                        "city": "Motihari",
+                        "adress": "C Complexe ground floor motihari"
+                    },
+                    "isRequstApproved": false,
+                    "_id": "5d76b3d52e03d62e687a213a",
+                    "vehicleNumber": "vh123474",
+                    "pickUpDate": "15/11/2019",
+                    "goodType": "Koila",
+                    "loadingCapacity": 5,
+                    "createdAt": "2019-09-09T20:19:33.831Z",
+                    "updatedAt": "2019-09-09T20:19:33.831Z",
+                    "__v": 0
+                },
+                {
+                    "sourceDetais": {
+                        "state": "Bihar",
+                        "city": "Motihari",
+                        "adress": "203 B complex delhi"
+                    },
+                    "destDetais": {
+                        "state": "Bihar",
+                        "city": "Motihari",
+                        "adress": "C Complexe ground floor motihari"
+                    },
+                    "isRequstApproved": false,
+                    "_id": "5d7e795f9d74213008294cc1",
+                    "vehicleNumber": "vh12347466",
+                    "pickUpDate": "15/12/2019",
+                    "goodType": "Koila",
+                    "loadingCapacity": 5,
+                    "createdAt": "2019-09-15T17:48:15.238Z",
+                    "updatedAt": "2019-09-15T17:48:15.238Z",
+                    "__v": 0
+                }
+            ]
         };
-        this.setState({spinner:true});
-        availableBookingsServiceController.getAvailableBookingsFromAgent(requstStateCityObject,token).then(data=>{
-            console.log('availabele bookings',data)
-            if(data.response){
-                this.setState({AvailableBooking:data.response});
-                this.setState({spinner:false});
-            }
-        }).catch(err=>this.setState({spinner:false}));
+        this.setState({AvailableBooking:availObj.response})
+        console.log('avail',this.state.AvailableBooking);
        this.getStates();
     }
 
@@ -102,7 +172,7 @@ class AvailableBooking extends Component {
                        </Left>
                         <Body>
                             <View style={{paddingTop:10}}>
-                                <Text style={styles.details}>{data.bookingId}</Text>
+                                <Text style={styles.details}>{data._id}</Text>
                             </View>
                         </Body>
                     </CardItem>
@@ -115,11 +185,11 @@ class AvailableBooking extends Component {
                         <View style={styles.dataRow}>
                             <View style={styles.data}>
                                 <Text>State:</Text>
-                                <Text style={styles.details}>{data.pickupLocationState}</Text>
+                                <Text style={styles.details}>{data.sourceDetais.state}</Text>
                             </View>
                             <View style={styles.data}>
                                 <Text>City</Text>
-                                <Text style={styles.details}>{data.pickupLocationCity}</Text>
+                                <Text style={styles.details}>{data.sourceDetais.city}</Text>
                             </View>
                         </View>
                     </CardItem>
@@ -132,12 +202,12 @@ class AvailableBooking extends Component {
                         <View style={styles.dataRow}>
                             <View style={styles.data}>
                                 <Text>State:</Text>
-                                <Text style={styles.details}>{data.dropLocationState}</Text>
+                                <Text style={styles.details}>{data.destDetais.state}</Text>
                             </View>
 
                             <View style={styles.data}>
                                 <Text>City:</Text>
-                                <Text style={styles.details}>{data.dropLocationState}</Text>
+                                <Text style={styles.details}>{data.destDetais.city}</Text>
                             </View>
                         </View>
                     </CardItem>
@@ -149,7 +219,7 @@ class AvailableBooking extends Component {
                     </CardItem>
                     <CardItem style={styles.cardRow}>
                         <View style={styles.data}>
-                            <Text style={styles.details}>{data.pickupDate}</Text>
+                            <Text style={styles.details}>{data.pickUpDate}</Text>
                         </View>
                     </CardItem>
 
@@ -171,7 +241,7 @@ class AvailableBooking extends Component {
                     </CardItem>
                     <CardItem style={styles.cardRow}>
                         <View style={styles.data}>
-                            <Text style={styles.details}>{data.quantity}</Text>
+                            <Text style={styles.details}>{data.loadingCapacity}</Text>
                         </View>
                     </CardItem>
 
@@ -182,7 +252,7 @@ class AvailableBooking extends Component {
                     </CardItem>
                     <CardItem style={styles.cardRow}>
                         <View style={styles.data}>
-                            <Text style={styles.details}>&#8377;{data.estimatedCostByAgent}</Text>
+                            <Text style={styles.details}>&#8377;50,000</Text>
                         </View>
                     </CardItem>
 
